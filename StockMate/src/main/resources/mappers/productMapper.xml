@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.stockm8.mapper.ProductMapper">
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="ProductResultMap" type="com.stockm8.domain.ProductVO">
+        <id property="productId" column="product_id"/>
+        <result property="name" column="name"/>
+        <result property="barcode" column="barcode"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="baseUnit" column="base_unit"/>
+        <result property="setSize" column="set_size"/>
+        <result property="price" column="price"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="businessId" column="business_id"/>
+        <result property="qrCodePath" column="qr_code_path"/>
+        <result property="barcodePath" column="barcode_path"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <!-- 상품 등록 -->
+    <insert id="insertProduct" parameterType="com.stockm8.domain.ProductVO">
+        INSERT INTO products (name, barcode, category_id, base_unit, set_size, price, 
+                              business_id, qr_code_path, barcode_path, description)
+        VALUES (#{name}, #{barcode}, #{categoryId}, #{baseUnit}, #{setSize}, #{price}, 
+                #{businessId}, #{qrCodePath}, #{barcodePath}, #{description})
+    </insert>
+
+    <!-- 상품 조회 -->
+    <select id="getProductById" parameterType="int" resultMap="ProductResultMap">
+        SELECT * FROM products WHERE product_id = #{productId}
+    </select>
+
+</mapper>
