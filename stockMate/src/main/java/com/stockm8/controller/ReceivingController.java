@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.stockm8.domain.ProductVO;
 import com.stockm8.domain.ReceivingShipmentVO;
 import com.stockm8.persistence.ReceivingDAO;
 import com.stockm8.service.ReceivingService;
@@ -26,13 +27,13 @@ public class ReceivingController {
 	
 	// http://localhost:8088/receiving/main
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void mainGET(Model model, ReceivingShipmentVO vo) throws Exception {
+	public void mainGET(Model model) throws Exception {
 		logger.info("mainGET() 호출");
 		
-		List<ReceivingShipmentVO> todayReceivingList = rService.getTodayReceivingList();
-		logger.info(todayReceivingList.size() + "개");
+		List<ReceivingShipmentVO> ReceivingList = rService.getReceivingList();
+		logger.info(ReceivingList.size() + "개");
 		
-		model.addAttribute("todayReceivingList", todayReceivingList);
+		model.addAttribute("ReceivingList", ReceivingList);
 		
 	}
 	

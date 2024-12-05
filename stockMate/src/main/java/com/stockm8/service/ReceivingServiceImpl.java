@@ -19,18 +19,13 @@ public class ReceivingServiceImpl implements ReceivingService {
 	@Inject
 	private ReceivingDAO rdao;
 
-	// 입고 메인 오늘 들어올 리스트
+	// 메인 입고 리스트
 	@Override
-	public List<ReceivingShipmentVO> getTodayReceivingList() throws Exception {
+	public List<ReceivingShipmentVO> getReceivingList() throws Exception {
 		logger.info("getTodayReceivingList() 호출");
-		return rdao.selectTodayReceivingList();
+		return rdao.selectReceivingList();
 	}
 
-	@Override
-	public List<ReceivingShipmentVO> getYesterdayReceivingList() throws Exception {
-		logger.info("getYesterdayReceivingList() 호출");
-		return null;
-	}
 	
 	
 	

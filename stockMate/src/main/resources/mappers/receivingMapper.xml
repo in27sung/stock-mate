@@ -4,22 +4,27 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.stockm8.mappers.receivingMapper">
 
-<!-- 오늘 입고될 리스트 -->
-<select id="getTodayReceivingList" resultType="com.stockm8.domain.ReceivingShipmentVO">
-	select *
-	from tbl_receiving
-	where Date(receivingDate) = curdate()
-	order by receivingDate
-	limit 0, 10
-</select>
-
-<!-- 어제 입고된 리스트 -->
-<select id="getYesterdayReceivingList" resultType="com.stockm8.domain.ReceivingShipmentVO">
-	select *
-	from tbl_receiving
-	where Date(receivingDate) = curdate() - INTERVAL 1 DAY
-	order by receivingDate
-	limit 0, 10
+<!-- 오늘 입고 예정 리스트 -->
+<select id="getReceivingList" resultType="com.stockm8.domain.ReceivingShipmentVO">
+	select
+	r.receiving_shipment_no, 
+	r.transaction_type, 
+	r.created_at, 
+	r.status, 
+	r.product_id, 
+	p.name, 
+	p.description, 
+	r.change_quantity, 
+	r.transaction_unit,
+	r.description,
+	b.company_name
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
+	join businesses b on w.business_id = b.business_id
+	where Date(r.created_at) = CURRENT_DATE and r.status = 'pending'
+	order by r.created_at
+	limit 0, 20
 </select>
   	
   </mapper>
