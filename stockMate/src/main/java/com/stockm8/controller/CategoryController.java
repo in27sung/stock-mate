@@ -44,13 +44,16 @@ public class CategoryController {
     // 카테고리 목록 페이지 호출 (GET)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String listCategories(Model model) throws Exception {
-    	// 카테고리 목록 조회
-        List<CategoryVO> categories = cService.getAllCategories(); 
-        
-        // JSP로 데이터 전달
-        model.addAttribute("categories", categories); 
-        // JSP 파일 경로: /views/category/list.jsp
-        return "category/list"; 
+    	try {
+            // 카테고리 목록 조회
+            List<CategoryVO> categories = cService.getAllCategories(); 
+            model.addAttribute("categories", categories);
+            return "category/list"; 
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "카테고리 목록을 가져오는 중 오류가 발생했습니다.");
+            return "error";  // 오류 페이지를 반환하거나, 오류 메시지를 전달하여 처리
+        } 
     }
     
     // 카테고리 수정 페이지 (GET)

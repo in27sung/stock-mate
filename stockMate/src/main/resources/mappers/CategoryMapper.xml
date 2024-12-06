@@ -51,12 +51,11 @@
     </select>
 
     <resultMap id="categoryWithParentsResultMap" type="com.stockm8.domain.vo.CategoryVO">
-        <result property="categoryId" column="categoryId"/>
-        <result property="categoryName" column="categoryName"/>
-        <result property="parentId" column="parentId"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="parentId" column="parent_id"/>
         <result property="level" column="level"/>
-        <result property="createdAt" column="createdAt"/>
-        <result property="parentCategoryName" column="parentCategoryName"/>
+        <result property="createdAt" column="created_at"/>
     </resultMap>
 
 </mapper>
