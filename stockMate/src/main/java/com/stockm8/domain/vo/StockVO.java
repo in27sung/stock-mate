@@ -13,5 +13,7 @@ public class StockVO {
 	private int totalQuantity; // 창고 내 총 재고 수량
 	private int reservedQuantity; // 예약된 수량
 	private int availableStock; // 사용 가능한 재고 (totalQuantity - reservedQuantity)
+	private Timestamp createdAt; // 재고 등록 시간
 	private Timestamp updatedAt; // 최근 수정 시간
+	private String description; // 재고 설명
 }
