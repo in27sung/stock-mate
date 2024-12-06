@@ -52,7 +52,7 @@ public class CategoryController {
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "카테고리 목록을 가져오는 중 오류가 발생했습니다.");
-            return "error";  // 오류 페이지를 반환하거나, 오류 메시지를 전달하여 처리
+            return  "/commonErr";  // 오류 페이지를 반환하거나, 오류 메시지를 전달하여 처리
         } 
     }
     
