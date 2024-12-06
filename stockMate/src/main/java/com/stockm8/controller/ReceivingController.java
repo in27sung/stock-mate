@@ -35,10 +35,10 @@ public class ReceivingController {
 		logger.info(ReceivingList.size() + "개");
 		
 		List<ReceivingShipmentVO> YesterdayReceivingList = rService.getYesterdayReceivingList();
-		logger.info(ReceivingList.size() + "개");
+		logger.info(YesterdayReceivingList.size() + "개");
 		
 		List<ReceivingShipmentVO> TDBYReceivingList = rService.getTDBYReceivingList();
-		logger.info(ReceivingList.size() + "개");
+		logger.info(TDBYReceivingList.size() + "개");
 		
 		model.addAttribute("ReceivingList", ReceivingList);
 		model.addAttribute("YesterdayReceivingList", YesterdayReceivingList);
