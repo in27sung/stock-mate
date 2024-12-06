@@ -7,7 +7,7 @@
     <title>인벤토리 목록</title>
 </head>
 <body>
-    <h1> /inventory/list.jsp </h1>
+    <h1> /views/inventory/list.jsp </h1>
     
     <!-- 필터링 폼 -->
     <form action="/inventory/list" method="GET">
