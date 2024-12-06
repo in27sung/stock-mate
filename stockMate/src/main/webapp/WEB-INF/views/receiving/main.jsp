@@ -17,6 +17,7 @@ ${ReceivingList }
 ${YesterdayReceivingList }
 ${TDBYReceivingList }
 
+
 <!-- 그래프 추가 -->
 <h2>가장 많이 나간 상품 수량</h2>
 <canvas id="myChart" width="400" height="200"></canvas>
