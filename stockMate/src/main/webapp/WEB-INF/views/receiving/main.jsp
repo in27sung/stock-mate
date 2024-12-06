@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,19 +28,19 @@ ${ReceivingList }
 		<th>작업 메모</th>
 		<th>공급사 회사 이름</th>
 	</tr>
-	<c:forEach var="vo" items="${ReceivingList}">
+	<c:forEach var="vo" items="${ReceivingList }">
 	<tr>
-		<td>${vo.receivingshipmentNo }</td>
-		<td>${vo.transactionType }</td>
-		<td>${vo.createdAt }</td>
+		<td>${vo.receiving_shipment_no }</td>
+		<td>${vo.transaction_type }</td>
+		<td><fmt:formatDate value="${vo.created_at}" pattern="yyyy-MM-dd" /></td>
 		<td>${vo.status }</td>
-		<td>${vo.productId }</td>
+		<td>${vo.product_id }</td>
 		<td>${vo.name }</td>
 		<td>${vo.description }</td>
-		<td>${vo.changeQuantity }</td>
-		<td>${vo.transactionUnit }</td>
-		<td>${vo.description }</td>
-		<td>${vo.companyName }</td>
+		<td>${vo.change_quantity }</td>
+		<td>${vo.transaction_unit }</td>
+		<td>${vo.memo }</td>
+		<td>${vo.company_name }</td>
 	</tr>
 	</c:forEach>
 </table>

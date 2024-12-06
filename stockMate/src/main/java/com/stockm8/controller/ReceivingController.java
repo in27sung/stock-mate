@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.stockm8.domain.BusinessVO;
 import com.stockm8.domain.ProductVO;
 import com.stockm8.domain.ReceivingShipmentVO;
 import com.stockm8.persistence.ReceivingDAO;
@@ -34,6 +35,7 @@ public class ReceivingController {
 		logger.info(ReceivingList.size() + "개");
 		
 		model.addAttribute("ReceivingList", ReceivingList);
+		
 		
 	}
 	
