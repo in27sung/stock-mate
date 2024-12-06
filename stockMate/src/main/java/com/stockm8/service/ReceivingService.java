@@ -10,6 +10,12 @@ public interface ReceivingService {
 	// 메인 입고 리스트
 	public List<ReceivingShipmentVO> getReceivingList() throws Exception;
 	
+	// 메인 입고 리스트
+	public List<ReceivingShipmentVO> getYesterdayReceivingList() throws Exception;
+	
+	// 메인 입고 리스트
+	public List<ReceivingShipmentVO> getTDBYReceivingList() throws Exception;
+	
 	
 
 } // ReceivingService end

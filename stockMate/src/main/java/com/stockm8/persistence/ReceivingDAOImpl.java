@@ -28,5 +28,19 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 		
 		return sqlSession.selectList(NAMESPACE + "getReceivingList"); 
 	}
+	
+	// 입고 메인 오늘 들어올 리스트
+	public List<ReceivingShipmentVO> selectYesterdayReceivingList() throws Exception {
+		logger.info("ReceivingList() 호출");
+		
+		return sqlSession.selectList(NAMESPACE + "getYesterdayReceivingList"); 
+	}
+		
+		// 입고 메인 오늘 들어올 리스트
+	public List<ReceivingShipmentVO> selectTDBYReceivingList() throws Exception {
+		logger.info("ReceivingList() 호출");
+		
+		return sqlSession.selectList(NAMESPACE + "getTDBYReceivingList"); 
+	}
 
 } // ReceivingDAOImpl end

@@ -26,6 +26,18 @@ public class ReceivingServiceImpl implements ReceivingService {
 		return rdao.selectReceivingList();
 	}
 
+	@Override
+	public List<ReceivingShipmentVO> getYesterdayReceivingList() throws Exception {
+		logger.info("getYesterdayReceivingList() 호출");
+		return rdao.selectYesterdayReceivingList();
+	}
+
+	@Override
+	public List<ReceivingShipmentVO> getTDBYReceivingList() throws Exception {
+		logger.info("getTDBYReceivingList() 호출");
+		return rdao.selectTDBYReceivingList();
+	}
+
 	
 	
 	
