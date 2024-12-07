@@ -1,4 +1,4 @@
-package com.stockm8.domain;
+package com.stockm8.domain.vo;
 
 import java.sql.Timestamp;
 

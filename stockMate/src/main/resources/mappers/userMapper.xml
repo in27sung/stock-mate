@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.stockm8.mapper.UserMapper">
+
+    <!-- UserResultMap 정의 -->
+    <resultMap id="UserResultMap" type="com.stockm8.domain.vo.UserVO">
+        <result property="userId" column="user_id" />
+        <result property="businessId" column="business_id" />
+        <result property="email" column="email" />
+        <result property="name" column="name" />
+        <result property="role" column="role" />
+        <result property="isDeleted" column="is_deleted" />
+    </resultMap>
+
+    <!-- 회원가입 -->
+    <insert id="insertUser">
+        INSERT INTO test_users (email, password, name, role, tel_number)
+        VALUES (#{email}, #{password}, #{name}, #{role}, #{telNumber})
+    </insert>
+
+    <!-- 로그인 체크 -->
+    <select id="loginCheck" parameterType="com.stockm8.domain.vo.UserVO" resultMap="UserResultMap">
+        SELECT 
+            user_id, 
+            business_id, 
+            email, 
+            name, 
+            role, 
+            is_deleted 
+        FROM test_users
+        WHERE email = #{email} AND password = #{password}
+    </select>
+
+    <!-- 회원정보 조회 -->
+    <select id="getUser" parameterType="long" resultMap="UserResultMap">
+        SELECT * FROM test_users
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 회원정보 수정 -->
+    <update id="updateUser">
+        UPDATE test_users
+        SET name = #{name},
+            tel_number = #{telNumber},
+            updated_at = NOW()
+        WHERE user_id = #{userId} AND password = #{password}
+    </update>
+
+    <!-- 회원정보 삭제 -->
+    <delete id="deleteUser">
+        DELETE FROM test_users
+        WHERE user_id = #{userId} AND password = #{password}
+    </delete>
+
+    <!-- 회원 목록 조회 -->
+    <select id="userList" resultMap="UserResultMap">
+        SELECT * FROM test_users
+    </select>
+
+    <!-- 유저 정보를 user_id로 조회 -->
+    <select id="getUserById" parameterType="long" resultMap="UserResultMap">
+        SELECT user_id, business_id, email, name, role, is_deleted
+        FROM test_users
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 유저의 삭제 여부 확인 -->
+    <select id="getIsDeleted" parameterType="long" resultType="int">
+        SELECT is_deleted
+        FROM test_users
+        WHERE user_id = #{userId}
+    </select>
+
+</mapper>

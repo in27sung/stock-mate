@@ -1,4 +1,4 @@
-package com.stockm8.domain;
+package com.stockm8.domain.vo;
 
 import java.sql.Timestamp;
 
@@ -12,5 +12,4 @@ public class CategoryVO {
     private String categoryName;   // 카테고리 이름
     private int level;             // 카테고리 계층 수준 (1=대분류, 2=소분류)
     private Timestamp createdAt;   // 카테고리 생성 일자
-
 }

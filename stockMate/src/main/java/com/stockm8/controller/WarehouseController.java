@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,12 +19,19 @@ public class WarehouseController {
 	
 	@Inject
 	private WarehouseService wService;
+	
 	// http://localhost:8088/warehouse/create
 	// 창고 등록하기
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public void createGET() throws Exception {
+	public void registGET() throws Exception {
 		logger.info("/warehouse/create 호출");
 		logger.info("연결된 뷰페이지(/board/create.jsp) 이동");
 	}
 	
+	// 창고 등록처리 
+	@PostMapping("/create")
+	public String registPOST() throws Exception {
+		logger.info("createPOST() 호출");
+		return null;
+	}
 }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.stockm8.mapper.CategoryMapper">
+
+	<!-- 카테고리 등록 -->
+	<!-- <insert id="insertCategory" -->
+	<!-- parameterType="com.stockm8.domain.vo.CategoryVO"> -->
+	<!-- insert into categories (parentId, businessId, -->
+	<!-- categoryName, level, -->
+	<!-- createdAt) -->
+	<!-- values (#{parentId}, #{businessId}, -->
+	<!-- #{categoryName}, #{level}, -->
+	<!-- #{createdAt}) -->
+	<!-- </insert> -->
+
+	<!-- 카테고리 목록 조회 -->
+	<!-- <select id="selectAllCategories" -->
+	<!-- resultType="com.stockm8.domain.vo.CategoryVO"> -->
+	<!-- select * -->
+	<!-- from categories -->
+	<!-- </select> -->
+
+	<!-- 카테고리 등록 -->
+	<!-- <insert id="insertCategory" -->
+	<!-- parameterType="com.stockm8.domain.vo.CategoryVO"> -->
+	<!-- insert into categories (parentId, businessId, -->
+	<!-- categoryName, level, -->
+	<!-- createdAt) -->
+	<!-- values (#{parentId}, #{businessId}, -->
+	<!-- #{categoryName}, #{level}, -->
+	<!-- #{createdAt}) -->
+	<!-- </insert> -->
+
+	<!-- 카테고리 목록 조회 -->
+	<!-- <select id="selectAllCategories" -->
+	<!-- resultType="com.stockm8.domain.vo.CategoryVO"> -->
+	<!-- select * -->
+	<!-- from categories -->
+	<!-- order by level asc, categoryName -->
+	<!-- asc -->
+	<!-- </select> -->
+	<!-- select절 id가 똑같이 작성 되었습니다. 확인 부탁드려요 -->
+
+    <!-- existsById 쿼리 -->
+	<select id="existsById" parameterType="map" resultType="int">
+		SELECT EXISTS(
+		SELECT 1
+		FROM test_categories
+		WHERE category_id = #{categoryId} AND business_id = #{businessId}
+		)
+	</select>
+
+	<!-- 카테고리 수정 -->
+	<update id="updateCategory"
+		parameterType="com.stockm8.domain.vo.CategoryVO">
+		update test_categories
+		set parentId = #{parentId},
+		categoryName = #{categoryName}, level =
+		#{level}
+		where categoryId =
+		#{categoryId}
+	</update>
+
+	<!-- 카테고리 삭제 -->
+	<delete id="deleteCategory" parameterType="int">
+		delete from test_categories
+		where categoryId = #{categoryId}
+	</delete>
+
+	<!-- 카테고리 ID로 조회 -->
+	<select id="selectCategoryById"
+		resultType="com.stockm8.domain.vo.CategoryVO">
+		select * from test_categories
+		where categoryId = #{categoryId}
+	</select>
+
+	<!-- 상위 카테고리만 조회 -->
+	<select id="selectParentCategories"
+		resultType="com.stockm8.domain.vo.CategoryVO">
+		select * from test_categories
+		where parentId is null
+	</select>
+
+	<!-- 카테고리와 부모 카테고리 조회 -->
+	<select id="selectCategoryWithParents"
+		resultMap="categoryWithParentsResultMap">
+		select c.*, p.categoryName as parentCategoryName
+		from
+		test_categories c
+		left join categories p on c.parentId = p.categoryId
+		where
+		c.categoryId = #{categoryId}
+	</select>
+
+	<resultMap id="categoryWithParentsResultMap"
+		type="com.stockm8.domain.vo.CategoryVO">
+		<result property="categoryId" column="categoryId" />
+		<result property="categoryName" column="categoryName" />
+		<result property="parentId" column="parentId" />
+		<result property="level" column="level" />
+		<result property="createdAt" column="createdAt" />
+		<result property="parentCategoryName"
+			column="parentCategoryName" />
+	</resultMap>
+
+</mapper>

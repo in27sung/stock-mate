@@ -1,4 +1,4 @@
-package com.stockm8.domain;
+package com.stockm8.domain.vo;
 
 import java.sql.Timestamp;
 
@@ -12,5 +12,4 @@ public class WarehouseVO {
 	private int businessId; 		// 사업자 ID
 	private int managerId; 			// 창고 담당자 ID
 	private Timestamp createdAt; 	// 창고 등록 날짜
-
 }

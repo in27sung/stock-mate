@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.stockm8.domain.ReceivingShipmentVO;
+import com.stockm8.domain.vo.ReceivingShipmentVO;
 import com.stockm8.persistence.ReceivingDAO;
 
 @Service
@@ -19,18 +19,25 @@ public class ReceivingServiceImpl implements ReceivingService {
 	@Inject
 	private ReceivingDAO rdao;
 
-	// 입고 메인 오늘 들어올 리스트
+	// 메인 입고 리스트
 	@Override
-	public List<ReceivingShipmentVO> getTodayReceivingList() throws Exception {
+	public List<ReceivingShipmentVO> getReceivingList() throws Exception {
 		logger.info("getTodayReceivingList() 호출");
-		return rdao.selectTodayReceivingList();
+		return rdao.selectReceivingList();
 	}
 
 	@Override
 	public List<ReceivingShipmentVO> getYesterdayReceivingList() throws Exception {
 		logger.info("getYesterdayReceivingList() 호출");
-		return null;
+		return rdao.selectYesterdayReceivingList();
 	}
+
+	@Override
+	public List<ReceivingShipmentVO> getTDBYReceivingList() throws Exception {
+		logger.info("getTDBYReceivingList() 호출");
+		return rdao.selectTDBYReceivingList();
+	}
+
 	
 	
 	
