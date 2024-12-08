@@ -5,7 +5,7 @@
   <mapper namespace="com.stockm8.mappers.receivingMapper">
   
   <resultMap type="com.stockm8.domain.vo.ReceivingShipmentVO" id="receivingshipmentMap">
-  	<id property="product_id" column="product_id"/>
+  	<id property="productId" column="product_id"/>
   	<result property="receivingShipmentNo" column="receiving_shipment_no"/>
   	<result property="createdAt" column="created_at"/>
   	<result property="status" column="status"/>

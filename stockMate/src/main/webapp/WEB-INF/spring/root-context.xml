@@ -17,7 +17,7 @@
 		<property name="password" value='1234' />
 	</bean>
 	<!-- 커넥션풀 설정 -->
-
+	
 	<!-- 디비연결 객체(DataSource) 생성 -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
 		destroy-method="close">
