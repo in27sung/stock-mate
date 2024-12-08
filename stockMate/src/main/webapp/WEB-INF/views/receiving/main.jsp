@@ -11,6 +11,8 @@
 </head>
 <body>
 
+<a href="/receiving/history">입고 내역</a>
+
 <h1>입고 메인</h1>
 
 ${ReceivingList }

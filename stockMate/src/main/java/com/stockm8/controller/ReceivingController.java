@@ -39,10 +39,12 @@ public class ReceivingController {
 		
 		model.addAttribute("ReceivingList", ReceivingList);
 		model.addAttribute("YesterdayReceivingList", YesterdayReceivingList);
-		model.addAttribute("TDBYReceivingList", TDBYReceivingList);
-		
-		
-		
+		model.addAttribute("TDBYReceivingList", TDBYReceivingList);	
+	}
+	
+	@RequestMapping(value = "/history", method = RequestMethod.GET)
+	public void historyGET(Model model) throws Exception {
+		logger.info("historyGET() 호출");
 	}
 	
 	
