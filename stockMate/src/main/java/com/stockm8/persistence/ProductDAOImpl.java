@@ -18,16 +18,25 @@ public class ProductDAOImpl implements ProductDAO {
 	@Inject
 	private SqlSession sqlSession;
 	
-	private static final String NAMESPACE = "com.stockm8.mappers.productMapper.";
+	private static final String NAMESPACE = "com.stockm8.mapper.ProductMapper.";
 	
 	@Override
-	public void insertProduct(ProductVO pVO) throws Exception {
+	public void insertProduct(ProductVO product) throws Exception {
 		logger.info("insertProduct(ProductVO pVO) 호출");
 		logger.info("DAO -> mapper(sql) 실행");
 		
 		// mapper 호출 및 실행 
-		sqlSession.insert(NAMESPACE + "insertProduct", pVO);
+		sqlSession.insert(NAMESPACE + "insertProduct", product);
 		
+	}
+
+	@Override
+	public ProductVO getProductById(int productId) throws Exception{
+	    logger.info("getProductById(int productId) 호출");
+	    logger.info("DAO -> mapper(sql) 실행");
+
+	    // mapper 호출 및 실행
+	    return sqlSession.selectOne(NAMESPACE + "getProductById", productId);
 	}
 
 }

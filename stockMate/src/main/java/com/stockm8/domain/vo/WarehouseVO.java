@@ -12,4 +12,5 @@ public class WarehouseVO {
 	private int businessId; 		// 사업자 ID
 	private int managerId; 			// 창고 담당자 ID
 	private Timestamp createdAt; 	// 창고 등록 날짜
+    private boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
 }

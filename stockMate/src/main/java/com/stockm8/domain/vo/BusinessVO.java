@@ -11,5 +11,6 @@ public class BusinessVO {
 	private String businessNumber;   // 사업자등록번호
 	private String companyName;  	 // 회사명
 	private Timestamp createdAt;	 // 사업자 등록 날짜
+	private Timestamp updatedAt;	 // 사업자 등록 날짜
 
 }

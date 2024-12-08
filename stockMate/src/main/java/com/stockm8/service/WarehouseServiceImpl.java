@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stockm8.domain.vo.WarehouseVO;
@@ -16,20 +17,20 @@ public class WarehouseServiceImpl implements WarehouseService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WarehouseServiceImpl.class);
 
-	@Inject
+	@Autowired
 	private WarehouseDAO warehouseDAO;
 	
 	@Override
-	public void createWarehouse(WarehouseVO wVO) throws Exception {
+	public void createWarehouse(WarehouseVO warehouse) throws Exception {
 		
-		logger.info("createWarehouse(WarehouseVO wVO) 호출");
+		logger.info("createWarehouse(WarehouseVO warehouse) 호출");
 		
 		logger.info("Service -> DAO 메서드 호출");
-		warehouseDAO.insertWarehouse(wVO);
+		warehouseDAO.insertWarehouse(warehouse);
 	}
 
 	@Override
-	public List<WarehouseVO> getWarehousesByBusinessId(Long businessId) throws Exception {
+	public List<WarehouseVO> getWarehousesByBusinessId(Integer businessId) throws Exception {
 
 		logger.info("getWarehousesByBusinessId(Long businessId) 호출");
 		

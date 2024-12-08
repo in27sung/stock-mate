@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.stockm8.mappers.shipmentMapper">
 
-<select id="getTodayShipmentList" resultType="com.stockm8.domain.ReceivingShipmentVO">
+<select id="getTodayShipmentList" resultType="com.stockm8.domain.vo.ReceivingShipmentVO">
 		
 </select>
   	

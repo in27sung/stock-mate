@@ -12,5 +12,6 @@ public class CategoryVO {
     private String categoryName;   // 카테고리 이름
     private int level;             // 카테고리 계층 수준 (1=대분류, 2=소분류)
     private Timestamp createdAt;   // 카테고리 생성 일자
-
+    private Timestamp updatedAt;   // 카테고리 수정 일자
+    private boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
 }

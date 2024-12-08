@@ -19,43 +19,60 @@
 	<!-- 창고 등록 -->
 	<insert id="insertWarehouse"
 		parameterType="com.stockm8.domain.vo.WarehouseVO">
-		INSERT INTO warehouses (warehouse_name, location, business_id, manager_id)
-		VALUES (#{warehouseName}, #{location}, #{businessId}, #{managerId})
+		INSERT INTO test_warehouses (warehouse_name, location,
+		business_id, manager_id)
+		VALUES (#{warehouseName}, #{location},
+		#{businessId}, #{managerId})
 	</insert>
 
 	<!-- 창고 조회 -->
 	<select id="selectWarehouseById" parameterType="int"
 		resultMap="WarehouseResultMap">
-		SELECT * FROM warehouses WHERE warehouse_id = #{warehouseId}
+		SELECT * FROM test_warehouses WHERE warehouse_id =
+		#{warehouseId}
 	</select>
 
 	<!-- 회사정보를 통한 창고ID 조회 -->
 	<select id="selectWarehouseIDByBusinessId" parameterType="int"
 		resultMap="WarehouseResultMap">
 		SELECT warehouseId
-		FROM warehouses
-		WHERE business_id = #{businessId}
+		FROM test_warehouses
+		WHERE business_id =
+		#{businessId}
 	</select>
 
 	<!-- 전체 창고 목록 조회 -->
 	<select id="findAllWarehouses" resultMap="WarehouseResultMap">
-		SELECT * FROM warehouses
+		SELECT * FROM
+		warehouses
+	</select>
+
+	<!-- Check if a warehouse exists by its ID and business ID -->
+	<select id="existsById" parameterType="map" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM test_warehouses
+		WHERE warehouse_id = #{warehouseId} AND
+		business_id = #{businessId}
 	</select>
 
 	<!-- 창고 정보 수정 -->
 	<update id="updateWarehouse"
 		parameterType="com.stockm8.domain.vo.WarehouseVO">
-		UPDATE warehouses
-		SET warehouse_name = #{warehouseName},
+		UPDATE test_warehouses
+		SET warehouse_name =
+		#{warehouseName},
 		location = #{location},
 		business_id = #{businessId},
-		manager_id = #{managerId}
+		manager_id =
+		#{managerId}
 		WHERE warehouse_id = #{warehouseId}
 	</update>
 
 	<!-- 창고 삭제 -->
 	<delete id="deleteWarehouseById" parameterType="int">
-		DELETE FROM warehouses WHERE warehouse_id = #{warehouseId}
+		DELETE FROM
+		test_warehouses WHERE warehouse_id = #{warehouseId}
 	</delete>
 
 </mapper>

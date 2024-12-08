@@ -18,7 +18,7 @@ public class WarehouseController {
 	private static final Logger logger = LoggerFactory.getLogger(WarehouseController.class);
 	
 	@Inject
-	private WarehouseService wService;
+	private WarehouseService warehouseService;
 	
 	// http://localhost:8088/warehouse/create
 	// 창고 등록하기
