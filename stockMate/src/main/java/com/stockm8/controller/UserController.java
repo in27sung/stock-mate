@@ -274,7 +274,7 @@ public class UserController {
 //		return "redirect:/dashboard";
 //	}
 
-		 // 대시보드 사용법 - /user/consultation (GET)
+		 // 상담하기 - /user/consultation (GET)
 			@RequestMapping(value = "/consultation", method = RequestMethod.GET)
 			public String consultationGET(Model model, HttpSession session) throws Exception {
 				Long userId = (Long) session.getAttribute("id");
@@ -286,6 +286,36 @@ public class UserController {
 				model.addAttribute("resultVO", resultVO);
 				return "user/consultation";
 			}	    
+			
+			 // 대시보드사용법 - /howtouse (GET)
+			@RequestMapping(value = "/howtouse", method = RequestMethod.GET)
+			public String howtouseGET(Model model, HttpSession session) throws Exception {
+				Long userId = (Long) session.getAttribute("id");
+//			    if (id == null) {
+//			        // 세션에 id가 없으면 에러 처리
+//			        return "redirect:/user/main";
+//			    }
+				UserVO resultVO = userService.getUser(userId);
+				model.addAttribute("resultVO", resultVO);
+				return "user/howtouse";
+			}	    
+			
+			
+			 // 회사소개 - /intro (GET)
+			@RequestMapping(value = "/intro", method = RequestMethod.GET)
+			public String introGET(Model model, HttpSession session) throws Exception {
+				Long userId = (Long) session.getAttribute("id");
+//			    if (id == null) {
+//			        // 세션에 id가 없으면 에러 처리
+//			        return "redirect:/user/main";
+//			    }
+				UserVO resultVO = userService.getUser(userId);
+				model.addAttribute("resultVO", resultVO);
+				return "user/intro";
+			}	    
+			
+			
+			
 		    
 			 // 비밀번호 변경 - /user/changepassword1 (GET)
 			@RequestMapping(value = "/changepassword1", method = RequestMethod.GET)
