@@ -52,10 +52,9 @@ public class ReceivingServiceImpl implements ReceivingService {
 	}
 	
 	@Override
-	public int getTotalCountBySearch(String startDate, String endDate, String keyword,
-			Criteria cri) throws Exception {
+	public int getTotalCountBySearch(String startDate, String endDate, String keyword) throws Exception {
 		logger.info("getTotalCountBySearch() 호출");
-		return rdao.selectTotalCountBySearch(startDate, endDate, keyword, cri);
+		return rdao.selectTotalCountBySearch(startDate, endDate, keyword);
 	}
 
 	@Override
@@ -63,6 +62,13 @@ public class ReceivingServiceImpl implements ReceivingService {
 		logger.info("getTotalCount() 호출");
 		return rdao.selectTotalCount();
 	}
+
+	@Override
+	public void insertReceiving() throws Exception {
+		logger.info("insertReceiving() 호출");
+		rdao.insertReceiving();
+	}
+	
 	
 	
 

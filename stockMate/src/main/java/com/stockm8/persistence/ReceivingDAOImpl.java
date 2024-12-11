@@ -72,13 +72,12 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	}
 
 	@Override
-	public int selectTotalCountBySearch(String startDate, String endDate, String keyword, Criteria cri) throws Exception {
+	public int selectTotalCountBySearch(String startDate, String endDate, String keyword) throws Exception {
 	    
 		Map<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("startDate", startDate);
 	    paramMap.put("endDate", endDate);
 	    paramMap.put("keyword", keyword);
-	    paramMap.put("cri", cri);
 	    return sqlSession.selectOne(NAMESPACE + "getTotalCountBySearch", paramMap);
 	}
 	
@@ -88,6 +87,14 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 		
 		return sqlSession.selectOne(NAMESPACE + "getTotalCount");
 	}
+
+	@Override
+	public void insertReceiving() throws Exception {
+		logger.info("insertReceiving() 호출");
+		sqlSession.insert(NAMESPACE + "insertReceiving");
+	}
+	
+	
 	
 	
 	

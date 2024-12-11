@@ -25,8 +25,36 @@
     <result property="price" column="price"/>
   </resultMap>
   
-  
 
+<!-- 테이블에 입고 데이터 입력 -->
+<insert id="insertReceiving">
+	INSERT INTO receiving_shipment (
+	transaction_type, 
+	status, 
+	product_id, 
+	change_quantity, 
+	transaction_unit,
+	order_item_id,
+	stock_id,
+	warehouse_id,
+    created_by
+	)
+	SELECT 
+	'in', 
+	'pending',
+	p.product_id, 
+	o.quantity, 
+	p.base_unit,
+	o.order_item_id,
+	s.stock_id,
+	o.warehouse_id,
+    u.created_by
+	FROM products p
+	JOIN order_items o ON o.product_id = p.product_id
+	JOIN stocks s ON s.product_id = p.product_id
+    JOIN users u ON u.business_id = p.business_id;
+</insert>
+	
 <!-- 오늘 입고 예정 리스트 -->
 <select id="getReceivingList" resultMap="receivingshipmentMap">
 	select
@@ -40,9 +68,9 @@
 	r.change_quantity, 
 	r.transaction_unit,
 	r.memo
-	from test_receiving_shipment r
-	join test_products p on r.product_id = p.product_id
-	join test_warehouses w on w.warehouse_id = r.warehouse_id
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
 	where Date(r.created_at) = CURRENT_DATE and r.status = 'pending' and r.transaction_type = 'in'
 	order by r.receiving_shipment_no desc
 	limit 0, 20
@@ -61,9 +89,9 @@
 	r.change_quantity, 
 	r.transaction_unit,
 	r.memo
-	from test_receiving_shipment r
-	join test_products p on r.product_id = p.product_id
-	join test_warehouses w on w.warehouse_id = r.warehouse_id
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -1 DAY) 
 	order by r.receiving_shipment_no desc
 	limit 0, 20
@@ -82,9 +110,9 @@
 	r.change_quantity, 
 	r.transaction_unit,
 	r.memo
-	from test_receiving_shipment r
-	join test_products p on r.product_id = p.product_id
-	join test_warehouses w on w.warehouse_id = r.warehouse_id
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -2 DAY) 
 	order by r.receiving_shipment_no desc
 	limit 0, 20
@@ -104,9 +132,9 @@
 	r.transaction_unit,
 	p.price,
 	r.memo
-	from test_receiving_shipment r
-	join test_products p on r.product_id = p.product_id
-	join test_warehouses w on w.warehouse_id = r.warehouse_id
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
 	where transaction_type = 'in'
 	order by r.receiving_shipment_no desc
 	limit #{startPage},#{pageSize};
@@ -126,9 +154,9 @@
     r.transaction_unit,
     p.price,
     r.memo
-    FROM test_receiving_shipment r
-    JOIN test_products p ON r.product_id = p.product_id
-    JOIN test_warehouses w ON w.warehouse_id = r.warehouse_id
+    FROM receiving_shipment r
+    JOIN products p ON r.product_id = p.product_id
+    JOIN warehouses w ON w.warehouse_id = r.warehouse_id
     <where>
         <if test="startDate != ''">
             r.created_at &gt;= #{startDate}
@@ -148,8 +176,8 @@
 <!-- 키워드 검색시 모든 개수 카운트 -->
 <select id="getTotalCountBySearch" parameterType="map" resultType="int">
     SELECT COUNT(*) 
-    FROM test_receiving_shipment r
-    JOIN test_products p ON r.product_id = p.product_id
+    FROM receiving_shipment r
+    JOIN products p ON r.product_id = p.product_id
     <where>
         <if test="startDate != ''">
             r.created_at &gt;= #{startDate}
@@ -168,7 +196,7 @@
 <!-- 입출고 모든 개수 카운트 -->
 <select id="getTotalCount" resultType="int">
 	select count(*)
-	from test_receiving_shipment
+	from receiving_shipment
 	where transaction_type = 'in'
 </select>
   	

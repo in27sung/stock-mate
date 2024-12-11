@@ -239,10 +239,9 @@ tr:hover {
 
 	<h1>입고 내역</h1>
 	<a href="/receiving/main">입고 메인</a>
-	<form action="/receiving/insert2" method="POST">
+	<form action="/receiving/insert3" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
-	
 
 	<!-- 기간별 검색 및 키워드 검색 폼 -->
 	<form action="/receiving/search" method="get"
@@ -314,17 +313,17 @@ tr:hover {
 	    <ul class="pagination">
 	        <c:if test="${pageVO.prev}">
 	            <li class="paginate_button previous">
-	                <a href="/receiving/history?page=${pageVO.startPage - 10}&pageSize=${pageVO.cri.pageSize}" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+	                <a href="/receiving/history?page=${pageVO.startPage - 10}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
 	            </li>
 	        </c:if>
 	        <c:forEach var="i" begin="${pageVO.startPage}" end="${pageVO.endPage}">
 	            <li class="paginate_button ${(i == pageVO.cri.page) ? 'active' : ''}">
-	                <a href="/receiving/history?page=${i}&pageSize=${pageVO.cri.pageSize}" aria-controls="example2" data-dt-idx="1" tabindex="0">${i}</a>
+	                <a href="/receiving/history?page=${i}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="1" tabindex="0">${i}</a>
 	            </li>
 	        </c:forEach>
 	        <c:if test="${pageVO.next}">
 	            <li class="paginate_button">
-	                <a href="/receiving/history?page=${pageVO.startPage + 1}&pageSize=${pageVO.cri.pageSize}" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a>
+	                <a href="/receiving/history?page=${pageVO.startPage + 1}&pageSize=${pageVO.cri.pageSize}&startDate=${param.startDate}&endDate=${param.endDate}&keyword=${param.keyword}" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a>
 	            </li>
 	        </c:if>
 	    </ul>

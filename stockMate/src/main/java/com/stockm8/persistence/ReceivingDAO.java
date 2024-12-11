@@ -23,9 +23,12 @@ public interface ReceivingDAO {
 	public List<ReceivingShipmentVO> selectHistoryByDateRange(String startDate, String endDate, String keyword, Criteria cri) throws Exception;
 
 	// 검색시 모든 리스트 개수
-	public int selectTotalCountBySearch(String startDate, String endDate, String keyword, Criteria cri) throws Exception;
+	public int selectTotalCountBySearch(String startDate, String endDate, String keyword) throws Exception;
 	
 	// 리스트 모든 개수
 	public int selectTotalCount() throws Exception;
+	
+	// rs 테이블 insert
+	public void insertReceiving() throws Exception;
 		
 } // ReceivingDAO end
