@@ -1,0 +1,87 @@
+@charset "UTF-8";
+
+/* Toast 메시지 */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    max-width: 90%; /* 모바일 대응 */
+    white-space: pre-wrap; /* 텍스트 줄바꿈 허용 */
+    word-wrap: break-word;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.toast.success {
+    background-color: #28a745;
+}
+
+.toast.error {
+    background-color: #dc3545;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    animation: slideIn 0.5s ease-out;
+}
+
+/* 다양한 위치 클래스 추가 */
+.toast.top {
+    top: 20px;
+}
+
+.toast.bottom {
+    top: auto;
+    bottom: 20px;
+}
+
+/* 애니메이션 정의 */
+@keyframes slideIn {
+    from {
+        transform: translate(-50%, -50px); /* 위에서 아래로 */
+    }
+    to {
+        transform: translate(-50%, 0); /* 원래 위치 */
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0; /* 투명해짐 */
+    }
+}
+
+/* 추가방법  */
+/* function showToast(message, type, position = "top") { */
+/*     // 토스트 요소 생성 */
+/*     const toast = document.createElement("div"); */
+/*     toast.className = `toast ${type} ${position}`; // success/error와 위치 클래스 */
+/*     toast.textContent = message; */
+
+/*     // DOM에 추가 */
+/*     document.body.appendChild(toast); */
+
+/*     // 표시 애니메이션 */
+/*     setTimeout(() => { */
+/*         toast.classList.add("show"); */
+/*     }, 10); // 약간의 딜레이로 애니메이션 적용 */
+
+/*     // 자동 제거 */
+/*     setTimeout(() => { */
+/*         toast.classList.remove("show"); */
+/*         setTimeout(() => { */
+/*             document.body.removeChild(toast); */
+/*         }, 300); // 애니메이션 시간과 동기화 */
+/*     }, 4000); // 4초 후 사라짐 */
+/* } */

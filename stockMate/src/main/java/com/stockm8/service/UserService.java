@@ -2,6 +2,7 @@ package com.stockm8.service;
 
 import java.util.List;
 
+import com.stockm8.domain.vo.BusinessVO;
 import com.stockm8.domain.vo.UserVO;
 
 public interface UserService {
@@ -9,19 +10,22 @@ public interface UserService {
 	//실행하려는 동작 추상메서드로 구현
 	
 	// 회원가입
-	public void userJoin(UserVO vo) throws Exception;
+	public void userJoin(UserVO user) throws Exception;
 	
 	// 로그인 체크
-	public UserVO userLogin(UserVO vo) throws Exception;
+	public UserVO userLogin(UserVO user) throws Exception;
 	
 	// 회원정보 조회
 	public UserVO getUser(Long userId) throws Exception;
 	
 	// 회원정보 수정
-	public void updateUser(UserVO userVO) throws Exception;
+	public void updateUser(UserVO user) throws Exception;
+	
+	// 회원정보에서 BusinessId 수정
+	public void updateUserBusinessId(Long userId, int businessId) throws Exception;
 	
 	// 회원정보 삭제
-	public int deleteUser(UserVO userVO) throws Exception;
+	public int deleteUser(UserVO user) throws Exception;
 	
 	// 회원정보 목록조회
 	public List<UserVO> userList() throws Exception;

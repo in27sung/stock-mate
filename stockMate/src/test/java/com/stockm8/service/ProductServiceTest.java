@@ -59,15 +59,14 @@ public class ProductServiceTest {
 				Integer.class, businessId);
 
 		ProductVO productVO = new ProductVO();
-		productVO.setName("테스트 상품");
-		productVO.setBarcode("123456789");
+		productVO.setProductName("테스트 상품");
+		productVO.setProductBarcode("123456789");
 		productVO.setBusinessId(businessId);
-		productVO.setWarehouseId(warehouseId);
 		productVO.setCategoryId(categoryId);
 		productVO.setBaseUnit("개");
 		productVO.setSetSize(10);
-		productVO.setPrice(new BigDecimal("19999.00"));
-		productVO.setDescription("테스트 상품 설명");
+		productVO.setProductPrice(new BigDecimal("19999.00"));
+		productVO.setProductDescription("테스트 상품 설명");
 
 		// When
 		productService.registerProduct(productVO);
@@ -75,7 +74,7 @@ public class ProductServiceTest {
 		// Then
 		ProductVO savedProduct = productDAO.getProductById(productVO.getProductId());
 		assertNotNull("등록된 상품은 null이 아니어야 합니다.", savedProduct);
-		assertEquals("상품명이 일치해야 합니다.", "테스트 상품", savedProduct.getName());
+		assertEquals("상품명이 일치해야 합니다.", "테스트 상품", savedProduct.getProductName());
 	}
 
 //	@Test

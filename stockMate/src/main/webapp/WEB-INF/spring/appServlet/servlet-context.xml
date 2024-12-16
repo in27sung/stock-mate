@@ -11,7 +11,7 @@
     <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
     
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-    <resources mapping="/resources/**" location="/resources/" />
+    <mvc:resources mapping="/resources/**" location="/resources/" />
 
     <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -21,12 +21,29 @@
     </beans:bean>
     
     <!-- Enable component scanning -->
-	<context:component-scan base-package="com.stockm8.controller, com.stockm8.interceptor, com.stockm8.service, com.stockm8.exception" />
-	
-	<mvc:annotation-driven>
-    <mvc:argument-resolvers>
-        <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.FlashMapMethodArgumentResolver" />
-    </mvc:argument-resolvers>
-	</mvc:annotation-driven>
-	
+    <context:component-scan base-package="com.stockm8.controller, com.stockm8.interceptor, com.stockm8.service, com.stockm8.exception" />
+    
+    <!-- Enable Spring MVC annotations and configure converters -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <beans:property name="supportedMediaTypes">
+                    <beans:list>
+                        <beans:value>text/html;charset=UTF-8</beans:value>
+                        <beans:value>application/json;charset=UTF-8</beans:value>
+                    </beans:list>
+                </beans:property>
+            </beans:bean>
+            <beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <beans:property name="supportedMediaTypes">
+                    <beans:list>
+                        <beans:value>application/json;charset=UTF-8</beans:value>
+                    </beans:list>
+                </beans:property>
+            </beans:bean>
+        </mvc:message-converters>
+        <mvc:argument-resolvers>
+            <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.FlashMapMethodArgumentResolver" />
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
 </beans:beans>

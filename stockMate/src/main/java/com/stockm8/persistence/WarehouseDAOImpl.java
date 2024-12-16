@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.stockm8.domain.dto.WarehouseDetailDTO;
 import com.stockm8.domain.vo.WarehouseVO;
 
 @Repository
@@ -24,15 +25,12 @@ public class WarehouseDAOImpl implements WarehouseDAO {
 	private static final String NAMESPACE = "com.stockm8.mapper.WarehouseMapper.";
 
 	@Override
-	public void insertWarehouse(WarehouseVO wVO) throws Exception {
-		logger.info("insertWarehouse(WarehouseVO wVO) 호출");
-		sqlSession.insert(NAMESPACE + "insertWarehouse", wVO);
+	public void insertWarehouse(WarehouseVO warehouse) throws Exception {
+		sqlSession.insert(NAMESPACE + "insertWarehouse", warehouse);
 	}
 
 	@Override
 	public List<WarehouseVO> selectWarehousesByBusinessId(Integer businessId) throws Exception {
-		logger.info("getWarehousesByBusinessId(Long businessId) 호출");
-
 		return sqlSession.selectList(NAMESPACE + "selectWarehousesByBusinessId", businessId);
 	}
 
@@ -45,4 +43,8 @@ public class WarehouseDAOImpl implements WarehouseDAO {
 		return count != null && count > 0;
 	}
 
+	@Override
+	public WarehouseDetailDTO selectWarehouseDetailById(int warehouseId) throws Exception {
+		return sqlSession.selectOne(NAMESPACE + "selectWarehouseDetailById", warehouseId);
+	}
 }

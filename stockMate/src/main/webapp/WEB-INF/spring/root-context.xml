@@ -58,8 +58,7 @@
 	<!-- JdbcTemplate 빈을 정의 -->
 
 	<!-- 트랜잭션 어노테이션 활성화 -->
-	<tx:annotation-driven
-		transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- 트랜잭션 관리자 설정 -->
 	<bean id="transactionManager"
@@ -74,4 +73,3 @@
 
 
 </beans>
-

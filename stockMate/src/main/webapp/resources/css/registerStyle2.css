@@ -1,0 +1,250 @@
+<style>
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		Helvetica, Arial, sans-serif;
+	background: #f9f9f9;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
+
+.container {
+	background: #fff;
+	border-radius: 16px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	padding: 40px;
+	width: 420px;
+	text-align: center;
+	transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.container:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+	font-size: 26px;
+	margin-bottom: 20px;
+	color: #333;
+	font-weight: 600;
+	letter-spacing: -0.5px;
+}
+
+.dashboard-btn {
+	margin-bottom: 20px;
+	padding: 12px 0;
+	background-color: #f4f4f4;
+	color: #007aff;
+	font-size: 15px;
+	font-weight: 600;
+	border: 1px solid #e1e4e8;
+	border-radius: 8px;
+	width: 100%;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+
+.dashboard-btn:hover {
+	background-color: #007aff;
+	color: #fff;
+	transform: scale(1.02);
+}
+
+.form-group {
+	text-align: left;
+	margin-bottom: 20px;
+}
+
+.form-group label {
+	color: #666;
+	font-size: 14px;
+	font-weight: 500;
+	margin-bottom: 5px;
+	display: block;
+}
+
+.form-control {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #e1e4e8;
+	border-radius: 8px;
+	font-size: 15px;
+	color: #333;
+	background: #fafafa;
+	transition: border 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+	outline: none;
+	border: 1px solid #007aff;
+	box-shadow: 0 0 4px rgba(0, 122, 255, 0.5);
+}
+
+.primary-button, .secondary-button {
+	width: 100%;
+	padding: 12px;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s ease-in-out;
+}
+
+.primary-button {
+	background: #007bff;
+	color: #fff;
+}
+
+.primary-button:hover {
+	background: #005bb5;
+}
+
+.secondary-button {
+	background: #f3f3f3;
+	color: #333;
+}
+
+.secondary-button:hover {
+	background: #e1e4e8;
+}
+
+.mt-2 {
+	margin-top: 10px !important;
+}
+
+/* 모달(커스텀) */
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+}
+
+.modal-backdrop.active {
+	display: flex;
+}
+
+.modal-container {
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	width: 90%;
+	max-width: 600px;
+	max-height: 80%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.modal-header, .modal-footer {
+	padding: 16px;
+	background: #f5f5f5;
+}
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.modal-header h5 {
+	margin: 0;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.modal-header .close {
+	background: none;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
+	line-height: 1;
+}
+
+.modal-body {
+	padding: 16px;
+	overflow: auto;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+.table th, .table td {
+	border: 1px solid #e1e4e8;
+	padding: 8px;
+	font-size: 14px;
+	text-align: left;
+}
+
+.table tbody tr:hover {
+	background: #f0f8ff;
+	cursor: pointer;
+}
+
+/* 로딩 스피너 */
+.spinner {
+	display: none;
+	margin: 0 auto;
+	border: 4px solid #f3f3f3;
+	border-top: 4px solid #007aff;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	animation: spin 1s linear infinite;
+}
+
+@
+keyframes spin { 100% {
+	transform: rotate(360deg);
+}
+
+}
+
+/* 검색 필드 */
+.search-field {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.search-field input {
+	flex: 1;
+	border-radius: 20px;
+	padding: 10px 15px;
+	border: 1px solid #ddd;
+	transition: 0.3s;
+	font-size: 14px;
+}
+
+.search-field input:focus {
+	border-color: #007aff;
+	box-shadow: 0 0 3px rgba(0, 122, 255, 0.5);
+}
+
+.search-field i {
+	margin-left: 10px;
+	color: #aaa;
+}
+
+/* 숨김 클래스 */
+.hidden {
+	display: none !important;
+}
+</style>

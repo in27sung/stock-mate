@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.stockm8.mapper.BusinessMapper">
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="businessResultMap" type="com.stockm8.domain.vo.BusinessVO">
+        <id property="businessId" column="business_id" />
+        <result property="businessNumber" column="business_number" />
+        <result property="businessName" column="business_name" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+    </resultMap>
+
+    <!-- 비즈니스 등록 -->
+    <insert id="insertBusiness" parameterType="com.stockm8.domain.vo.BusinessVO" useGeneratedKeys="true" keyProperty="businessId">
+        INSERT INTO businesses (
+            business_number, 
+            business_name, 
+            created_at, 
+            updated_at
+        ) 
+        VALUES (
+            #{businessNumber}, 
+            #{businessName}, 
+            NOW(), 
+            NOW()
+        );
+    </insert>
+
+    <!-- 비즈니스 정보 조회(businessNumber, businessName) -->
+    <select id="selectBusinessByNumberAndName" resultMap="businessResultMap" parameterType="map">
+        SELECT 
+            business_id, 
+            business_number, 
+            business_name, 
+            created_at, 
+            updated_at
+        FROM businesses 
+        WHERE 
+            business_number = #{businessNumber} AND 
+            business_name = #{businessName};
+    </select>
+    
+    <!-- 회사 중복 확인 -->
+    <select id="checkBusinessNumberExists" parameterType="string" resultType="int">
+        SELECT COUNT(*) 
+        FROM businesses 
+        WHERE business_number = #{businessNumber};
+    </select>
+
+    <!-- 모든 비즈니스 목록 조회 -->
+    <select id="getAllBusinesses" resultMap="businessResultMap">
+        SELECT 
+            business_id, 
+            business_number, 
+            business_name, 
+            created_at, 
+            updated_at
+        FROM businesses;
+    </select>
+
+</mapper>

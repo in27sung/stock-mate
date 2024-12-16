@@ -1,0 +1,268 @@
+@charset "UTF-8";
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Card Styles */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    background: white; /* 추가: 배경색 명시 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 추가: 그림자 효과 */
+}
+
+.card-header {
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold; /* 추가: 헤더 텍스트 강조 */
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* Grid System */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+}
+
+.col-md-3, .col-md-4, .col-md-6, .col-12 {
+    padding: 10px;
+}
+
+.col-md-3 { width: 25%; }
+.col-md-4 { width: 33.333%; }
+.col-md-6 { width: 50%; }
+.col-12 { width: 100%; }
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333; /* 추가: 라벨 색상 */
+}
+
+.required-label::after {
+    content: " *";
+    color: red;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s; /* 추가: 부드러운 전환 효과 */
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(13,110,253,0.25);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s; /* 추가: 버튼 호버 효과 */
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-primary { 
+    background: #0d6efd; 
+    color: white; 
+}
+
+.btn-success { 
+    background: #198754; 
+    color: white; 
+}
+
+.btn-secondary { 
+    background: #6c757d; 
+    color: white; 
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:disabled {
+    background: #e9acb3;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Utility Classes */
+.text-center { 
+    text-align: center; 
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    opacity: 0;
+    transition: opacity 0.3s; /* 추가: 모달 페이드 효과 */
+}
+
+.modal.show {
+    display: block !important;
+    opacity: 1;
+}
+
+.modal-dialog {
+    position: relative;
+    width: 100%;
+    max-width: 2000px;
+    margin: 50px auto;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 추가: 모달 그림자 */
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa; /* 추가: 헤더 배경색 */
+}
+
+.modal-body {
+    padding: 15px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s; /* 추가: 닫기 버튼 호버 효과 */
+}
+
+.btn-close:hover {
+    transform: scale(1.1);
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #f8f9fa; /* 추가: 테이블 헤더 배경색 */
+    font-weight: bold;
+}
+
+.stock-table {
+    margin-top: 10px;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.stock-table tr:hover {
+    background-color: #f5f5f5; /* 추가: 행 호버 효과 */
+}
+
+.product-table {
+    font-size: 0.9rem;
+}
+
+/* Custom Components */
+.stock-info-card {
+    margin-bottom: 20px;
+    position: relative; /* 추가: 상대 위치 지정 */
+}
+
+ (max-width: 768px) {
+    .col-md-3, .col-md-4, .col-md-6 {
+        width: 100%;
+    }
+    
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* 추가: 로딩 인디케이터 스타일 */
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.loading::after {
+    content: "로딩중...";
+    font-size: 1.2rem;
+    color: #0d6efd;
+}

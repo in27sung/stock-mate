@@ -2,14 +2,15 @@ package com.stockm8.service;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.stockm8.domain.vo.BusinessVO;
 import com.stockm8.domain.vo.UserVO;
+import com.stockm8.persistence.BusinessDAO;
 import com.stockm8.persistence.UserDAO;
 
 @Service
@@ -17,22 +18,25 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-	@Inject
+	@Autowired
 	private UserDAO userDAO;
+	
+    @Autowired
+    private BusinessDAO businessDAO;
 
 	@Override
-	public void userJoin(UserVO userVO) throws Exception {
-		userDAO.userJoin(userVO);
+	public void userJoin(UserVO user) throws Exception {
+		userDAO.userJoin(user);
 		// userDAO.userJoinOracle(userVO); // 각각의 비지니스 로직을 처리
 		// userDAO.userJoinMysql(userVO);
 	}
 
 	@Override
-	public UserVO userLogin(UserVO userVO) throws Exception {
+	public UserVO userLogin(UserVO user) throws Exception {
 		logger.info(" userLogin(UserVO vo) 호출 ");
 
 		// DAO 로그인체크 동작 실행
-		UserVO resultVO = userDAO.userLogin(userVO);
+		UserVO resultVO = userDAO.userLogin(user);
 		return resultVO;
 	}
 
@@ -42,20 +46,29 @@ public class UserServiceImpl implements UserService {
 
 		return userDAO.getUser(userId);
 	}
-
+	
+	// 회원 정보 수정 
 	@Override
-	public void updateUser(UserVO userVO) throws Exception {
+	public void updateUser(UserVO user) throws Exception {
 		logger.info("updateuser(UserVO userVO) 실행");
 
 		// DAO 회원정보 수정메서드 호출
-		userDAO.updateUser(userVO);
+		userDAO.updateUser(user);
+	}
+	
+	@Override
+	public void updateUserBusinessId(Long userId, int businessId) throws Exception {
+		logger.info("updateUserBusinessId() 실행");
+		
+		// DAO 회원 businessId정보 수정메서드 호출
+		userDAO.updateUserBusinessId(userId, businessId);
 	}
 
 	@Override
-	public int deleteUser(UserVO userVO) throws Exception {
+	public int deleteUser(UserVO user) throws Exception {
 		logger.info(" deleteuser(UserVO dvo) 실행 ");
 
-		return userDAO.deleteUser(userVO);
+		return userDAO.deleteUser(user);
 	}
 
 	@Override
@@ -78,4 +91,6 @@ public class UserServiceImpl implements UserService {
 
         return userDAO.getIsDeleted(userId);
     }
+    
+    
 }

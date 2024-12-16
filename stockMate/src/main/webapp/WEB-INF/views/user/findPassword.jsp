@@ -108,7 +108,7 @@
     <!-- Container -->
     <div class="container">
         <div class="back-button">
-            <a href="dashboard.jsp">&larr; 뒤로 가기</a>
+            <a href="/user/main">&larr; 뒤로 가기</a>
         </div>
         <h1>비밀번호 찾기</h1>
         <form id="passwordForm">

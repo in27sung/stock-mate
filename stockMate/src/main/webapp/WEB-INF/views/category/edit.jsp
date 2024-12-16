@@ -13,11 +13,10 @@
 	<h2> 카테고리 수정 </h2>
 	<form action="/category/update" method="post">
 	    <input type="hidden" name="categoryId" value="${category.categoryId}" />
-	    
+	
 	    <label for="categoryName">카테고리 이름:</label>
-	    <input type="text" id="categoryName" name="categoryName" 
-	           value="${category.categoryName}" required />
-	    
+	    <input type="text" id="categoryName" name="categoryName" value="${category.categoryName}" required />
+	
 	    <label for="parentId">상위 카테고리:</label>
 	    <select id="parentId" name="parentId">
 	        <option value="">대분류 선택</option>
@@ -28,7 +27,7 @@
 	            </option>
 	        </c:forEach>
 	    </select>
-	    
+	
 	    <button type="submit">수정</button>
 	</form>
 	

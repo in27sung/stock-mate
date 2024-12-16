@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- 콘솔에 출력할 패턴 정의 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <!-- log4jdbc-log4j2 -->
-	<logger name="jdbc.sqlonly"        level="DEBUG"/>
-    <logger name="jdbc.sqltiming"      level="INFO"/>
-    <logger name="jdbc.audit"          level="WARN"/>
-    <logger name="jdbc.resultset"      level="ERROR"/>
+    <logger name="jdbc.sqlonly" level="DEBUG"/>
+    <logger name="jdbc.sqltiming" level="INFO"/>
+    <logger name="jdbc.audit" level="WARN"/>
+    <logger name="jdbc.resultset" level="ERROR"/>
     <logger name="jdbc.resultsettable" level="ERROR"/>
-    <logger name="jdbc.connection"     level="INFO"/>
-</configuration>
+    <logger name="jdbc.connection" level="INFO"/>
+    
+    <!-- 스프링 트랜잭션 관련 로깅 -->
+    <logger name="org.springframework.transaction" level="DEBUG"/>
+    <logger name="org.springframework.transaction.interceptor" level="DEBUG"/>
+    <logger name="org.springframework.jdbc.datasource" level="DEBUG"/>
+    
+    <!-- MyBatis SQL 실행 로그 -->
+    <logger name="org.apache.ibatis.logging.LogFactory" level="DEBUG"/>
+    
+    <!-- HikariCP 로그 -->
+    <logger name="com.zaxxer.hikari" level="DEBUG"/>
 
+    <!-- 루트 로거 설정 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

@@ -1,0 +1,444 @@
+@charset "UTF-8";
+
+/* 공통 스타일 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #f9f9f9, #ffffff);
+}
+
+/* 컨테이너 스타일 */
+.container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 420px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    will-change: transform, box-shadow;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 제목 스타일 */
+h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #333333;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+/* 대시보드로 돌아가는 버튼 */
+button.dashboard-btn {
+    margin-bottom: 20px;
+    padding: 12px 0;
+    background-color: #f4f4f4;
+    color: #007aff;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button.dashboard-btn:hover {
+    background-color: #007aff;
+    color: white;
+    transform: scale(1.02);
+}
+
+button.dashboard-btn:active {
+    background-color: #005bb5;
+    color: white;
+    transform: scale(0.98);
+}
+
+/* 폼 요소 스타일 */
+form label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    color: #666666;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+form input,
+form select,
+form textarea {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #333333;
+    background-color: #fafafa;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border: 1px solid #007aff;
+    box-shadow: 0 0 4px rgba(0, 122, 255, 0.5);
+}
+
+/* 추가 설명 텍스트박스 스타일 */
+form textarea {
+    resize: none;
+    height: 120px; 
+    padding: 10px;
+    background-color: #fafafa;
+    color: #333333;
+}
+
+/* 바코드 그룹 정렬 */
+.barcode-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.barcode-group input {
+    flex: 1;
+}
+
+.barcode-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    height: auto;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.barcode-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 카테고리 링크 스타일 */
+.category-link {
+    display: block;
+    font-size: 14px;
+    text-align: left;
+    color: #007aff;
+    text-decoration: none;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    transition: color 0.3s ease-in-out;
+}
+
+.category-link:hover {
+    color: #005bb5;
+    text-decoration: underline;
+}
+
+/* 기본 버튼 스타일 */
+.primary-button {
+    background: #007bff;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    font-weight:bold;
+}
+
+.primary-button:hover {
+    background-color: #005bb5;
+}
+
+.secondary-button {
+    background: #f3f3f3;
+    color: #333;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight:bold;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.secondary-button:hover {
+    background: #e1e4e8;
+}
+
+/* 반응형 웹 디자인 추가 */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    form input,
+    form select,
+    form textarea {
+        font-size: 14px;
+    }
+
+    .barcode-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    button.dashboard-btn {
+        font-size: 14px;
+        padding: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    .barcode-group {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .barcode-btn {
+        width: 100%;
+    }
+
+    .category-link {
+        text-align: center;
+    }
+}
+
+/* 버튼 그룹 정렬 */
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* 버튼 스타일 */
+.primary-button {
+    width: 100%;
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.primary-button:hover {
+    background-color: #005bb5;
+}
+
+.secondary-button {
+    width: 100%;
+    background-color: #f3f3f3;
+    color: #333;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.secondary-button:hover {
+    background-color: #e1e4e8;
+}
+
+/* /* 모달 및 Modern UI 관련 스타일 */ */
+/* .modal-backdrop { */
+/*     position: fixed; */
+/*     top:0; left:0; */
+/*     width:100%; height:100%; */
+/*     background: rgba(0,0,0,0.5); */
+/*     display:none; */
+/*     justify-content:center; */
+/*     align-items:center; */
+/*     z-index:9999; */
+/*     opacity:0;  */
+/*     transition:opacity 0.3s ease; */
+/* } */
+
+/* .modal-backdrop.active { */
+/*     display:flex; */
+/*     opacity:1; */
+/* } */
+
+/* .modal-container { */
+/*     background:#fff; */
+/*     border-radius:12px; */
+/*     box-shadow:0 4px 15px rgba(0,0,0,0.1); */
+/*     width:90%; */
+/*     max-width:600px; */
+/*     max-height:80%; */
+/*     display:flex; */
+/*     flex-direction:column; */
+/*     overflow:hidden; */
+/*     transform:translateY(30px); */
+/*     opacity:0; */
+/*     transition:transform 0.3s ease, opacity 0.3s ease; */
+/* } */
+
+/* .modal-backdrop.active .modal-container { */
+/*     transform:translateY(0); */
+/*     opacity:1; */
+/* } */
+
+/* .modal-header, */
+/* .modal-footer { */
+/*     padding:16px; */
+/*     background:#f5f5f5; */
+/*     display:flex; */
+/*     align-items:center; */
+/*     justify-content:space-between; */
+/* } */
+
+/* .modal-header h5 { */
+/*     margin:0; */
+/*     font-size:18px; */
+/*     font-weight:bold; */
+/*     color:#333; */
+/* } */
+
+/* .modal-header .close { */
+/*     background:none; */
+/*     border:none; */
+/*     font-size:20px; */
+/*     cursor:pointer; */
+/*     line-height:1; */
+/*     color:#999; */
+/*     transition:color 0.3s ease; */
+/* } */
+/* .modal-header .close:hover { */
+/*     color:#333; */
+/* } */
+
+/* .modal-body { */
+/*     padding:16px; */
+/*     overflow:auto; */
+/*     flex:1; */
+/*     display:flex; */
+/*     flex-direction:column; */
+/* } */
+
+/* 검색 필드 */
+.search-field {
+    display:flex;
+    align-items:center;
+    margin-bottom:10px;
+}
+.search-field input {
+    flex:1;
+    border-radius:20px;
+    padding:10px 15px;
+    border:1px solid #ddd;
+    transition:0.3s;
+    font-size:14px;
+}
+.search-field input:focus {
+    border-color:#007aff;
+    box-shadow:0 0 3px rgba(0,122,255,0.5);
+}
+.search-field i {
+    margin-left:10px;
+    color:#aaa;
+}
+
+/* 테이블 */
+.table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    transition:background 0.3s ease;
+}
+.table th, .table td {
+    border:1px solid #e1e4e8;
+    padding:8px;
+    font-size:14px;
+    text-align:left;
+}
+.table tbody tr:hover {
+    background:#f0f8ff;
+}
+
+/* 숨김 클래스 */
+.hidden {
+    display:none!important;
+}
+
+/* 스피너 */
+.spinner {
+    display:none;
+    margin:0 auto;
+    border:4px solid #f3f3f3; 
+    border-top:4px solid #007aff;
+    border-radius:50%;
+    width:30px; 
+    height:30px;
+    animation:spin 1s linear infinite;
+}
+@keyframes spin {
+    100% {transform:rotate(360deg);}
+}
+
+/* autofocus 클래스: 모달이 열렸을 때 이 클래스를 가진 입력에 포커스 */
+.autofocus:focus {
+    border-color:#007aff;
+    box-shadow:0 0 3px rgba(0,122,255,0.5);
+}
+
+/* 반응형: 작은 화면에서 모달 크기, 폼 요소 폰트 크기 조정 */
+@media (max-width: 480px) {
+    .modal-container {
+        width:95%;
+    }
+
+    .modal-header h5 {
+        font-size:16px;
+    }
+
+    .search-field input {
+        font-size:13px;
+    }
+
+    .table th, .table td {
+        font-size:13px;
+        padding:6px;
+    }
+}
+
+/* hover/focus 시 transition 등 Modern UI 느낌 추가 */
+form input:hover,
+form select:hover,
+form textarea:hover {
+    background-color:#fdfdfd;
+}

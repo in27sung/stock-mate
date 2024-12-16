@@ -1,95 +1,123 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>회원가입</title>
-<style>
-body {
-	font-family: Arial, sans-serif;
-	background-color: #333;
-	color: white;
-	margin: 0;
-	padding: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+        }
 
-.container {
-	width: 500px;
-	background-color: #fff;
-	color: #000;
-	padding: 30px 20px;
-	border-radius: 10px;
-	text-align: center;
-	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-}
+        .signup-container {
+            width: 600px; /* 컨테이너 폭 */
+            padding: 40px 30px; /* 위아래 40px, 좌우 30px 패딩 */
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
 
-.container img {
-	width: 100px;
-	margin-bottom: 20px;
-}
+        .signup-container h2 {
+            color: #333;
+            margin-bottom: 30px; /* 제목과 폼 간 거리 */
+            font-size: 24px;
+        }
 
-.container input {
-	width: 90%;
-	margin: 10px 0;
-	padding: 12px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-size: 16px;
-}
+        .signup-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* 입력 필드 간 거리 */
+        }
 
-.actions {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 20px;
-}
+        .signup-container input {
+            width: 100%; /* 입력 필드가 컨테이너 너비에 맞게 */
+            padding: 15px; /* 필드 안쪽 여백 */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box; /* 패딩 포함 크기 계산 */
+        }
 
-.actions button {
-	background-color: #007BFF;
-	color: white;
-	border: none;
-	padding: 12px 20px;
-	cursor: pointer;
-	border-radius: 5px;
-	width: 48%;
-	font-size: 16px;
-}
+        .signup-container input::placeholder {
+            color: #aaa;
+        }
 
-.actions button:hover {
-	background-color: #0056b3;
-}
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px; /* 버튼 간 간격 */
+        }
 
-footer {
-	margin-top: 20px;
-	color: #999;
-	font-size: 12px;
-}
-</style>
+        .btn {
+            flex: 1; /* 버튼이 균등한 폭을 가지도록 설정 */
+            padding: 15px 0; /* 버튼 높이 */
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #007BFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #28a745;
+        }
+
+        .btn-secondary:hover {
+            background-color: #1e7e34;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #aaa;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-		<img src="https://via.placeholder.com/100" alt="Logo">
-		<h2>회원가입</h2>
-		<form id="signupForm" action="/user/signup" method="post">
-			<input type="text" name="email" placeholder="이메일" required>
-			<input type="password" name="password" placeholder="비밀번호" required>
-			<input type="text" name="name" placeholder="이름" required>
-			<input type="text" name="phone" placeholder="전화번호" required>
-			<input type="text" name="role" placeholder="역할 (admin, manager, staff)" required>
+    <div class="signup-container">
+        <h2>회원가입</h2>
 
-			<div class="actions">
-				<button type="submit">가입하기</button>
-				<button type="button" onclick="window.location.href='/'">메인페이지로</button>
-			</div>
-		</form>
-		<footer> 회사 정보 - 사업자 번호, 연락처 등 유의 내용 </footer>
-	</div>
+        <form action="/user/signup" method="post">
+            <input type="email" placeholder="이메일" name="email">
+            <input type="password" placeholder="비밀번호" name="password">
+            <input type="text" placeholder="이름" name="name">
+            <input type="tel" placeholder="전화번호" name="phone">
+            <input type="text" placeholder="역할 (ADMIN, MANAGER, STAFF)" name="role">
+
+            <div class="buttons">
+                <!-- 가입하기 버튼 -->
+                <button type="submit" class="btn btn-primary">가입하기</button>
+                
+                <!-- 메인페이지로 버튼 -->
+                <button type="button" class="btn btn-secondary" onclick="location.href='/user/main'">메인페이지로</button>
+            </div>
+        </form>
+
+        <div class="footer">
+            회사 정보 - 사업자 번호, 연락처 등 유의 내용
+        </div>
+    </div>
 </body>
 </html>
 
-</body>
-</html>
