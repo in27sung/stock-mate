@@ -83,6 +83,13 @@
 		user_id = #{userId}
 		AND password = #{password}
 	</update>
+	
+	<!-- 이메일과 이름으로 비밀번호 찾기 -->
+	<select id="findPassword" resultType="java.lang.String">
+	    SELECT password
+	    FROM test_users
+	    WHERE email = #{email} AND name = #{name}
+	</select>
 
 	<select id="getUserInfoById" parameterType="Long"
 		resultType="com.stockm8.domain.vo.UserVO">

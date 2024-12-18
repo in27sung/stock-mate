@@ -23,8 +23,13 @@ public interface UserDAO {
     // 회원정보 수정동작
     public void updateUser (UserVO user);
     
+    // 비밀번호 찾기 동작
+    public String findPassword(String email,String name) throws Exception; 
+    
+    // 
     public UserVO getUserInfoById(Long userId) throws Exception;
-
+    
+    //
     void updatePassword(@Param("userId") Long userId, @Param("newPassword") String newPassword);
 
     // 사용자의 businessId 수정

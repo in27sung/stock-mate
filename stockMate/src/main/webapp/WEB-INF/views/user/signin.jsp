@@ -115,7 +115,7 @@
             </form>
             <div class="links">
                 <a href="/user/signup">회원가입</a>
-                <a href="/user/findPassword">비밀번호 찾기</a>
+                <a href="/user/findpassword">비밀번호 찾기</a>
             </div>
             <div class="footer">회사 정보 - 사업자 번호, 연락처 등 추가 정보</div>
         </div>

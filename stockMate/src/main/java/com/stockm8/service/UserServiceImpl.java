@@ -57,6 +57,14 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public String findPassword(String email, String name) throws Exception {
+		 logger.info("findPassword 실행: 이메일 = " + email + ", 이름 = " + name);
+		    // userDAO에서 비밀번호를 찾아 반환
+		   return userDAO.findPassword(email, name);
+	}
+
+	
+	@Override
 	public UserVO getUserInfoById(Long userId) throws Exception {
 	    return userDAO.getUserInfoById(userId);
 	}

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -108,51 +109,31 @@
     <!-- Container -->
     <div class="container">
         <div class="back-button">
-            <a href="/user/main">&larr; 뒤로 가기</a>
+            <a href="/">&larr; 뒤로 가기</a>
         </div>
         <h1>비밀번호 찾기</h1>
-        <form id="passwordForm">
+        <form action="findpassword" method="post">
             <input type="email" id="email" name="email" placeholder="이메일" required>
             <input type="text" id="name" name="name" placeholder="이름" required>
-            <button type="button" onclick="showSuccess()">비밀번호 찾기</button>
-            <button type="button" onclick="showError()">비밀번호 찾기 - 정보 오류</button>
+            <button type="submit">비밀번호 찾기</button>
+            
         </form>
     </div>
+    
+    <script type="text/javascript">
+    
+	    <c:if test="${not empty errorMessage}">
+	        alert("${errorMessage}");
+	    </c:if>
+	    
+    </script>
 
-    <!-- Success Alert -->
-    <div id="successAlert" class="alert-box">
-        <p>비밀번호 확인<br>1234</p>
-        <button onclick="closeAlert()">확인</button>
-    </div>
-
-    <!-- Error Alert -->
-    <div id="errorAlert" class="alert-box">
-        <p>이메일 또는 이름이 존재하지 않습니다.<br>다시 한 번 확인해주세요.</p>
-        <button onclick="closeAlert()">확인</button>
-    </div>
 
     <!-- Footer -->
     <div class="footer">
         회사 정보 - 사업자 번호, 연락처 등 유의 내용
     </div>
 
-    <script>
-        function showSuccess() {
-            const alert = document.getElementById('successAlert');
-            alert.classList.add('active');
-        }
 
-        function showError() {
-            const alert = document.getElementById('errorAlert');
-            alert.classList.add('active');
-        }
-
-        function closeAlert() {
-            const successAlert = document.getElementById('successAlert');
-            const errorAlert = document.getElementById('errorAlert');
-            successAlert.classList.remove('active');
-            errorAlert.classList.remove('active');
-        }
-    </script>
 </body>
 </html>

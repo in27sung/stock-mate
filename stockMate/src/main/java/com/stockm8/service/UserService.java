@@ -21,6 +21,10 @@ public interface UserService {
    // 회원정보 수정
    public void updateUser(UserVO user) throws Exception;
    
+	// 비밀번호 찾기
+	public String findPassword (String email, String name) throws Exception;
+
+   
    public UserVO getUserInfoById(Long userId) throws Exception;
    
    void updatePassword(Long userId, String newPassword) throws Exception;

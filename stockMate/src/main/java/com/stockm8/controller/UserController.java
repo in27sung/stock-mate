@@ -48,9 +48,8 @@ public class UserController {
 
 	// http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/signin (o)
-	// http://localhost:8088/user/main (o)
-	// http://localhost:8088/user/info1 (o)
-	// http://localhost:8088/user/info2 (o)
+	// http://localhost:8088
+	
 
 	// http://localhost:8088/dashboard (o)
 	// http://localhost:8088/user/info1 (o)
@@ -269,31 +268,6 @@ public class UserController {
 	}
 
 
-	// 비밀번호 찾기 - get
-	@RequestMapping(value = "/findPassword", method = RequestMethod.GET)
-	public String findPasswordGet() {
-
-		return "/user/findPassword";
-	}
-
-//	// 회원정보 수정 - GET
-//	// (기존정보를 가져와서 보여주고, 수정할 정보를 입력)
-//	@RequestMapping(value = "/editinfo1", method = RequestMethod.GET)
-//	public void userUpdateGET(@SessionAttribute("userId") Long userId, Model model) throws Exception {
-//		logger.info(" userUpdateGET() 호출 ");
-//
-//		// 사용자의 ID정보를 가져오기(세션)
-//		logger.info("userId : " + userId);
-//
-//		// 서비스 -> DAO 회원정보 가져오는 동작 호출
-//		UserVO resultVO = userService.getUser(userId);
-//
-//		// 연결된 뷰페이지에 출력
-//		// => model 객체에 정보 저장
-//		model.addAttribute("resultVO", resultVO);
-//		// /user/update.jsp 뷰페이지 연결
-//	}
-//
 
 	// 회원정보 수정
 	@RequestMapping(value = "/changepassword1", method = RequestMethod.GET)
@@ -391,8 +365,45 @@ public class UserController {
 	        out.flush();
 	    }
 	}
+	
+	// 비밀번호 찾기 - GET
+    @RequestMapping(value = "/findpassword", method = RequestMethod.GET)
+    public String findPasswordGet() {
+        return "/user/findpassword";  // 비밀번호 찾기 페이지로 이동
+    }
+
+    // 비밀번호 찾기 - POST 
+    @RequestMapping(value = "/findpassword", method = RequestMethod.POST)
+    public String findPasswordPost(@RequestParam("email") String email,
+                                    @RequestParam("name") String name,
+                                    Model model) {
+    	 try {
+    	        // 이메일과 이름으로 비밀번호 찾기
+    	        String password = userService.findPassword(email, name);  // 비밀번호를 String으로 받음
+
+    	        if (password != null) {
+    	            // 비밀번호가 일치하면 얼럿창을 통해 비밀번호를 사용자에게 전달
+    	            model.addAttribute("password", password);  // 비밀번호를 model에 추가
+    	            model.addAttribute("alertMessage", "입력한 정보에 해당하는 비밀번호는: " + password);
+    	            return "/user/showpassword";  // 비밀번호를 보여주는 페이지로 이동
+    	        } else {
+    	            // 비밀번호가 일치하지 않으면 오류 메시지 추가
+    	            logger.info("비밀번호 찾기 실패: 이메일 또는 이름이 일치하지 않음"); // 실패 로그
+    	            model.addAttribute("errorMessage", "이메일 또는 이름이 일치하지 않습니다.");
+    	            return "/user/findpassword";  // 비밀번호 찾기 페이지로 다시 이동
+    	        }
+    	    } catch (Exception e) {
+    	        e.printStackTrace();
+    	        logger.error("비밀번호 찾기 처리 중 오류 발생", e);  // 예외 로그 추가
+    	        model.addAttribute("errorMessage", "비밀번호 찾기 처리 중 오류가 발생했습니다.");
+    	        return "/user/findpassword";  // 오류 발생 시 비밀번호 찾기 페이지로 돌아감
+    	    }
+    	}
 
 
+
+
+    // 상담하기
 	@RequestMapping(value = "/sendConsultation", method = RequestMethod.POST)
 	public String sendConsultation(
 	        @RequestParam("company") String company,
@@ -472,6 +483,8 @@ public class UserController {
 
 	    return "redirect:/user/consultation";
 	}
+	
+	
 
 
 	// 대시보드사용법 - /howtouse2 (GET)
