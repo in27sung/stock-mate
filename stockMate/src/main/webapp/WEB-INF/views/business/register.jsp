@@ -27,7 +27,6 @@
         } 
         .login-box {
             width: 410px;
-            height : 220px;
                background: #fff;
 			    border-radius: 12px;
 			    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -103,6 +102,12 @@
 			margin-bottom:-70px;
 		}
 		
+		h2{
+			color:#25498a;
+            margin-bottom: 30px; /* 제목과 폼 간 거리 */
+            font-size: 22px;
+		}
+		
     </style>
 </head>
 <body>
@@ -129,10 +134,12 @@
 			</a>
 </div>
 	
-	<h2>비즈니스 등록</h2>
+	
 	
     <!-- 비즈니스 등록 폼 -->
     <div class="login-box">
+    
+    	<h2>비즈니스 등록</h2>
     <form method="post" action="/business/register">
         
 		<!-- 사업자 등록 번호 -->

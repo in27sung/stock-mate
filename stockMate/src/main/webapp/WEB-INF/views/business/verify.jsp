@@ -27,7 +27,7 @@
         } 
         .login-box {
             width: 410px;
-            height : 220px;
+          
                background: #fff;
 			    border-radius: 12px;
 			    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -102,6 +102,12 @@
 			margin-bottom:-70px;
 		}
 		
+		h2{
+			color:#25498a;
+            margin-bottom: 30px; /* 제목과 폼 간 거리 */
+            font-size: 22px;
+		}
+		
     </style>
     
 </head>
@@ -128,9 +134,11 @@
 			</a>
 </div>
 
-<h2>비즈니스 인증</h2>
+
 
 <div class="login-box">
+
+<h2>비즈니스 인증</h2>	
     <form action="/business/verify" method="post">
    
         <input type="text" id="businessNumber" name="businessNumber" required placeholder="사업자 등록 번호">
