@@ -1,0 +1,180 @@
+@charset "UTF-8";
+
+body {
+	font-family: 'Roboto', sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f7f6;
+	display: flex;
+	justify-content: center; /* 테이블 중앙 정렬 */
+	align-items: center;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+h1 {
+	text-align: center;
+	margin: 30px 0;
+}
+
+.container {
+	width: 90%;
+	margin: 0 auto;
+	background-color: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 테이블 스타일 */
+table {
+	width: 80%; /* 테이블 너비 조정 */
+	border-collapse: collapse;
+	margin: 20px auto; /* 테이블 중앙 정렬 */
+}
+
+table th, table td {
+	border: 1px solid #ddd;
+	padding: 15px;
+	text-align: center;
+	white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+th {
+	background-color: #007bff;
+	color: white;
+}
+
+tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+tr:hover {
+	background-color: #f1f8ff;
+}
+
+/* 대분류와 중분류 스타일 */
+tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+tr:hover {
+	background-color: #f1f1f1;
+}
+
+/* 테이블 전체 중앙 정렬 */
+table {
+	margin: 30px auto;
+	border-collapse: collapse;
+	width: 80%;
+}
+
+/* 테이블 셀 디자인 */
+table th, table td {
+	padding: 16px;
+	text-align: center;
+}
+
+th {
+	background-color: #007bff;
+	color: white;
+	font-size: 16px;
+}
+
+td {
+	font-size: 14px;
+}
+
+/* 대분류 - 파란색 강조 */
+tr td:first-child {
+	font-weight: bold;
+	color: #007aff;
+}
+
+/* 중분류 - 보라색 강조 */
+tr td:nth-child(3):contains ('중분류 ') {
+	color: #af52de;
+}
+
+/* 소분류 - 기본 텍스트 */
+tr td:nth-child(3):contains ('소분류 ') {
+	color: #333;
+}
+
+.action-btn {
+	border: none;
+	padding: 10px 24px;
+	font-size: 15px;
+	font-weight: 500;
+	border-radius: 30px; /* 둥근 버튼 */
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+	background: linear-gradient(145deg, #f0f0f0, #e0e0e0); /* 밝은 그레이 */
+	color: #333;
+}
+
+.action-btn:hover {
+	background: linear-gradient(145deg, #e0e0e0, #d6d6d6); /* 호버시 더 진한 회색 */
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15); /* 호버 시 더 뚜렷한 그림자 */
+}
+
+.action-btn:active {
+	transform: scale(0.98); /* 클릭 시 살짝 눌린 듯한 효과 */
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* 비활성화된 버튼 */
+.disabled-btn {
+	background: #e0e0e0;
+	color: #9e9e9e;
+	box-shadow: none;
+	cursor: not-allowed;
+}
+
+/* 카테고리 등록 링크 */
+a {
+	display: inline-block;
+	margin-bottom: 20px;
+	color: #007bff;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/* 반응형 디자인 */
+@media ( max-width : 768px) {
+	table {
+		font-size: 14px;
+	}
+	table th, table td {
+		padding: 10px;
+	}
+	.container {
+		width: 95%;
+		padding: 10px;
+	}
+	button {
+		padding: 8px 10px;
+		font-size: 14px;
+	}
+}
+
+@media ( max-width : 480px) {
+	table {
+		font-size: 12px;
+	}
+	table th, table td {
+		padding: 8px;
+	}
+	h1 {
+		font-size: 24px;
+	}
+	button {
+		padding: 6px 8px;
+		font-size: 12px;
+	}
+}

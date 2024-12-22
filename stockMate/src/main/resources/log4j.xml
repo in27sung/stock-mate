@@ -11,6 +11,10 @@
 	</appender>
 	
 	<!-- Application Loggers -->
+	<logger name="com.stockm8.interceptor">
+		<level value="info" />
+	</logger>
+	
 	<logger name="com.stockm8.controller">
 		<level value="info" />
 	</logger>
@@ -22,6 +26,7 @@
 	<logger name="com.stockm8.persistence">
 		<level value="info" />
 	</logger>
+	
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">

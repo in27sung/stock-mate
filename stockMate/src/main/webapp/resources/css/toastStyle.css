@@ -1,64 +1,84 @@
-@charset "UTF-8";
-
-/* Toast 메시지 */
+/* Toast 메시지 - 화면 중앙 상단에 표시되는 알림 메시지 */
 .toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #ffffff;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    max-width: 90%; /* 모바일 대응 */
-    white-space: pre-wrap; /* 텍스트 줄바꿈 허용 */
-    word-wrap: break-word;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-    z-index: 1000;
+    position: fixed; /* 화면에 고정 */
+    top: 20px; /* 상단에서 20px 아래 */
+    left: 50%; /* 가로 중앙 정렬 */
+    transform: translateX(-50%); /* 수평 중앙 정렬 */
+    background-color: rgba(255, 255, 255, 0.9); /* 투명한 화이트 배경 */
+    color: #000000; /* 기본 텍스트 색상 */
+    padding: 16px 24px; /* 메시지 내부 여백 */
+    border-radius: 12px; /* 둥근 모서리 */
+    font-size: 16px; /* 텍스트 크기 */
+    font-weight: 500; /* 텍스트 두께 */
+    max-width: 90%; /* 화면 대비 최대 너비 */
+    white-space: pre-wrap; /* 줄바꿈 허용 */
+    word-wrap: break-word; /* 단어 줄바꿈 */
+    opacity: 0; /* 초기 투명도 */
+    transform: translate(-50%, -30px); /* 초기 위치 (위쪽) */
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; /* 등장/퇴장 애니메이션 */
+    z-index: 1000; /* 가장 위에 표시 */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 효과 */
 }
 
+/* 성공 알림 스타일 */
 .toast.success {
-    background-color: #28a745;
+    background-color: rgba(56, 207, 136, 0.9); /* 부드러운 초록색 배경 */
+    color: #ffffff; /* 화이트 텍스트 */
 }
 
+/* 오류 알림 스타일 */
 .toast.error {
-    background-color: #dc3545;
+    background-color: rgba(255, 69, 58, 0.9); /* 부드러운 빨간색 배경 */
+    color: #ffffff; /* 화이트 텍스트 */
 }
 
+/* 정보 알림 스타일 */
+.toast.info {
+    background-color: rgba(90, 200, 250, 0.9); /* 부드러운 파란색 배경 */
+    color: #ffffff; /* 화이트 텍스트 */
+}
+
+/* 경고 알림 스타일 */
+.toast.warning {
+    background-color: rgba(255, 204, 0, 0.9); /* 부드러운 노란색 배경 */
+    color: #000000; /* 블랙 텍스트 */
+}
+
+/* Toast가 화면에 표시될 때 */
 .toast.show {
-    opacity: 1;
-    transform: translate(-50%, 0);
-    animation: slideIn 0.5s ease-out;
+    opacity: 1; /* 불투명 */
+    transform: translate(-50%, 0); /* 원래 위치 */
+    animation: slideDown 0.5s ease-out, fadeOut 4s 3.5s ease-in forwards; /* 등장 후 사라짐 */
 }
 
-/* 다양한 위치 클래스 추가 */
+/* Toast의 위치 조정 - 상단 */
 .toast.top {
-    top: 20px;
+    top: 20px; /* 상단에서 20px */
 }
 
+/* Toast의 위치 조정 - 하단 */
 .toast.bottom {
-    top: auto;
-    bottom: 20px;
+    top: auto; /* 자동 */
+    bottom: 20px; /* 하단에서 20px */
 }
 
-/* 애니메이션 정의 */
-@keyframes slideIn {
+/* 나타날 때 아래로 슬라이드 애니메이션 */
+@keyframes slideDown {
     from {
-        transform: translate(-50%, -50px); /* 위에서 아래로 */
+        transform: translate(-50%, -50px); /* 위쪽에서 시작 */
     }
     to {
-        transform: translate(-50%, 0); /* 원래 위치 */
+        transform: translate(-50%, 0); /* 원래 위치로 이동 */
     }
 }
 
+/* 사라질 때 투명해지는 애니메이션 */
 @keyframes fadeOut {
     from {
-        opacity: 1;
+        opacity: 1; /* 보임 */
     }
     to {
-        opacity: 0; /* 투명해짐 */
+        opacity: 0; /* 투명 */
     }
 }
 

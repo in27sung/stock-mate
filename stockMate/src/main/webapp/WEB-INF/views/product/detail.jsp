@@ -1,121 +1,96 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>상품 상세정보</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style type="text/css">
-.error-banner {
-	width: 100%;
-	background-color: #FCE4E4;
-	color: #D32F2F;
-	text-align: center;
-	padding: 10px 0;
-	font-size: 14px;
-	font-weight: 500;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1000;
-	border-bottom: 1px solid #F5C6C6;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.success-banner {
-	width: 100%;
-	background-color: #E6F4EA;
-	color: #2E7D32;
-	text-align: center;
-	padding: 10px 0;
-	font-size: 14px;
-	font-weight: 500;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1000;
-	border-bottom: 1px solid #C8E6C9;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* 공통 버튼 스타일 */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50; /* 버튼 배경색: 녹색 */
-    color: #FFFFFF; /* 텍스트 색상: 흰색 */
-    text-decoration: none; /* 링크 밑줄 제거 */
-    border-radius: 5px; /* 둥근 모서리 */
-    font-size: 14px; /* 폰트 크기 */
-    font-weight: bold; /* 굵은 텍스트 */
-    text-align: center; /* 텍스트 가운데 정렬 */
-    border: none; /* 버튼 테두리 제거 */
-    cursor: pointer; /* 마우스 커서 포인터로 변경 */
-    transition: background-color 0.3s ease; /* 호버 애니메이션 */
-}
-
-.btn:hover {
-    background-color: #388E3C; /* 호버 시 버튼 배경색 */
-    color: #FFFFFF; /* 호버 시 텍스트 색상 */
-}
-
-	
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 상세 정보</title>
+    <link rel="stylesheet" href="<c:url value='/resources/css/warehouseDetailStyle.css' />">
 </head>
 <body>
-	<h1>상품 상세정보</h1>
-	
-	<!-- 에러 메시지가 있을 경우 상단 배너로 표시 -->
-	<c:if test="${not empty errorMessage}">
-		<div class="error-banner">${errorMessage}</div>
-	</c:if>
-	
-	<!-- 성공 메시지가 있을 경우 상단 배너로 표시 -->
-	<c:if test="${not empty successMessage}">
-		<div class="success-banner">${successMessage}</div>
-	</c:if>
-	    <a href="/product/list">상품 리스트</a>
-	<!-- 상품 상세 페이지 -->
-	<c:if test="${product != null}">
-	    <p>카테고리명: ${categoryName}</p>
-	    <p>상품명: ${product.productName}</p>
-	    <p>바코드: ${product.productBarcode}</p>
-		<p>기본 단위: ${product.baseUnit}</p>
-		<p>세트 크기: ${product.setSize}</p>
-		<p>가격: ${product.productPrice}</p>
-		<p>설명: ${product.productDescription}</p>
-	    
-		<!-- QR 코드 생성 버튼 -->
-		<c:if test="${product.productQrCodePath == null}">
-		    <form action="/product/generateQR" method="get" style="display:inline;">
-		        <input type="hidden" name="productId" value="${product.productId}">
-		        <button type="submit" class="btn">QR 코드 생성</button>
-		    </form>
-		</c:if>
-		
-		<!-- QR 코드 다운로드 버튼 -->
-		<c:if test="${product.productQrCodePath != null}">
-		    <form action="/product/downloadQr" method="get" style="display:inline;">
-		        <input type="hidden" name="productId" value="${product.productId}">
-		        <button type="submit" class="btn">QR 코드 다운로드</button>
-		    </form>
-		</c:if>
-		
-		<p>등록일: ${product.createdAt}</p>
-		<!-- 수정일이 등록일과 다를 경우에만 표시 -->
-	    <c:if test="${product.updatedAt != product.createdAt}">
-	        <p>수정일: ${product.updatedAt}</p>
-	    </c:if>
+    <div class="container">
+        <!-- 대시보드 이동 버튼 -->
+        <button class="dashboard-btn" onclick="location.href='/dashboard';">대시보드로 돌아가기</button>
 
-		
-	</c:if>
+        <!-- 페이지 타이틀 -->
+        <h1>상품 상세 정보</h1>
+        
+        <!-- 상품 상세 테이블 -->
+        <table>
+            <tr>
+                <th>카테고리명</th>
+                <td>${categoryName}</td>
+            </tr>
+            <tr>
+                <th>상품명</th>
+                <td>${product.productName}</td>
+            </tr>
+            <tr>
+                <th>바코드</th>
+                <td>${product.productBarcode}</td>
+            </tr>
+            <tr>
+                <th>기본 단위</th>
+                <td>${product.baseUnit}</td>
+            </tr>
+            <tr>
+                <th>세트 크기</th>
+                <td>${product.setSize}</td>
+            </tr>
+            <tr>
+			    <th>가격</th>
+			    <td>
+			        <fmt:formatNumber value="${product.productPrice}" type="number" maxFractionDigits="0" /> 원
+			    </td>
+			</tr>
+            <tr>
+                <th>상세 설명</th>
+                <td>
+                    <c:choose>
+                        <c:when test="${not empty product.productDescription}">
+                            ${product.productDescription}
+                        </c:when>
+                        <c:otherwise>N/A</c:otherwise>
+                    </c:choose>
+                </td>
+            </tr>
+            <tr>
+                <th>등록 날짜</th>
+                <td><fmt:formatDate value="${product.createdAt}" pattern="yyyy-MM-dd" /></td>
+            </tr>
+            <tr>
+                <th>수정 날짜</th>
+                <td>
+                    <c:choose>
+                        <c:when test="${product.updatedAt != product.createdAt}">
+                            <fmt:formatDate value="${product.updatedAt}" pattern="yyyy-MM-dd" />
+                        </c:when>
+                        <c:otherwise>등록 이후 수정 없음</c:otherwise>
+                    </c:choose>
+                </td>
+            </tr>
+        </table>
 
-	<c:if test="${product == null}">
-		<p>해당 상품 정보가 없습니다.</p>
-	</c:if>
-	
+        <!-- QR 코드 버튼 -->
+        <div style="text-align: center; margin-top: 20px;">
+            <c:if test="${product.productQrCodePath == null}">
+                <form action="/product/generateQR" method="get" style="display:inline;">
+                    <input type="hidden" name="productId" value="${product.productId}">
+                    <button type="submit" class="btn btn-green">상품정보 QR 코드 생성</button>
+                </form>
+            </c:if>
+            <c:if test="${product.productQrCodePath != null}">
+                <form action="/product/downloadQr" method="get" style="display:inline;">
+                    <input type="hidden" name="productId" value="${product.productId}">
+                    <button type="submit" class="btn btn-blue">상품정보 QR 코드 다운로드</button>
+                </form>
+            </c:if>
+        </div>
+
+        <!-- 목록으로 돌아가기 버튼 -->
+        <button class="dashboard-btn" onclick="location.href='/stock/list';" style="margin-top: 15px;">목록으로 돌아가기</button>
+    </div>
 </body>
 </html>

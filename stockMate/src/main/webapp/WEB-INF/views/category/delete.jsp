@@ -8,7 +8,8 @@
 <title>카테고리 수정</title>
 </head>
 <body>
-		<!-- delete.jsp -->
+
+	<!-- delete.jsp -->
 	<h2>카테고리 삭제</h2>
 	<p>정말로 이 카테고리를 삭제하시겠습니까?</p>
 	

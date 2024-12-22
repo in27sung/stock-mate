@@ -1,9 +1,11 @@
 package com.stockm8.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -11,14 +13,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.service.UserService;
+
+import javax.mail.internet.MimeMessage;
+import javax.mail.Message;
+import javax.mail.Transport;
+import javax.mail.Session;
+import java.util.Properties;
+import javax.mail.PasswordAuthentication;
 
 @Controller
 @RequestMapping(value = "/user/*")
@@ -36,10 +47,9 @@ public class UserController {
 
 	// http://localhost:8088/user/signup (o)
 	// http://localhost:8088/user/signin (o)
-	// http://localhost:8088/user/main (o)
+	// http://localhost:8088/ (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
-	
 	// http://localhost:8088/dashboard (o)
 	// http://localhost:8088/user/info1 (o)
 	// http://localhost:8088/user/info2 (o)
@@ -77,84 +87,56 @@ public class UserController {
 		return "redirect:/user/signin";
 	}
 
-	// http://localhost:8088/user/login (GET)
+	// http://localhost:8088/user/signin (GET)
 	// 로그인 - 정보입력 / GET
 	@RequestMapping(value = "/signin", method = RequestMethod.GET)
 	public String userSgininGET(HttpServletRequest request, Model model) {
-		logger.info("userSgininGET(HttpServletRequest request, Model model) 호출 ");
-		logger.info("!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-		
-		
+		logger.info("userSgininGET() 호출 ");
+
 		// FlashMap에서 에러 메시지 확인
-	    Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-	    if (flashMap != null) {
-	        String errorMessage = (String) flashMap.get("errorMessage");
-	        if (errorMessage != null) {
-	            model.addAttribute("errorMessage", errorMessage);
-	        }
-	    }
-	    
-	    return "/user/signin";
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if (flashMap != null) {
+			String errorMessage = (String) flashMap.get("errorMessage");
+			if (errorMessage != null) {
+				model.addAttribute("errorMessage", errorMessage);
+			}
+		}
+		return "/user/signin";
 	}
 
 	// 로그인 - 정보처리 / POST
 	@RequestMapping(value = "/signin", method = RequestMethod.POST)
 	public String userLoginPOST(UserVO user, RedirectAttributes rttr, HttpSession session) throws Exception {
-	    logger.info("userLoginPOST() 호출");
+		logger.info("userLoginPOST() 호출");
 
-	    // 입력받은 로그인 정보 출력
-	    logger.debug("입력된 로그인 정보: {}", user);
+		// 입력받은 로그인 정보 출력
+		logger.debug("입력된 로그인 정보: {}", user);
 
-	    // 서비스 계층에서 로그인 체크 호출
-	    UserVO resultVO = userService.userLogin(user);
+		// 서비스 계층에서 로그인 체크 호출
+		UserVO resultVO = userService.userLogin(user);
 
-	    // 로그인 성공 처리
-	    if (resultVO != null) {
-	        logger.info("로그인 성공, 사용자 ID: {}", resultVO.getUserId());
-	        
-	        // 세션에 사용자 ID 저장
-	        session.setAttribute("userId", resultVO.getUserId()); 
-	        
-	        // 원래 요청 URL로 리다이렉트
-	        String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
-	        
-	        if (redirectUrl != null) {
-	            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
-	            return "redirect:" + redirectUrl;
-	        }
-	        return "redirect:/dashboard";
-	    }
+		// 로그인 성공 처리
+		if (resultVO != null) {
+			logger.info("로그인 성공, 사용자 ID: {}", resultVO.getUserId());
 
-	    // 로그인 실패 처리
-	    logger.warn("로그인 실패, 사용자 정보를 찾을 수 없습니다.");
-	    rttr.addFlashAttribute("errorMessage", "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
-	    return "redirect:/user/signin"; // 로그인 페이지 이동
+		// 세션에 사용자 ID 저장
+		session.setAttribute("userId", resultVO.getUserId());
+        logger.debug("세션 저장 완료 - Session ID: {}, User ID: {}", session.getId(), session.getAttribute("userId"));
+
+		// 원래 요청 URL로 리다이렉트
+        String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
+        
+        if (redirectUrl != null) {
+            session.removeAttribute("redirectAfterLogin"); // 세션에서 URL 삭제
+            return "redirect:" + redirectUrl;
+        }
+			return "redirect:/dashboard";
+		}
+		// 로그인 실패 처리
+		logger.warn("로그인 실패, 사용자 정보를 찾을 수 없습니다.");
+		rttr.addFlashAttribute("errorMessage", "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
+		return "redirect:/user/signin"; // 로그인 페이지 이동
 	}
-
-	// 메인페이지 - GET
-	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void mainGET(HttpServletRequest request, Model model) throws Exception {
-		logger.info(" mainGET() 호출 ");
-		
-		// FlashMap에서 에러 메시지 확인
-	    Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-	    if (flashMap != null) {
-	        String errorMessage = (String) flashMap.get("errorMessage");
-	        if (errorMessage != null) {
-	            model.addAttribute("errorMessage", errorMessage);
-	        }
-	    }
-
-		logger.info(" /user/main -> /user/main.jsp 연결 ");
-	}
-
-	// 대시보드 페이지 - GET
-//	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-//	public void dashGET() {
-//		logger.info(" dashGET() 호출 ");
-//
-//		logger.info(" /user/main -> /user/dash.jsp 연결 ");
-//	}
 
 	// 로그아웃 - GET
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
@@ -166,157 +148,254 @@ public class UserController {
 
 		// 로그아웃 처리 후 페이지 이동
 
-		return "redirect:/user/main";
+		return "redirect:/user/signin";
 	}
 
-	// 회원정보 조회 - /user/info1 (GET)
-	@RequestMapping(value = "/info1", method = RequestMethod.GET)
-	public String userInfo1GET(Model model, HttpSession session) throws Exception {
-		Long userId = (Long) session.getAttribute("id");
-//	    if (id == null) {
-//	        // 세션에 id가 없으면 에러 처리
-//	        return "redirect:/user/main";
-//	    }
-		UserVO resultVO = userService.getUser(userId);
-		model.addAttribute("resultVO", resultVO);
-		return "user/info1";
+
+	// 회원정보 수정
+	@RequestMapping(value = "/editinfo1", method = RequestMethod.GET)
+	public String userEditInfo1GET(HttpSession session, Model model) {
+		Long userId = (Long) session.getAttribute("userId");
+		if (userId == null) {
+			// 세션에 사용자 ID가 없으면 대시보드로 리다이렉트
+			return "redirect:/dashboard";
+			
+			
+			
+		}
+		return "/user/editinfo1"; // 비밀번호 입력 페이지로 이동
 	}
-	// 회원정보 조회 - /user/info1 (GET)
-		@RequestMapping(value = "/info2", method = RequestMethod.GET)
-		public String userInfo2GET(Model model, HttpSession session) throws Exception {
-			Long userId = (Long) session.getAttribute("id");
-//		    if (id == null) {
-//		        // 세션에 id가 없으면 에러 처리
-//		        return "redirect:/user/main";
-//		    }
-			UserVO resultVO = userService.getUser(userId);
-			model.addAttribute("resultVO", resultVO);
-			return "user/info2";
+	
+
+
+	@RequestMapping(value = "/editinfo1", method = RequestMethod.POST)
+	public String userEditInfo2POST(@RequestParam("password") String password, HttpSession session, RedirectAttributes rttr) {
+	    Long userId = (Long) session.getAttribute("userId");
+
+	    if (userId == null) {
+	        return "redirect:/dashboard";
+	    }
+
+	    try {
+	        UserVO userVO = userService.getUser(userId, password);
+
+	        if (userVO == null) {
+	            rttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+	            return "redirect:/user/editinfo1";
+	        }
+
+	        // RedirectAttributes에 사용자 정보 추가
+	        rttr.addFlashAttribute("userVO", userVO);
+	        return "redirect:/user/editinfo2";
+
+	    } catch (Exception e) {
+	        rttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
+	        return "redirect:/user/editinfo1";
+	    }
+	}
+
+
+	
+	@RequestMapping(value = "/editinfo2", method = RequestMethod.GET)
+	public String userEditInfo2GET(HttpSession session, Model model) {
+	    if (!model.containsAttribute("userVO")) {
+	        return "redirect:/dashboard"; // 데이터가 없으면 대시보드로 리다이렉트
+	    }
+
+	    return "/user/editinfo2";
+	}
+
+	
+	@RequestMapping(value = "/updateInfo2", method = RequestMethod.POST)
+	public void userUpdatePOST(@ModelAttribute UserVO user, HttpSession session, HttpServletResponse response) throws Exception {
+	    logger.info("userUpdatePOST() 실행");
+
+	    Long userId = (Long) session.getAttribute("userId");
+	    if (userId == null) {
+	        response.sendRedirect("/dashboard");
+	        return;
+	    }
+
+	    user.setUserId(userId); // userId 설정
+
+	    try {
+	    	System.out.println(user);
+	        userService.updateUser(user); // 정보 업데이트
+	        logger.info("회원정보 수정 성공");
+
+	        // JavaScript로 알림창 띄우고 대시보드로 이동
+	        response.setContentType("text/html; charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        out.println("<script>alert('변경완료'); location.href='/dashboard';</script>");
+	        out.flush();
+	    } catch (Exception e) {
+	        logger.error("회원정보 수정 실패", e);
+
+	        // 오류 발생 시 오류 메시지와 함께 돌아가기
+	        response.setContentType("text/html; charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        out.println("<script>alert('오류가 발생했습니다. 다시 시도해주세요.'); history.back();</script>");
+	        out.flush();
+	    }
+	}
+
+
+
+	// 비밀번호 변경
+	@RequestMapping(value = "/changepassword1", method = RequestMethod.GET)
+	public String changepassword1GET(HttpSession session) {
+		Long userId = (Long) session.getAttribute("userId");
+		if (userId == null) {
+			// 세션에 사용자 ID가 없으면 대시보드로 리다이렉트
+			return "redirect:/dashboard";
 		}
+		return "/user/changepassword1"; // 비밀번호 입력 페이지로 이동
+	}
 	
 	
+	@RequestMapping(value = "/changepassword1", method = RequestMethod.POST)
+	public String changepassword2POST(@RequestParam("password") String password, RedirectAttributes rttr, HttpSession session) {
+	    Long userId = (Long) session.getAttribute("userId");
+
+	    if (userId == null) {
+	        return "redirect:/dashboard"; // 세션이 없는 경우 대시보드로 이동
+	    }
+
+	    try {
+	        // 사용자 정보 조회 및 비밀번호 확인
+	        UserVO userVO = userService.getUser(userId, password);
+
+	        if (userVO == null) {
+	            rttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+	            return "redirect:/user/changepassword1"; // 비밀번호 불일치 시 다시 이동
+	        }
+
+	        // 비밀번호를 모델에 추가 (FlashAttributes 사용)
+	        rttr.addFlashAttribute("userVO", userVO);
+	        rttr.addFlashAttribute("currentPassword", password); // 현재 비밀번호 추가
+	        return "redirect:/user/changepassword2";
+
+	    } catch (Exception e) {
+	        logger.error("비밀번호 확인 중 오류 발생: ", e);
+	        rttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
+	        return "redirect:/user/changepassword1";
+	    }
+	}
 	
-//	// 회원정보 조회 - /user/info1 (GET)
-//	@RequestMapping(value = "/info1", method = RequestMethod.GET)
-//	public void userInfo1GET(
-//			Model model
-//			,@SessionAttribute(name = "id") String id) {
-//		logger.info(" userInfo1GET() 호출");
-//		
-//		// 세션에 저장된 아이디 정보를 가져오기
-//		logger.info(" id : "+id);
-//		
-//		// 서비스 -> DAO 호출(회원정보 조회)
-//		userVO resultVO = userservice.getuser(id);
-//		// 결과정보를 저장 view페이지 전달 & 출력 (Model객체)		
-//		model.addAttribute("resultVO", resultVO);
-//		logger.info(" /user/info => /user/info1.jsp 연결");
-//	}
-//	
+	
+	@RequestMapping(value = "/changepassword2", method = RequestMethod.GET)
+	public String changepassword2GET(@ModelAttribute("currentPassword") String currentPassword, Model model) {
+	    if (currentPassword == null || currentPassword.isEmpty()) {
+	        return "redirect:/user/changepassword1"; // 비밀번호가 없는 경우 다시 이동
+	    }
 
-		// 회원정보 수정 - /user/info1 (GET)
-		@RequestMapping(value = "/editinfo1", method = RequestMethod.GET)
-		public String usereditinfo1GET(Model model, HttpSession session) throws Exception {
-			Long userId = (Long) session.getAttribute("id");
-//		    if (id == null) {
-//		        // 세션에 id가 없으면 에러 처리
-//		        return "redirect:/user/main";
-//		    }
-			UserVO resultVO = userService.getUser(userId);
-			model.addAttribute("resultVO", resultVO);
-			return "user/editinfo1";
-		}
-		// 회원정보 수정 - /user/info1 (GET)
-			@RequestMapping(value = "/editinfo2", method = RequestMethod.POST)
-			public String usereditinfo2GET(Model model, HttpSession session) throws Exception {
-				
-				
-				logger.info("ㅇㄻ니");
-				Long userId = (Long) session.getAttribute("id");
-//			    if (id == null) {
-//			        // 세션에 id가 없으면 에러 처리
-//			        return "redirect:/user/main";
-//			    }
-				UserVO resultVO = userService.getUser(userId);
-				model.addAttribute("resultVO", resultVO);
-				return "/user/editinfo2";
-			}
-		
-		
-		
-			// 비밀번호 찾기 - get
-		    @RequestMapping(value = "/findPassword", method = RequestMethod.GET)
-		    public String findPasswordGet() {
+	    model.addAttribute("currentPassword", currentPassword);
+	    return "/user/changepassword2"; // JSP 페이지 반환
+	}
+	
+	@RequestMapping(value = "/changepassword2", method = RequestMethod.POST)
+	public void changePasswordPOST(
+	        @RequestParam("newPassword") String newPassword,
+	        @RequestParam("confirmPassword") String confirmPassword,
+	        HttpSession session, 
+	        HttpServletResponse response) throws Exception {
+	    
+	    Long userId = (Long) session.getAttribute("userId");
 
-		        return "/user/findPassword";
-		    }
-		
-		
-//	// 회원정보 수정 - GET
-//	// (기존정보를 가져와서 보여주고, 수정할 정보를 입력)
-//	@RequestMapping(value = "/editinfo1", method = RequestMethod.GET)
-//	public void userUpdateGET(@SessionAttribute("userId") Long userId, Model model) throws Exception {
-//		logger.info(" userUpdateGET() 호출 ");
-//
-//		// 사용자의 ID정보를 가져오기(세션)
-//		logger.info("userId : " + userId);
-//
-//		// 서비스 -> DAO 회원정보 가져오는 동작 호출
-//		UserVO resultVO = userService.getUser(userId);
-//
-//		// 연결된 뷰페이지에 출력
-//		// => model 객체에 정보 저장
-//		model.addAttribute("resultVO", resultVO);
-//		// /user/update.jsp 뷰페이지 연결
-//	}
-//
-//	// 회원정보 수정 - POST
-//	// (수정된 정보를 전달받아서 정보 수정)
-//	@RequestMapping(value = "/editinfo2", method = RequestMethod.POST)
-//	public String userUpdatePOST(UserVO user) throws Exception {
-//		logger.info(" userUpdatePOST() ");
-//
-//		// 전달정보(수정정보) 저장
-//		logger.info("vo : " + user);
-//
-//		// 서비스 -> DAO 호출 (회원정보 수정)
-//		userService.updateUser(user);
-//
-//		// 수정완료시 메인페이지로 이동
-//		return "redirect:/dashboard";
-//	}
+	    if (userId == null) {
+	        response.sendRedirect("/dashboard"); // 세션 없으면 대시보드로 이동
+	        return;
+	    }
 
-		 // 대시보드 사용법 - /user/consultation (GET)
-			@RequestMapping(value = "/consultation", method = RequestMethod.GET)
-			public String consultationGET(Model model, HttpSession session) throws Exception {
-				Long userId = (Long) session.getAttribute("id");
-//			    if (id == null) {
-//			        // 세션에 id가 없으면 에러 처리
-//			        return "redirect:/user/main";
-//			    }
-				UserVO resultVO = userService.getUser(userId);
-				model.addAttribute("resultVO", resultVO);
-				return "user/consultation";
-			}	    
-		    
-			 // 비밀번호 변경 - /user/changepassword1 (GET)
-			@RequestMapping(value = "/changepassword1", method = RequestMethod.GET)
-			public String changepassword1GET(Model model, HttpSession session) throws Exception {
-				Long userId = (Long) session.getAttribute("id");
-//			    if (id == null) {
-//			        // 세션에 id가 없으면 에러 처리
-//			        return "redirect:/user/main";
-//			    }
-				UserVO resultVO = userService.getUser(userId);
-				model.addAttribute("resultVO", resultVO);
-				return "user/changepassword1";
-			}	    
-			
-			
-			
-			
-		    
-		    
+	    // 비밀번호 일치 여부 확인
+	    if (!newPassword.equals(confirmPassword)) {
+	        // 비밀번호 불일치 시 오류 메시지와 함께 머무르기
+	        response.setContentType("text/html; charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        out.println("<script>alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.'); history.back();</script>");
+	        out.flush();
+	        return;
+	    }
+
+	    // 비밀번호 업데이트
+	    try {
+	        userService.updatePassword(userId, newPassword); // 비밀번호 변경
+	        logger.info("비밀번호 변경 성공: userId = " + userId);
+
+	        // 성공 메시지와 함께 대시보드로 이동
+	        response.setContentType("text/html; charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        out.println("<script>alert('정보 변경 완료'); location.href='/dashboard';</script>");
+	        out.flush();
+	    } catch (Exception e) {
+	        logger.error("비밀번호 변경 실패: ", e);
+
+	        // 오류 발생 시 메시지와 함께 이전 페이지로 이동
+	        response.setContentType("text/html; charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        out.println("<script>alert('시스템 오류가 발생했습니다. 다시 시도해주세요.'); history.back();</script>");
+	        out.flush();
+	    }
+	}
+
+
+
+
+	// 비밀번호 찾기 - GET
+	//
+    @RequestMapping(value = "/findpassword", method = RequestMethod.GET)
+    public String findPasswordGet() {
+        return "/user/findpassword";  // 비밀번호 찾기 페이지로 이동
+    }
+
+    // 비밀번호 찾기 - POST 
+    @RequestMapping(value = "/findpassword", method = RequestMethod.POST)
+    public String findpasswordPost(@RequestParam("email") String email,
+                                    @RequestParam("name") String name,
+                                    Model model) {
+    	 try {
+    		 System.out.println(email);
+    		 System.out.println(name);
+    	        // 이메일과 이름으로 비밀번호 찾기
+    	        String password = userService.findPassword(email, name);  // 비밀번호를 String으로 받음
+    	       System.out.println(password);
+    	        if (password != null) {
+    	            // 비밀번호가 일치하면 얼럿창을 통해 비밀번호를 사용자에게 전달
+    	            model.addAttribute("password", password);  // 비밀번호를 model에 추가
+    	            model.addAttribute("alertMessage", "입력한 정보에 해당하는 비밀번호는: " + password);
+    	            return "/user/showpassword";  // 비밀번호를 보여주는 페이지로 이동
+    	        } else {
+    	            // 비밀번호가 일치하지 않으면 오류 메시지 추가
+    	            logger.info("비밀번호 찾기 실패: 이메일 또는 이름이 일치하지 않음"); // 실패 로그
+    	            model.addAttribute("errorMessage", "이메일 또는 이름이 일치하지 않습니다.");
+    	            return "/user/findpassword";  // 비밀번호 찾기 페이지로 다시 이동
+    	        }
+    	    } catch (Exception e) {
+    	        e.printStackTrace();
+    	        logger.error("비밀번호 찾기 처리 중 오류 발생", e);  // 예외 로그 추가
+    	        model.addAttribute("errorMessage", "비밀번호 찾기 처리 중 오류가 발생했습니다.");
+    	        return "/user/findpassword";  // 오류 발생 시 비밀번호 찾기 페이지로 돌아감
+    	    }
+    	}
+
+
+	
+	
+	// 대시보드사용법 - /howtouse2 (GET)
+	@RequestMapping(value = "/howtouse2", method = RequestMethod.GET)
+	public String howtouseGET2(Model model, HttpSession session) throws Exception {
+		Long userId = (Long) session.getAttribute("userId");
+//                if (id == null) {
+//                    // 세션에 id가 없으면 에러 처리
+//                    return "redirect:/user/main";
+//                }
+//               UserVO resultVO = userService.getUser(userId);
+//               model.addAttribute("resultVO", resultVO);
+		return "/user/howtouse2";
+	}
+
+
+
 	// 회원정보 삭제 - 비밀번호 입력 (GET)
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public String userDeleteGET() throws Exception {
@@ -328,7 +407,8 @@ public class UserController {
 
 	// 회원정보 삭제 - 아이디/비밀번호 확인후 정보 삭제 (POST)
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String userDeletePOST(UserVO user, HttpSession session) throws Exception {
+	public String userDeletePOST(UserVO user, HttpSession session, @RequestParam("password") String password)
+			throws Exception {
 		logger.info(" userDeletePOST() 실행 ");
 
 		// 전달된 파라메터(id,pw)를 저장

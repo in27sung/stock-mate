@@ -1,5 +1,6 @@
 package com.stockm8.persistence;
 
+import com.stockm8.domain.dto.StockDTO;
 import com.stockm8.domain.vo.CategoryVO;
 import com.stockm8.domain.vo.StockVO;
 
@@ -14,7 +15,7 @@ public interface StockDAO {
     public List<StockVO> selectFilteredStocks(FilterCriteria criteria, String sortOrder) throws Exception;
     
     // 사업자 ID에 해당하는 재고 목록 조회
-    public List<StockVO> selectStockListByBusinessId(int businessId) throws Exception;
+    public List<StockDTO> selectStockListByBusinessId(int businessId, String sortColumn, String sortOrder) throws Exception;
     
     // 사업자 ID에 해당하는 재고 목록 조회 (단순 조회)
     public List<StockVO> selectOnlyStockByBusinessId(int businessId) throws Exception;

@@ -18,7 +18,6 @@ public class WarehouseVO {
 	private Timestamp updatedAt;		 // 창고 수정 날짜
 	private int warehouseCapacity;                // 창고 저장 용량
 	private String warehouseDescription; // 창고에 대한 상세 설명
-	private WarehouseStatus warehouseStatus;               // 창고 상태 ('active', 'inactive')
+	private WarehouseStatus warehouseStatus;               // 창고 상태 ('ACTIVE', 'INACTIVE')
     private boolean isDeleted;     		 // 논리 삭제 여부 (true: 삭제됨, false: 활성)
-    
 }

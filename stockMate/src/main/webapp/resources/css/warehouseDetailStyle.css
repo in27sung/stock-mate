@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 .container {
     max-width: 600px;
     margin: 50px auto;
@@ -44,5 +45,55 @@ button {
 }
 
 button:hover {
+    background-color: #0056b3;
+}
+
+/* 공통 버튼 스타일 */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px; /* 모든 버튼 글자 크기를 동일하게 */
+    font-weight: bold; /* 굵은 글씨 */
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    color: #ffffff; /* 글자 색상 */
+}
+
+/* 초록색 QR 코드 생성 버튼 */
+.btn-green {
+    background-color: #4CAF50; /* 초록색 배경 */
+}
+
+.btn-green:hover {
+    background-color: #388E3C; /* 호버 시 진한 초록색 */
+}
+
+/* 파란색 버튼 */
+.btn-blue {
+    background-color: #007BFF; /* 파란색 배경 */
+}
+
+.btn-blue:hover {
+    background-color: #0056b3; /* 호버 시 진한 파란색 */
+}
+
+/* 대시보드 버튼 */
+.dashboard-btn {
+    background-color: #007BFF;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-btn:hover {
     background-color: #0056b3;
 }

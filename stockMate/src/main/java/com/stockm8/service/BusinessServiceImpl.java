@@ -48,7 +48,7 @@ public class BusinessServiceImpl implements BusinessService {
 	    logger.info("비즈니스 등록 완료: businessNumber={}, businessId={}", business.getBusinessNumber(), business.getBusinessId());
 
 	    if (business.getBusinessId() == null) {
-	        throw new IllegalStateException("비즈니스 ID가 생성되지 않았습니다. DB 설정을 확인하세요.");
+	        throw new IllegalStateException("예상치 못한 오류로 인해 비즈니스 ID가 생성되지 않았습니다.");
 	    }
 
 	    int businessId = business.getBusinessId();
@@ -63,10 +63,10 @@ public class BusinessServiceImpl implements BusinessService {
 
 	// 비즈니스 정보를 사업자 등록 번호와 회사명으로 조회
 	@Override
-	public BusinessVO getBusinessByNumberAndName(String businessNumber, String companyName) throws Exception {
+	public BusinessVO getBusinessByNumberAndName(String businessNumber, String businessName) throws Exception {
 	    logger.info("getBusinessByNumberAndName() 호출");
 
-		return businessDAO.selectBusinessByNumberAndName(businessNumber, companyName);
+		return businessDAO.selectBusinessByNumberAndName(businessNumber, businessName);
 	}
 	
 }

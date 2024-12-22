@@ -11,7 +11,7 @@ public interface BusinessDAO {
 	public void insertBusiness(BusinessVO business) throws Exception;
 	
 	// 회사 정보 조회 
-	public BusinessVO selectBusinessByNumberAndName(@Param("businessNumber") String businessNumber, @Param("companyName") String companyName) throws Exception;
+	public BusinessVO selectBusinessByNumberAndName(@Param("businessNumber") String businessNumber, @Param("businessName") String businessName) throws Exception;
 	
 	// 회사 중복 확인
 	int checkBusinessNumberExists(String businessNumber);

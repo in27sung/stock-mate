@@ -24,41 +24,52 @@
     <result property="productDescription" column="product_description"/>
     <result property="productPrice" column="product_price"/>   
     <result property="businessId" column="business_id"/>   
+    <result property="userId" column="user_id"/>   
   </resultMap>
   
 
 <!-- 테이블에 입고 데이터 입력 -->
-<insert id="insertReceiving">
-	INSERT INTO receiving_shipment (
-	transaction_type, 
-	status, 
-	product_id, 
-	change_quantity, 
-	transaction_unit,
-	order_item_id,
-	stock_id,
-	warehouse_id,
-    created_by
-	)
-	SELECT 
-	'INBOUND', 
-	'PENDING',
-	p.product_id, 
-	o.quantity, 
-	p.base_unit,
-	o.order_item_id,
-	s.stock_id,
-	o.warehouse_id,
-    u.created_by
-	FROM products p
-	JOIN order_items o ON o.product_id = p.product_id
-	JOIN stocks s ON s.product_id = p.product_id
-    JOIN users u ON u.business_id = p.business_id;
+<insert id="insertReceiving" parameterType="com.stockm8.domain.vo.ReceivingShipmentVO">
+INSERT INTO receiving_shipment (
+    transaction_type, 
+    status, 
+    product_id, 
+    change_quantity, 
+    order_item_id,
+    stock_id,
+    warehouse_id,
+    created_by,
+    memo
+)
+SELECT DISTINCT 
+    ord.order_type, 
+    'PENDING',
+    p.product_id, 
+    o.quantity, 
+    o.order_item_id,
+    s.stock_id,
+    o.warehouse_id,
+    #{userId},
+    o.remarks
+FROM products p
+JOIN order_items o ON o.product_id = p.product_id
+JOIN stocks s ON s.product_id = p.product_id
+JOIN users u ON u.business_id = p.business_id
+JOIN orders ord ON ord.order_id = o.order_id
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM receiving_shipment rs
+    WHERE rs.transaction_type = ord.order_type
+    AND rs.status = 'PENDING'
+    AND rs.product_id = p.product_id
+    AND rs.order_item_id = o.order_item_id
+    AND rs.stock_id = s.stock_id
+)AND u.business_id = #{businessId}
 </insert>
 	
 <!-- 오늘 입고 예정 리스트 -->
 <select id="getReceivingList" resultMap="receivingShipmentMap">
-	select
+	select DISTINCT 
 	r.receiving_shipment_no, 
 	r.transaction_type, 
 	r.created_at, 
@@ -71,7 +82,7 @@
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
+	JOIN users u on u.user_id = r.created_by
 	where Date(r.created_at) = CURRENT_DATE and r.status = 'PENDING' and r.transaction_type = 'INBOUND'
 	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
@@ -80,7 +91,7 @@
 
 <!-- 어제 입고 리스트 -->
 <select id="getYesterdayReceivingList" resultMap="receivingShipmentMap">
-	select
+	select DISTINCT 
 	r.receiving_shipment_no, 
 	r.transaction_type, 
 	r.created_at, 
@@ -93,7 +104,7 @@
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
+	JOIN users u on u.user_id = r.created_by
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -1 DAY) 
 	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
@@ -102,7 +113,7 @@
 
 <!-- 그저께 입고 리스트 -->
 <select id="getTDBYReceivingList" resultMap="receivingShipmentMap">
-	select
+	select DISTINCT 
 	r.receiving_shipment_no, 
 	r.transaction_type, 
 	r.created_at, 
@@ -115,7 +126,7 @@
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
+	JOIN users u on u.user_id = r.created_by
 	where Date(r.created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -2 DAY) 
 	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
@@ -124,8 +135,9 @@
 
 <!-- 입고 내역 히스토리 -->
 <select id="getReceivingHistoryList" resultMap="receivingShipmentMap">
-	select
+	select DISTINCT 
 	r.receiving_shipment_no, 
+	r.order_item_id,
 	r.transaction_type, 
 	r.created_at, 
 	r.status, 
@@ -139,15 +151,16 @@
 	from receiving_shipment r
 	join products p on r.product_id = p.product_id
 	join warehouses w on w.warehouse_id = r.warehouse_id
-	JOIN users u on u.created_by = r.created_by
-	where transaction_type = 'INBOUND' AND u.business_id = #{businessId}
+	JOIN users u on u.user_id = r.created_by
+	where transaction_type = 'INBOUND' 
+	AND u.business_id = #{businessId}
 	order by r.receiving_shipment_no desc
 	limit #{cri.startPage},#{cri.pageSize};
 </select>
 
 <!-- 입고 내역 검색 -->
 <select id="getHistoryByDateRange" parameterType="map" resultMap="receivingShipmentMap">
-    SELECT 
+    SELECT DISTINCT 
     r.receiving_shipment_no, 
     r.transaction_type, 
     r.created_at, 
@@ -162,7 +175,7 @@
     FROM receiving_shipment r
     JOIN products p ON r.product_id = p.product_id
     JOIN warehouses w ON w.warehouse_id = r.warehouse_id
-    JOIN users u on u.created_by = r.created_by
+    JOIN users u on u.user_id = r.created_by
     <where>
         <if test="startDate != ''">
             r.created_at &gt;= #{startDate}
@@ -185,7 +198,7 @@
     SELECT COUNT(*) 
     FROM receiving_shipment r
     JOIN products p ON r.product_id = p.product_id
-    JOIN users u on u.created_by = r.created_by
+    JOIN users u on u.user_id = r.created_by
     <where>
         <if test="startDate != ''">
             r.created_at &gt;= #{startDate}
@@ -204,38 +217,112 @@
 
 <!-- 입출고 모든 개수 카운트 -->
 <select id="getTotalCount" resultType="int">
-	select count(*)
-	from receiving_shipment r
-	JOIN users u on u.created_by = r.created_by
-	where transaction_type = 'INBOUND'
-	AND u.business_id = #{businessId}
+SELECT COUNT(DISTINCT r.receiving_shipment_no)
+FROM receiving_shipment r
+JOIN users u ON u.user_id = r.created_by
+WHERE r.transaction_type = 'INBOUND'
+  AND u.business_id = #{business_id};
 </select>
 
    <!-- receiving scan을 위한 매퍼 -->
    <!-- 바코드로 제품 조회 -->
 <select id="selectQuantityCheckByBarcode" resultType="com.stockm8.domain.vo.StockVO">
-       SELECT s.product_id, p.product_name, s.total_quantity, s.warehouse_id
-       FROM stocks s
-       JOIN products p ON p.product_id = s.product_id
-       WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+	SELECT s.product_id, p.product_name, s.total_quantity
+	FROM stocks s
+	JOIN products p ON p.product_id = s.product_id
+	JOIN receiving_shipment r on r.stock_id = s.stock_id
+	WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+	AND r.receiving_shipment_no = #{receivingShipmentNo}  
 </select>
 
 <!-- 바코드로 재고 1 감소 -->
 <update id="updateIncreseStock">
-    UPDATE stocks s
-    JOIN products p on p.product_id = s.product_id
-    SET s.total_quantity = s.total_quantity + 1
-    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
-    AND s.total_quantity > 0
+    UPDATE order_items o
+    JOIN products p on p.product_id = o.product_id
+    JOIN stocks s on o.product_id = s.product_id
+    JOIN receiving_shipment r on r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
+    SET s.total_quantity = s.total_quantity + 1,
+    o.change_quantity = o.change_quantity -1
+    WHERE p.product_barcode = #{barcode}
+    AND s.business_id = #{businessId}
+    AND o.change_quantity > 0
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
+    AND r.order_item_id = #{orderItemId}
 </update>
 
 <!-- 바코드로 남은 재고 조회 -->
 <select id="selectStockByBarcode" resultType="int">
     SELECT s.total_quantity
+    FROM order_items o
+    JOIN products p on p.product_id = o.product_id
+    JOIN stocks s on o.product_id = s.product_id
+    JOIN receiving_shipment r on r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
+    WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
+    AND r.order_item_id = #{orderItemId}
+    limit 1;
+</select>
+
+<!-- 바코드로 남은 발주 수량 조회 -->
+<select id="selectReservedQuantity" resultType="int">
+SELECT o.change_quantity
+FROM order_items o
+JOIN stocks s ON s.product_id = o.product_id
+JOIN products p ON p.product_id = s.product_id
+JOIN receiving_shipment r ON r.stock_id = s.stock_id AND r.order_item_id = o.order_item_id
+WHERE p.product_barcode = #{barcode}
+AND s.business_id = #{businessId}
+AND r.receiving_shipment_no = #{receivingShipmentNo}
+AND r.order_item_id = #{orderItemId}
+</select>
+
+<!-- 바코드로 제품 이름 조회 -->
+<select id="selectProductNameBarcode" resultType="com.stockm8.domain.vo.ProductVO">
+    SELECT p.product_name, p.product_price
     FROM stocks s
     JOIN products p on p.product_id = s.product_id
+    JOIN receiving_shipment r on r.stock_id = s.stock_id
     WHERE p.product_barcode = #{barcode} AND s.business_id = #{businessId}
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
 </select>
+
+<update id="updateReceivingStatusToComplete">
+    UPDATE receiving_shipment r
+    JOIN products p ON r.product_id = p.product_id
+    JOIN stocks s ON s.product_id = p.product_id
+    JOIN order_items o ON s.product_id = o.product_id
+    SET r.status = 'COMPLETED',
+    r.created_by = #{userId}
+    WHERE p.product_barcode = #{barcode}
+    AND o.change_quantity = 1
+    AND r.status = 'PENDING'
+    AND s.business_id = #{businessId}
+    AND r.receiving_shipment_no = #{receivingShipmentNo}
+    AND r.order_item_id = #{orderItemId}
+</update>
 <!-- receiving scan을 위한 매퍼 -->
+
+<!-- 입고 내역 히스토리 -->
+<select id="getReceivingShipmentNo" resultMap="receivingShipmentMap">
+	select DISTINCT 
+	r.receiving_shipment_no, 
+	r.transaction_type, 
+	r.created_at, 
+	r.status, 
+	r.product_id, 
+	p.product_name, 
+	p.product_description, 
+	r.change_quantity, 
+	p.product_price,
+	r.warehouse_id,
+	r.memo
+	from receiving_shipment r
+	join products p on r.product_id = p.product_id
+	join warehouses w on w.warehouse_id = r.warehouse_id
+	JOIN users u on u.user_id = r.created_by
+	where transaction_type = 'INBOUND' 
+	AND u.business_id = #{businessId} 
+	AND r.receiving_shipment_no = #{receivingShipmentNo}
+</select>
 
 </mapper>

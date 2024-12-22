@@ -1,0 +1,117 @@
+@charset "UTF-8";
+
+/* 전체 페이지 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 상단 정렬 */
+    min-height: 100vh;
+    padding-top: 50px; /* 상단 여백 추가 */
+}
+
+/* 메인 컨테이너 스타일 */
+.container {
+    width: 400px;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    margin-top: 30px; /* 컨테이너 상단 여백 */
+}
+
+/* 제목 스타일 */
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* 라벨 스타일 */
+label {
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* 입력 필드 스타일 */
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 버튼 스타일 */
+button,
+a.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin-top: 5px;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+button:hover,
+a.btn:hover {
+    background-color: #0056b3;
+}
+
+/* 자동 생성 버튼 스타일 */
+button.auto-generate {
+    background-color: #17a2b8;
+    font-size: 12px;
+    padding: 5px 8px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+button.auto-generate:hover {
+    background-color: #138496;
+}
+
+/* 텍스트 영역 스타일 */
+textarea {
+    height: 80px;
+    resize: none;
+}
+
+/* 링크 스타일 */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+a:hover {
+    text-decoration: underline;
+}

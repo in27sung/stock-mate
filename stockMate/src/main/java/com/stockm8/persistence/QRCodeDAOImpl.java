@@ -6,7 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.stockm8.domain.vo.QRCodeVO;
+import com.stockm8.domain.dto.QRCodeDTO;
+import com.stockm8.domain.dto.StockQRCodeDTO;
 
 @Repository
 public class QRCodeDAOImpl implements QRCodeDAO {
@@ -18,17 +19,22 @@ public class QRCodeDAOImpl implements QRCodeDAO {
     private static final String NAMESPACE = "com.stockm8.mapper.QRCodeMapper.";
 
     @Override
-    public void insertQRCode(QRCodeVO qrCode) {
-        sqlSession.insert(NAMESPACE + "insertQRCode", qrCode);
+    public void updateQRCodePathByProductId(StockQRCodeDTO stockBarcode) {
+        sqlSession.insert(NAMESPACE + "updateQRCodePathByProductId", stockBarcode);
     }
 
 	@Override
-	public QRCodeVO selectQRCodeByProductId(int productId) {
-		return sqlSession.selectOne(NAMESPACE + "selectQRCodeByProductId", productId);
+	public StockQRCodeDTO selectQRCodeByBarcode(String productBarcode) {
+		return sqlSession.selectOne(NAMESPACE + "selectQRCodeByBarcode", productBarcode);
 	}    
 	
     @Override
-    public List<QRCodeVO> selectQRCodePathsByBusinessId(int businessId) throws Exception {
+	public StockQRCodeDTO selectQRCodeByProductId(Integer productId) throws Exception {
+		return sqlSession.selectOne(NAMESPACE + "selectQRCodeByProductId", productId);
+	}
+
+	@Override
+    public List<QRCodeDTO> selectQRCodePathsByBusinessId(int businessId) throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectQRCodePathsByBusinessId", businessId);
     }
 }

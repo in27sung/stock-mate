@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.stockm8.domain.dto.PendingUserDTO;
+import com.stockm8.domain.dto.UpdateUserStatusDTO;
 import com.stockm8.domain.vo.BusinessVO;
 import com.stockm8.domain.vo.UserVO;
 import com.stockm8.persistence.BusinessDAO;
@@ -41,12 +43,22 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO getUser(Long userId) throws Exception {
+	public UserVO getUser(Long userId, String password) throws Exception {
 		logger.info(" getuser(String user_id)호출 ");
 
-		return userDAO.getUser(userId);
+		return userDAO.getUser(userId, password);
 	}
 	
+	@Override
+	public List<PendingUserDTO> getPendingUsersWithBusiness() throws Exception {		// TODO Auto-generated method stub
+        return userDAO.selectPendingUsersWithBusiness();
+	}
+	
+	@Override
+	public List<PendingUserDTO> getStaffByBusinessId(int businessId) throws Exception {
+        return userDAO.selectStaffByBusinessId(businessId);
+	}
+
 	// 회원 정보 수정 
 	@Override
 	public void updateUser(UserVO user) throws Exception {
@@ -57,6 +69,21 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public UserVO getUserInfoById(Long userId) throws Exception {
+	    return userDAO.getUserInfoById(userId);
+	}
+	
+	@Override
+	public void updatePassword(Long userId, String newPassword) throws Exception {
+	    userDAO.updatePassword(userId, newPassword);
+	}
+
+	@Override
+	public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) {
+		userDAO.updateUserStatus(updateUserStatusDTO);
+	}
+
+	@Override
 	public void updateUserBusinessId(Long userId, int businessId) throws Exception {
 		logger.info("updateUserBusinessId() 실행");
 		
@@ -64,6 +91,13 @@ public class UserServiceImpl implements UserService {
 		userDAO.updateUserBusinessId(userId, businessId);
 	}
 
+	@Override
+	public String findPassword(String email, String name) throws Exception {
+		 logger.info("findPassword 실행: 이메일 = " + email + ", 이름 = " + name);
+		    // userDAO에서 비밀번호를 찾아 반환
+		   return userDAO.findPassword(email, name);
+	}
+	
 	@Override
 	public int deleteUser(UserVO user) throws Exception {
 		logger.info(" deleteuser(UserVO dvo) 실행 ");

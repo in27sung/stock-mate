@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.stockm8.domain.dto.BarcodeDTO;
 import com.stockm8.domain.vo.ProductVO;
 
 @Repository
@@ -51,5 +52,15 @@ public class ProductDAOImpl implements ProductDAO {
 	    return sqlSession.selectList(NAMESPACE + "selectProductsByBusinessId", businessId);
 	}
 
+	@Override
+	public ProductVO getProductByBarcode(String productBarcode) throws Exception {
+	    return sqlSession.selectOne(NAMESPACE + "selectProductByBarcode", productBarcode);
+	}
+
+	@Override
+	public void updateBarcodePathByProductId(BarcodeDTO barcode) {
+		sqlSession.update(NAMESPACE + "updateBarcodePathByProductId", barcode);		
+
+	}
 	
 }

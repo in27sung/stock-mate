@@ -1,6 +1,7 @@
 package com.stockm8.persistence;
 
 import com.stockm8.domain.vo.StockVO;
+import com.stockm8.domain.dto.StockDTO;
 import com.stockm8.domain.vo.CategoryVO;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -30,8 +31,13 @@ public class StockDAOImpl implements StockDAO {
     
     // 사업자 ID에 해당하는 재고 목록 조회
     @Override
-    public List<StockVO> selectStockListByBusinessId(int businessId) throws Exception {
-        return sqlSession.selectList(NAMESPACE + "selectStockListByBusinessId", businessId);
+    public List<StockDTO> selectStockListByBusinessId(int businessId, String sortColumn, String sortOrder) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("businessId", businessId);
+        params.put("sortColumn", sortColumn);
+        params.put("sortOrder", sortOrder);
+
+        return sqlSession.selectList(NAMESPACE + "selectStockListByBusinessId", params);
     }
 
     // 필터링된 재고 목록 조회 (정렬 기준 포함)
@@ -51,15 +57,11 @@ public class StockDAOImpl implements StockDAO {
     public List<StockVO> selectOnlyStockByBusinessId(int businessId) throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectOnlyStockByBusinessId", businessId);
 	}
+    
     // 카테고리 목록 조회
     @Override
     public List<CategoryVO> selectAllCategories() throws Exception {
         return sqlSession.selectList(NAMESPACE + "selectAllCategories");
     }
-    
-   @Override
-   public List<CategoryVO> selectAllCategories() throws Exception {
-         return sqlSession.selectList(NAMESPACE + "selectAllCategories");
-   }
 }
 

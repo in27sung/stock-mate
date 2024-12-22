@@ -14,7 +14,7 @@ public class WarehouseDetailDTO {
     private String warehouseLocation;       // 창고 위치
     private int businessId;                 // 비즈니스 ID
     private String businessName;            // 회사명
-    private Long managerId;                    // 관리자 ID
+    private Long managerId;                 // 관리자 ID
     private String managerName;             // 관리자명
     private Timestamp createdAt;            // 창고 등록 날짜
     private Timestamp updatedAt;            // 창고 수정 날짜

@@ -8,8 +8,7 @@
 		<param-value>/WEB-INF/spring/*-context.xml</param-value>
 	</context-param>
 
-<!-- 	<context:component-scan base-package="com.stockm8" /> -->
-
+	<!-- <context:component-scan base-package="com.stockm8" /> -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
@@ -18,7 +17,6 @@
 	<listener>
    		 <listener-class>com.stockm8.config.ApplicationLifecycleListener</listener-class>
 	</listener>
-	
 
 	<!-- Processes application requests -->
 	<servlet>

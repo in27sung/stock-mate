@@ -82,14 +82,14 @@ th, td {
 	    const cameraSelect = document.getElementById('cameraSelect');
 	    const toggleScannerBtn = document.getElementById('toggleScannerBtn');
 	    const productListBody = document.getElementById('productList');
-	    const beepSound = new Audio("/resources/audio/beep.mp3"); // 비프 소리 경로
+	    const beepSound = new Audio("/resources/audio/beep.mp3");
 
 	    let reader = new Html5Qrcode("reader");
 	    let scannerRunning = false;
-	    const scannedProducts = {}; // 스캔된 상품 수량 추적 객체
-	    let isScanning = false; // 중복 스캔 방지 플래그
+	    const scannedProducts = {}; // productId 기반 상품 추적 객체
+	    let lastScannedTime = 0;
 
-	    // **카메라 목록 불러오기**  
+	    // **카메라 목록 불러오기**
 	    Html5Qrcode.getCameras()
 	        .then(devices => {
 	            if (devices.length) {
@@ -103,20 +103,16 @@ th, td {
 	                alert("카메라를 찾을 수 없습니다. 권한을 확인해주세요.");
 	            }
 	        })
-	        .catch(err => {
-	            console.error("카메라 목록 불러오기 오류:", err);
-	            alert("카메라 정보를 불러오지 못했습니다. 브라우저 권한을 확인해주세요.");
-	        });
+	        .catch(err => console.error("카메라 목록 오류:", err));
 
-	    // **스캐너 시작/종료 버튼 이벤트**
+	    // **스캐너 시작/종료 이벤트**
 	    toggleScannerBtn.addEventListener('click', () => {
 	        if (scannerRunning) stopScanner();
 	        else startScanner();
 	    });
 
-	    // **스캐너 시작**  
 	    function startScanner() {
-	        const cameraId = cameraSelect.value || { facingMode: "environment" }; // 기본 설정  
+	        const cameraId = cameraSelect.value || { facingMode: "environment" };
 	        reader.start(
 	            cameraId,
 	            { fps: 10, qrbox: 250 },
@@ -125,64 +121,60 @@ th, td {
 	        ).then(() => {
 	            scannerRunning = true;
 	            toggleScannerBtn.textContent = "웹캠 끄기";
-	        }).catch(err => {
-	            console.error("스캐너 시작 오류:", err);
-	            alert("스캐너를 시작할 수 없습니다. 다른 카메라를 선택하거나 권한을 확인해주세요.");
-	        });
+	        }).catch(err => console.error("스캐너 오류:", err));
 	    }
 
-	    // **스캐너 종료**  
 	    function stopScanner() {
 	        reader.stop().then(() => {
 	            scannerRunning = false;
 	            toggleScannerBtn.textContent = "웹캠 시작";
-	        }).catch(err => console.error("스캐너 종료 오류:", err));
+	        });
 	    }
 
-	    // **스캔 성공 시 호출**  
+	    // **스캔 성공 시 호출**
 	    function onScanSuccess(decodedText) {
-	        if (isScanning) return; // 중복 방지  
-	        isScanning = true;
-	        beepSound.play();
-	        console.log("Scanned Text:", decodedText); // 디버깅 로그 추가
+	        const currentTime = new Date().getTime();
+	        if (currentTime - lastScannedTime < 1000) return; // 1초 제한
+	        lastScannedTime = currentTime;
 
-	        if (scannedProducts[decodedText]) {
-	            scannedProducts[decodedText].quantity++;
-	            updateTableRow(decodedText);
-	            isScanning = false;
-	        } else {
-	            fetch("/api/qrcode/scan", {
-	                method: "POST",
-	                headers: { "Content-Type": "application/json" },
-	                body: JSON.stringify({ productId: decodedText }) // productId 전송
-	            })
-	            .then(response => response.json())
-	            .then(data => {
-	                console.log("Server Response:", data); // 서버 응답 확인 (디버깅)
-	                if (data.success) {
-	                    const product = {
+	        beepSound.play();
+
+	        fetch("/api/qrcode/scan", {
+	            method: "POST",
+	            headers: { "Content-Type": "application/json" },
+	            body: JSON.stringify({ productId: decodedText }) // QR 코드 데이터 전송
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	                const productId = data.productId; // 서버에서 반환된 productId 사용
+	                if (scannedProducts[productId]) {
+	                    // 이미 스캔된 상품의 수량 증가
+	                    scannedProducts[productId].quantity++;
+	                    updateTableRow(productId);
+	                } else {
+	                    // 새로운 상품 추가
+	                    scannedProducts[productId] = {
 	                        productName: data.productName,
 	                        productBarcode: data.productBarcode,
-	                        productPrice: data.productPrice
+	                        productPrice: data.productPrice,
+	                        quantity: 1
 	                    };
-	                    scannedProducts[decodedText] = { ...product, quantity: 1 };
-	                    addTableRow(decodedText, scannedProducts[decodedText]);
-	                } else {
-	                    alert("상품 정보를 찾을 수 없습니다.");
+	                    addTableRow(productId, scannedProducts[productId]);
 	                }
-	            })
-	            .catch(err => console.error("오류 발생:", err))
-	            .finally(() => isScanning = false);
-	        }
+	            } else {
+	                alert("상품 정보를 찾을 수 없습니다.");
+	            }
+	        })
+	        .catch(err => console.error("오류 발생:", err));
 	    }
 
-	    // **스캔 실패 시 호출**  
 	    function onScanError(errorMessage) {
 	        console.warn("스캔 오류:", errorMessage);
 	    }
 
-	    // **테이블에 상품 정보 추가**  
-	    function addTableRow(barcode, product) {
+	    // **테이블에 상품 정보 추가**
+	    function addTableRow(productId, product) {
 	        const tr = document.createElement('tr');
 
 	        const tdName = document.createElement('td');
@@ -195,8 +187,8 @@ th, td {
 	        tdPrice.textContent = product.productPrice || "N/A";
 
 	        const tdQuantity = document.createElement('td');
-	        tdQuantity.id = `quantity-${barcode}`;
-	        tdQuantity.textContent = "1";
+	        tdQuantity.id = `quantity-${productId}`;
+	        tdQuantity.textContent = product.quantity;
 
 	        tr.appendChild(tdName);
 	        tr.appendChild(tdBarcode);
@@ -206,10 +198,12 @@ th, td {
 	        productListBody.appendChild(tr);
 	    }
 
-	    // **수량 업데이트**  
-	    function updateTableRow(barcode) {
-	        const quantityCell = document.getElementById(`quantity-${barcode}`);
-	        quantityCell.textContent = scannedProducts[barcode].quantity;
+	    // **수량 업데이트**
+	    function updateTableRow(productId) {
+	        const quantityCell = document.getElementById(`quantity-${productId}`);
+	        if (quantityCell) {
+	            quantityCell.textContent = scannedProducts[productId].quantity;
+	        }
 	    }
 	});
     </script>

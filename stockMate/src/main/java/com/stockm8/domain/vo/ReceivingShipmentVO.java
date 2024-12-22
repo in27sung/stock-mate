@@ -28,5 +28,6 @@ public class ReceivingShipmentVO {
     private String productDescription;
     private int productPrice;
     private int businessId;
+    private Long userId;
 
 }

@@ -16,8 +16,9 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.stockm8.domain.dto.QRCodeDTO;
+import com.stockm8.domain.dto.StockQRCodeDTO;
 import com.stockm8.domain.vo.ProductVO;
-import com.stockm8.domain.vo.QRCodeVO;
 import com.stockm8.persistence.CategoryDAO;
 import com.stockm8.persistence.ProductDAO;
 import com.stockm8.persistence.QRCodeDAO;
@@ -42,10 +43,10 @@ public class QRCodeServiceImpl implements QRCodeService {
      * @param productId 생성할 상품 ID
      * @throws Exception 예외 발생 시 처리
      */
-    @Async
+//    @Async
     @Override
-    public void generateQRCode(int productId) throws Exception {
-        logger.info("QR 코드 생성 요청 (비동기): Product ID = {}", productId);
+    public String generateQRCode(int productId) throws Exception {
+        logger.info("QR 코드 생성 요청 (동기): Product ID = {}", productId);
 
         // 상품 정보 조회
         ProductVO product = productDAO.getProductById(productId);
@@ -63,13 +64,15 @@ public class QRCodeServiceImpl implements QRCodeService {
         generateQRCodeImage(qrCodeData, filePath);
 
         // QRCodeVO 객체 생성 및 데이터베이스 저장
-        QRCodeVO qrCode = new QRCodeVO();
-        qrCode.setProductId(productId);
-        qrCode.setQrCodeData(qrCodeData);
-        qrCode.setQrCodePath(filePath);
-        qrCodeDAO.insertQRCode(qrCode);
+        StockQRCodeDTO stockBarcode = new StockQRCodeDTO();
+        stockBarcode.setProductId(productId);
+        stockBarcode.setStockQrCodeData(qrCodeData);
+        stockBarcode.setStockQrCodePath(filePath);
+        qrCodeDAO.updateQRCodePathByProductId(stockBarcode);
 
         logger.info("QR 코드 생성 및 저장 완료. 파일 경로: {}", filePath);
+        
+        return filePath;
     }
 
     /**
@@ -80,7 +83,7 @@ public class QRCodeServiceImpl implements QRCodeService {
      */
     private String createJSONContent(ProductVO product) {
         return String.format(
-            "{\"productId\":%d,\"barcode\":\"%s\",\"businessId\":%d,\"baseUnit\":\"%s\",\"setSize\":%d}",
+            "{\"productId\":%d,\"productBarcode\":\"%s\",\"businessId\":%d,\"baseUnit\":\"%s\",\"setSize\":%d}",
             product.getProductId(),
             product.getProductBarcode(),
             product.getBusinessId(),
@@ -108,7 +111,7 @@ public class QRCodeServiceImpl implements QRCodeService {
         // QR 코드 저장 경로 생성
         int businessId = product.getBusinessId(); // 상품의 비즈니스 ID
         int categoryId = product.getCategoryId(); // 상품의 카테고리 ID
-        String basePath = "/Users/Insung/Documents/products"; // QR 코드 기본 저장 경로
+        String basePath = "/Users/Insung/Documents/upload"; // QR 코드 기본 저장 경로
 //      String basePath = "/usr/local/tomcat/webapps/upload";
 
         // 디렉토리 경로 생성
@@ -163,7 +166,14 @@ public class QRCodeServiceImpl implements QRCodeService {
      * @throws Exception QR 코드 조회 실패 시 예외
      */
     @Override
-    public QRCodeVO getQRCodeByProductId(int productId) throws Exception {
-        return qrCodeDAO.selectQRCodeByProductId(productId);
+    public StockQRCodeDTO getQRCodeByBarcode(String productBarcode) throws Exception {
+        return qrCodeDAO.selectQRCodeByBarcode(productBarcode);
     }
+
+	@Override
+	public StockQRCodeDTO getQRCodeByProductId(Integer productId) throws Exception {
+        return qrCodeDAO.selectQRCodeByProductId(productId);
+	}
+    
+    
 }

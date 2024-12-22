@@ -9,8 +9,8 @@ public class ScanProductDTO {
     @JsonProperty("productId")
     private int productId;
 
-    @JsonProperty("barcode")
-    private String barcode;
+    @JsonProperty("productBarcode")
+    private String productBarcode;
 
     @JsonProperty("businessId")
     private int businessId;

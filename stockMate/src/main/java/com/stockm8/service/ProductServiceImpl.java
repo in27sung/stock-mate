@@ -18,8 +18,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.stockm8.domain.dto.QRCodeDTO;
 import com.stockm8.domain.vo.ProductVO;
-import com.stockm8.domain.vo.QRCodeVO;
 import com.stockm8.persistence.CategoryDAO;
 import com.stockm8.persistence.ProductDAO;
 import com.stockm8.persistence.QRCodeDAO;
@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
         ProductVO product = productDAO.getProductById(productId);
         
         if (product != null) {
-            String qrContent = "http://localhost:8088/product/detail?productId=" + productId;
+            String qrContent = "http://c7d2408t1p1.itwillbs.com/product/detail?productId=" + productId;
             
             // 카테고리명을 ID를 참조하여 가져오기
             String categoryName = categoryDAO.selectCategoryNameById(product.getCategoryId());
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
             // QR 코드 저장 경로 생성
             int businessId = product.getBusinessId(); // 상품의 비즈니스 ID
             int categoryId = product.getCategoryId(); // 상품의 카테고리 ID
-            String basePath = "/Users/Insung/Documents/products"; // QR 코드 기본 저장 경로
+            String basePath = "/Users/Insung/Documents/upload"; // QR 코드 기본 저장 경로
 //          String basePath = "/usr/local/tomcat/webapps/upload";
 
             // 디렉토리 경로 생성
@@ -132,9 +132,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Map<Integer, String> getQRCodePathsByBusinessId(int businessId) throws Exception {
-        List<QRCodeVO> qrCodes = qrCodeDAO.selectQRCodePathsByBusinessId(businessId);
+        List<QRCodeDTO> qrCodes = qrCodeDAO.selectQRCodePathsByBusinessId(businessId);
         return qrCodes.stream()
-                .collect(Collectors.toMap(QRCodeVO::getProductId, QRCodeVO::getQrCodePath));
+                .collect(Collectors.toMap(QRCodeDTO::getProductId, QRCodeDTO::getQrCodePath));
     }
 
 	@Override
@@ -142,6 +142,12 @@ public class ProductServiceImpl implements ProductService {
 		return productDAO.selectProductsByBusinessId(businessId);
 	}
     
-    
-    
+    @Override
+    public ProductVO getProductByBarcode(String productBarcode) throws Exception {
+        ProductVO product = productDAO.getProductByBarcode(productBarcode);
+        if (product == null) {
+            throw new Exception("해당 바코드의 상품을 찾을 수 없습니다.");
+        }
+        return product;
+    }
 }

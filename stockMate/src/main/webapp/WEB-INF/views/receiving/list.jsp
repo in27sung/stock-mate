@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>스캔된 입출고 리스트</h1>
-    <table id="shipmentList">
+    <table id="receivingList">
         <thead>
             <tr>
                 <th>상품 ID</th>
@@ -23,8 +23,8 @@
 
     <script>
         // Example: Fetch data and update the table dynamically
-        function updateShipmentList(transaction) {
-            const tableBody = document.getElementById("shipmentList").getElementsByTagName("tbody")[0];
+        function updatereceivingList(transaction) {
+            const tableBody = document.getElementById("receivingList").getElementsByTagName("tbody")[0];
             const row = tableBody.insertRow();
             row.innerHTML = `
                 <td>${transaction.productId}</td>
@@ -35,7 +35,7 @@
         }
 
         // Example: Simulate new transaction data
-        updateShipmentList({ productId: 1, warehouseId: 2, quantity: 50, transactionType: 'INBOUND' });
+        updateSeceivingList({ productId: 1, warehouseId: 2, quantity: 50, transactionType: 'INBOUND' });
     </script>
 </body>
 </html>

@@ -28,10 +28,10 @@ public class BusinessDAOImpl implements BusinessDAO {
 
     // 회사 정보 조회(businessNumber, companyName)
     @Override
-    public BusinessVO selectBusinessByNumberAndName(String businessNumber, String companyName) throws Exception {
+    public BusinessVO selectBusinessByNumberAndName(String businessNumber, String businessName) throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("businessNumber", businessNumber);
-        params.put("companyName", companyName);
+        params.put("businessName", businessName);
 
         return sqlSession.selectOne(NAMESPACE + "selectBusinessByNumberAndName", params);
     }

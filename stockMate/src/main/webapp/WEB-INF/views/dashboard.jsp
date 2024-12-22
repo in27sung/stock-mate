@@ -5,9 +5,11 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>대시보드</title>
+    <link rel="stylesheet" href="<c:url value='/resources/css/bannerStyle.css' />">
     <style>
+    
         /* Reset and Global Styles */
         body, html {
             margin: 0;
@@ -23,22 +25,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh; /* 화면 전체 높이를 채우기 */
-        }
-        
-        .error-banner {
-            width: 100%;
-            background-color: #FCE4E4;
-            color: #D32F2F;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 14px;
-            font-weight: 500;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #F5C6C6;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* Content Section */
@@ -168,10 +154,15 @@
 </head>
 <body>
     <div class="container">
-   	   <!-- 에러 메시지가 있을 경우 상단 배너로 표시 -->
-       <c:if test="${not empty errorMessage}">
-           <div class="error-banner">${errorMessage}</div>
-       </c:if>
+		<%-- 에러 메시지 표시 --%>
+		<c:if test="${not empty errorMessage}">
+		    <div class="error-banner">${errorMessage}</div>
+		</c:if>
+		
+		<%-- 성공 메시지 표시 --%>
+		<c:if test="${not empty successMessage}">
+			<div class="success-banner">${successMessage}</div>
+		</c:if>
         <!-- Header Section -->
         <div class="header">
             대시보드
@@ -181,23 +172,41 @@
             <a href="/receiving/main">입고</a>
             <a href="/shipment/main">출고</a>
             <a href="/stock/list">재고</a>
-            <a href="/user/admin">관리자 페이지</a>
+            
+        <c:choose>
+	        <c:when test="${userRole == 'ADMIN'}">
+	            <a href="/admin/approve">관리자 페이지</a>
+	        </c:when>
+	        <c:when test="${userRole == 'MANAGER'}">
+	            <a href="/manager/approve">매니저 페이지</a>
+	        </c:when>
+    	</c:choose>
         </div>
 
         <!-- Content Section -->
         <div class="content">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="disabled">Dashboard</div>
-                <a href="product/register">상품 등록</a>
-                <a href="warehouse/register">창고 등록</a>
-                <a href="stock/register">재고 등록</a>
-                <a href="profile">내정보 조회/수정</a>
-                <a href="password">비밀번호 변경</a>
-                <a href="help">대시보드 사용법</a>
-                <a href="user/signout" style="color: red;">Sign out</a>
+			<!-- Sidebar -->
+			<div class="sidebar fade-in">
+			    <!-- 등록페이지 드롭다운 메뉴 -->
+			        <a href="#" class="dropdown-btn">등록페이지</a>
+			        <ul class="dropdown-content">
+			            <li><a href="warehouse/register">창고 등록</a></li>
+			            <li><a href="category/register">카테고리 등록</a></li>
+			            <li><a href="product/register">상품 등록</a></li>
+			            <li><a href="stock/register">재고 등록</a></li>
+			        </ul>
+				    <!-- 기타 메뉴 -->
+				    <a href="user/editinfo1">내정보 조회/수정</a>
+				    <a href="user/changepassword1">비밀번호 변경</a>
+				    <a href="user/howtouse2">대시보드 사용법</a>
+				    <a href="user/signout" class="signout" style="color: red;">Sign out</a>
+			<script>
+			function confirmLogout() {
+			    alert("로그아웃 되었습니다");
+			    return true; // 링크 이동을 계속 진행
+			}
+			</script>
             </div>
-
             <!-- Main Content -->
             <div class="main-content">
                 <h2>Order Time</h2>
@@ -247,6 +256,31 @@
                     backgroundColor: '#36A2EB'
                 }]
             }
+        });
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownBtn = document.querySelector('.dropdown-btn');
+            const dropdownContent = document.querySelector('.dropdown-content');
+            let isDropdownVisible = false;
+
+            dropdownBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                isDropdownVisible = !isDropdownVisible;
+
+                if (isDropdownVisible) {
+                    dropdownContent.style.display = 'block';
+                } else {
+                    dropdownContent.style.display = 'none';
+                }
+            });
+
+            // 다른 영역 클릭 시 드롭다운 닫기
+            document.addEventListener('click', (e) => {
+                if (!dropdownBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                    dropdownContent.style.display = 'none';
+                    isDropdownVisible = false;
+                }
+            });
         });
     </script>
 </body>

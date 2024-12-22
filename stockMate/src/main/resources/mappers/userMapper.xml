@@ -5,141 +5,205 @@
 
 <mapper namespace="com.stockm8.mapper.UserMapper">
 
-    <!-- UserResultMap 정의 -->
-    <resultMap id="userResultMap" type="com.stockm8.domain.vo.UserVO">
-        <result property="userId" column="user_id" />
-        <result property="email" column="email" />
-        <result property="password" column="password" />
-        <result property="userName" column="user_name" />
-        <result property="userRole" column="user_role" />
-        <result property="businessId" column="business_id" />
-        <result property="telNumber" column="tel_number" />
-        <result property="createdBy" column="created_by" />
-        <result property="createdAt" column="created_at" />
-        <result property="updatedAt" column="updated_at" />
-        <result property="userStatus" column="user_status" javaType="com.stockm8.domain.enums.UserStatus"/>
-        <result property="isDeleted" column="is_deleted" />
-    </resultMap>
+	<!-- UserResultMap 정의 -->
+	<resultMap id="userResultMap"
+		type="com.stockm8.domain.vo.UserVO">
+		<result property="userId" column="user_id" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="userName" column="user_name" />
+		<result property="userRole" column="user_role" />
+		<result property="businessId" column="business_id" />
+		<result property="telNumber" column="tel_number" />
+		<result property="createdBy" column="created_by" />
+		<result property="createdAt" column="created_at" />
+		<result property="updatedAt" column="updated_at" />
+		<result property="userStatus" column="user_status" javaType="com.stockm8.domain.enums.UserStatus" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
 
-    <!-- 회원가입 -->
-    <insert id="insertUser"
-        parameterType="com.stockm8.domain.vo.UserVO" 
-        useGeneratedKeys="true"
-        keyProperty="userId">
-        INSERT INTO users (
-            email,
-            password,
-            user_name,
-            user_role,
-            tel_number,
-            created_at,
-            user_status,
-            is_deleted
-        )
-        VALUES (
-            #{email},
-            #{password},
-            #{userName},
-            #{userRole},
-            #{telNumber},
-            NOW(),
-            'PENDING',
-            0
-        )
-    </insert>
+	<!-- 회원가입 -->
+	<insert id="insertUser"
+		parameterType="com.stockm8.domain.vo.UserVO" useGeneratedKeys="true"
+		keyProperty="userId">
+		INSERT INTO users (
+		email,
+		password,
+		user_name,
+		user_role,
+		tel_number,
+		created_at,
+		user_status,
+		is_deleted
+		)
+		VALUES (
+		#{email},
+		#{password},
+		#{userName},
+		#{userRole},
+		#{telNumber},
+		NOW(),
+		'PENDING',
+		0
+		)
+	</insert>
 
-    <!-- 로그인 체크 -->
-    <select id="loginCheck"
-        parameterType="com.stockm8.domain.vo.UserVO" 
-        resultMap="userResultMap">
-        SELECT
-            user_id,
-            email,
-            password,
-            user_name,
-            user_role,
-            business_id,
-            user_status,
-            is_deleted
-        FROM users
-        WHERE email = #{email} AND password = #{password}
-    </select>
+	<!-- 로그인 체크 -->
+	<select id="loginCheck"
+		parameterType="com.stockm8.domain.vo.UserVO" resultMap="userResultMap">
+		SELECT
+		user_id,
+		email,
+		password,
+		user_name,
+		user_role,
+		business_id,
+		user_status,
+		is_deleted
+		FROM users
+		WHERE email = #{email} AND password = #{password}
+	</select>
 
-    <!-- 회원정보 조회 -->
-    <select id="getUser" 
-        parameterType="long"
-        resultMap="userResultMap">
-        SELECT * 
-        FROM users
-        WHERE user_id = #{userId}
-    </select>
+	<!-- 회원정보 조회 -->
+	<select id="getUser"
+		resultMap="userResultMap">
+		SELECT *
+		FROM users
+		WHERE user_id = #{userId} and password = #{password}
+	</select>
+	
+   	<!-- 역할이 ADMIN 또는 MANAGER이고 상태가 pending이며 isDeleted가 false인 회원 리스트 조회 -->
+	<select id="selectPendingUsersWithBusiness" resultType="com.stockm8.domain.dto.PendingUserDTO">
+	    SELECT u.user_id AS approvedUserId, 
+	           u.email, 
+	           u.user_name, 
+	           u.user_role, 
+	           u.tel_number, 
+	           u.created_at, 
+	           u.user_status,
+	           b.business_id, 
+	           b.business_number, 
+	           b.business_name
+	    FROM users u
+	    LEFT JOIN businesses b ON u.business_id = b.business_id
+	    WHERE u.user_role IN ('ADMIN', 'MANAGER')
+	      AND u.user_status = 'PENDING'
+	      AND u.is_deleted = FALSE
+	    ORDER BY u.created_at DESC
+	</select>
+	
+	<select id="selectStaffByBusinessId" parameterType="int" resultType="com.stockm8.domain.dto.PendingUserDTO">
+	    SELECT u.user_id AS approvedUserId, 
+	           u.email, 
+	           u.user_name, 
+	           u.user_role, 
+	           u.tel_number, 
+	           u.created_at, 
+	           u.user_status,
+	           b.business_id, 
+	           b.business_name
+	    FROM users u
+	    JOIN businesses b ON u.business_id = b.business_id
+	    WHERE u.business_id = #{businessId}
+	      AND u.user_role = 'STAFF'
+	      AND u.user_status = 'PENDING' 
+	      AND u.is_deleted = FALSE
+	    ORDER BY u.created_at DESC
+	</select>
 
-    <!-- 회원정보 수정 -->
-    <update id="updateUser">
-        UPDATE users
-        SET 
-            user_name = #{userName},
-            tel_number = #{telNumber},
-            updated_at = NOW()
-        WHERE 
-            user_id = #{userId} 
-            AND password = #{password}
-    </update>
+	<!-- 회원정보 수정 -->
+	<update id="updateUser">
+		UPDATE users
+		SET
+		user_name = #{userName},
+		tel_number = #{telNumber},
+		
+		updated_at = NOW()
+		WHERE
+		user_id = #{userId}
+		AND password = #{password}
+	</update>
+	
+    <!-- 회원 승인 여부 수정 -->
+	<update id="updateUserStatus" parameterType="com.stockm8.domain.dto.UpdateUserStatusDTO">
+	    UPDATE users
+	    SET user_status = #{userStatus},
+	        created_by = #{userId},
+	        updated_at = NOW()
+	    WHERE user_id = #{approvedUserId}
+	</update>
 
-    <!-- 사용자의 businessId 수정 -->
-    <update id="updateUserBusinessId" 
-        parameterType="map">
-        UPDATE users
-        SET 
-            business_id = #{businessId}
-        WHERE 
-            user_id = #{userId} 
-            AND business_id IS NULL
-    </update>
+	<select id="getUserInfoById" parameterType="Long"
+		resultType="com.stockm8.domain.vo.UserVO">
+		SELECT user_id AS userId, name, email, tel_number AS telNumber
+		FROM users
+		WHERE user_id = #{userId}
+	</select>
 
-    <!-- 회원정보 삭제 -->
-    <delete id="deleteUser">
-        DELETE FROM users
-        WHERE 
-            user_id = #{userId} 
-            AND password = #{password}
-    </delete>
+	<update id="updatePassword" parameterType="map">
+		UPDATE users
+		SET password = #{newPassword}
+		WHERE user_id = #{userId}
+	</update>
 
-    <!-- 회원 목록 조회 -->
-    <select id="userList" 
-        resultMap="userResultMap">
-        SELECT * 
-        FROM users
-    </select>
+	<!-- 사용자의 businessId 수정 -->
+	<update id="updateUserBusinessId" parameterType="map">
+		UPDATE users
+		SET
+		business_id = #{businessId}
+		WHERE
+		user_id = #{userId}
+		AND business_id IS NULL
+	</update>
 
-    <!-- 유저 정보를 user_id로 조회 -->
-    <select id="getUserById" 
-        parameterType="long"
-        resultMap="userResultMap">
-        SELECT
-            user_id,
-            email,
-            password,
-            user_name,
-            user_role,
-            business_id,
-            tel_number,
-            created_at,
-            updated_at,
-            created_by,
-            user_status,
-            is_deleted
-        FROM users
-        WHERE user_id = #{userId}
-    </select>
+ 	<!-- 이메일과 이름으로 비밀번호 찾기 -->
+	<select id="findPassword" resultType="java.lang.String">
+    	SELECT password
+    	FROM users
+    	WHERE email = #{email} AND user_name = #{name}
+	</select>
 
-    <!-- 유저의 삭제 여부 확인 -->
-    <select id="getIsDeleted" 
-        parameterType="long" 
-        resultType="int">
-        SELECT is_deleted
-        FROM users
-        WHERE user_id = #{userId}
-    </select>
+
+	<!-- 회원정보 삭제 -->
+	<delete id="deleteUser">
+		DELETE FROM users
+		WHERE
+		user_id = #{userId}
+		AND password = #{password}
+	</delete>
+
+	<!-- 회원 목록 조회 -->
+	<select id="userList" resultMap="userResultMap">
+		SELECT *
+		FROM users
+	</select>
+
+	<!-- 유저 정보를 user_id로 조회 -->
+	<select id="getUserById" parameterType="long"
+		resultMap="userResultMap">
+		SELECT
+		user_id,
+		email,
+		password,
+		user_name,
+		user_role,
+		business_id,
+		tel_number,
+		created_at,
+		updated_at,
+		created_by,
+		user_status,
+		is_deleted
+		FROM users
+		WHERE user_id = #{userId}
+	</select>
+
+
+	<!-- 유저의 삭제 여부 확인 -->
+	<select id="getIsDeleted" parameterType="long" resultType="int">
+		SELECT is_deleted
+		FROM users
+		WHERE user_id = #{userId}
+	</select>
 
 </mapper>

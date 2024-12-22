@@ -63,6 +63,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         
         // 2. DB에서 사용자 정보 조회
         UserVO user = userService.getUserById(userId);
+        request.setAttribute("currentUser", user); //검증 된 사용자 정보를 저장
         
         if (user == null) {
             logger.warn("해당 유저({}) 정보를 찾을 수 없습니다. 회원가입 페이지로 이동합니다.", userId);
@@ -82,7 +83,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         
         logger.info("유효한 사용자 확인 (유저 ID: {}, 회사 ID: {})", userId, user.getBusinessId());
         return true; // 유효성 검사 통과
-        
 	}
 	
 	// 원래 요청 URL 저장 메서드
@@ -132,7 +132,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     private boolean isValidUser(HttpServletRequest request, HttpServletResponse response, UserVO user) throws Exception {
         
     	// 허용된 역할 정의
-        List<UserRole> allowedRoles = Arrays.asList(UserRole.MANAGER, UserRole.ADMIN /*Role.STAFF*/);
+        List<UserRole> allowedRoles = Arrays.asList(UserRole.MANAGER, UserRole.ADMIN /*UserRole.STAFF*/);
 
         // 1. PENDING 상태 처리
         if (user.getUserStatus() == UserStatus.PENDING) {
@@ -148,18 +148,18 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
             if (user.getBusinessId() != null) {
                 logger.info("PENDING 상태의 사용자({})가 businessId({})를 가지고 있습니다. 메인 페이지로 이동합니다.", user.getUserId(), user.getBusinessId());
-                sendErrorMessage(request, response, "승인 절차가 완료될 때까지 기다려주세요.", "/user/main");
+                sendErrorMessage(request, response, "승인 절차가 완료될 때까지 기다려주세요.", "/");
                 return false;
             }
         }
 
         // 2. APPROVED 상태 처리
         if (user.getUserStatus() == UserStatus.APPROVED) {
-            if (!allowedRoles.contains(user.getUserRole())) {
-                logger.warn("권한 없는 사용자({})가 접근을 시도했습니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getUserRole());
-                return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");
-            }
-
+//            if (!allowedRoles.contains(user.getUserRole())) {
+//                logger.warn("권한 없는 사용자({})가 접근을 시도했습니다. 대시보드로 이동합니다. (역할: {})", user.getUserId(), user.getUserRole());
+//                return sendErrorMessage(request, response, "접근 권한이 없습니다.", "/dashboard");
+//            }
+//
             logger.info("APPROVED 상태의 사용자({})가 대시보드로 접근합니다.", user.getUserId());
             return true;
         }

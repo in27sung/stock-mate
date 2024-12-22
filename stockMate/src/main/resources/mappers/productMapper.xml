@@ -136,5 +136,31 @@
 	    LEFT JOIN qr_codes q ON p.product_id = q.product_id
 	    WHERE p.business_id = #{businessId} AND p.is_deleted = 0
 	</select>
+	
+	<!-- 바코드 기반으로 상품 조회 -->
+    <select id="selectProductByBarcode" parameterType="string" resultType="com.stockm8.domain.vo.ProductVO">
+        SELECT 
+            p.product_id,
+            p.product_name,
+            p.product_barcode,
+            p.business_id,
+            p.category_id,
+            p.base_unit,
+            p.set_size,
+            p.product_price,
+            p.barcode_path,
+            p.created_at,
+            p.updated_at
+        FROM products p
+        WHERE p.product_barcode = #{productBarcode}
+        LIMIT 1;
+    </select>
+    
+    <!-- 바코드 경로 업데이트 쿼리 -->
+    <update id="updateBarcodePathByProductId" parameterType="com.stockm8.domain.dto.BarcodeDTO">
+        UPDATE products
+        SET barcode_path = #{stockQrCodePath}
+        WHERE product_id = #{productId};
+    </update>
 
 </mapper>

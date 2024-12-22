@@ -4,8 +4,9 @@ import lombok.Data;
 
 @Data
 public class QRCodeDTO {
-    private Integer productId;
-    private Boolean isJsonQRCode;
-
+    private String productBarcode;        // 바코드 (NULL 가능)
+    private int productId;
+    private String qrCodeData;
+    private String qrCodePath;
     // Getters and Setters
 }

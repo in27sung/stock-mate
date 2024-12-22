@@ -7,242 +7,17 @@
 <head>
 <meta charset="UTF-8">
 <title>입고 내역</title>
-<style>
-/* 전체 페이지 스타일 */
-/* 페이지네이션 컨테이너 스타일 */
-.dataTables_paginate {
-    text-align: center;
-    margin-top: 20px;
-}
-
-/* 페이지네이션 목록 스타일 */
-.dataTables_paginate ul.pagination {
-    display: inline-flex;
-    padding-left: 0;
-    list-style: none;
-    margin: 0;
-}
-
-/* 페이지 번호 버튼 스타일 */
-.dataTables_paginate ul.pagination .paginate_button {
-    padding: 8px 16px;
-    margin: 0 4px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #3498db;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-/* 활성 페이지 번호 스타일 */
-.dataTables_paginate ul.pagination .paginate_button.active {
-    background-color: #3498db;
-    color: #fff;
-    border-color: #3498db;
-}
-
-/* 비활성화된(이전/다음) 버튼 스타일 */
-.dataTables_paginate ul.pagination .paginate_button.disabled {
-    background-color: #f4f4f4;
-    color: #ccc;
-    cursor: not-allowed;
-    border-color: #ddd;
-}
-
-/* 이전 및 다음 버튼 스타일 */
-.dataTables_paginate ul.pagination .paginate_button.previous,
-.dataTables_paginate ul.pagination .paginate_button.next {
-    font-weight: bold;
-}
-
-/* 이전/다음 버튼의 hover 효과 */
-.dataTables_paginate ul.pagination .paginate_button:hover {
-    background-color: #2980b9;
-    color: white;
-    border-color: #2980b9;
-}
-
-/* 이전/다음 버튼 활성화 시 색상 */
-.dataTables_paginate ul.pagination .paginate_button.previous:not(.disabled),
-.dataTables_paginate ul.pagination .paginate_button.next:not(.disabled) {
-    background-color: #3498db;
-    color: #fff;
-}
-
-/* 페이지 번호 클릭 시 효과 */
-.dataTables_paginate ul.pagination .paginate_button:focus,
-.dataTables_paginate ul.pagination .paginate_button:hover {
-    outline: none;
-    background-color: #2980b9;
-    color: white;
-}
-
-/* 반응형 스타일 - 모바일에서 페이지네이션 크기 조정 */
-@media (max-width: 768px) {
-    .dataTables_paginate ul.pagination .paginate_button {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-}
-
-
-body {
-	font-family: 'Arial', sans-serif;
-	background-color: #f4f4f9;
-	margin: 0;
-	padding: 0;
-	color: #333;
-}
-
-/* 타이틀 스타일 */
-h1 {
-	text-align: center;
-	margin-top: 30px;
-	color: #2c3e50;
-	font-size: 36px;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 1.5px;
-}
-
-h1 a {
-	text-decoration: none;
-	color: #3498db;
-	font-size: 20px;
-	display: block;
-	margin-top: 10px;
-	text-align: center;
-}
-
-a {
-	display: inline-block;
-	padding: 10px 20px;
-	margin: 20px 0;
-	font-size: 16px;
-	color: #fff;
-	background-color: #3498db;
-	text-decoration: none;
-	border-radius: 5px;
-	transition: background-color 0.3s;
-}
-
-h1 a:hover {
-	color: #2980b9;
-}
-
-/* 검색 폼 스타일 */
-form {
-	width: 80%;
-	max-width: 1000px;
-	margin: 30px auto;
-	padding: 20px;
-	background-color: #fff;
-	border-radius: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-label {
-	margin-right: 10px;
-	font-size: 14px;
-}
-
-input[type="date"], input[type="text"] {
-	padding: 8px;
-	margin-right: 20px;
-	font-size: 14px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	width: 180px;
-}
-
-button {
-	padding: 8px 15px;
-	background-color: #3498db;
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 14px;
-	transition: background-color 0.3s ease;
-}
-
-button:hover {
-	background-color: #2980b9;
-}
-
-/* 테이블 스타일 */
-table {
-	width: 90%;
-	margin: 40px auto;
-	border-collapse: collapse;
-	background-color: #fff;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-th, td {
-	padding: 12px;
-	text-align: center;
-	border: 1px solid #ddd;
-}
-
-th {
-	background-color: #3498db;
-	color: white;
-}
-
-tr:nth-child(even) {
-	background-color: #f9f9f9;
-}
-
-tr:hover {
-	background-color: #ecf0f1;
-}
-
-/* 결과가 없을 경우 메시지 스타일 */
-.no-results {
-	text-align: center;
-	font-size: 18px;
-	color: #e74c3c;
-	margin-top: 30px;
-}
-
-/* 반응형 스타일 */
-@media ( max-width : 768px) {
-	form {
-		width: 95%;
-	}
-	table {
-		width: 100%;
-	}
-	th, td {
-		font-size: 12px;
-	}
-	label {
-		font-size: 12px;
-	}
-	input[type="date"], input[type="text"] {
-		font-size: 12px;
-		padding: 6px;
-		width: 150px;
-	}
-	button {
-		font-size: 12px;
-		padding: 6px 12px;
-	}
-	
-}
-</style>
+<link rel="stylesheet" type="text/css" href="/resources/css/receivingHistoryStyle.css">
 </head>
 <body>
 
 	<h1>입고 내역</h1>
-	<a href="/receiving/main">입고 메인</a>
-	<a href="/receiving/scan">실시간 입고</a>
+	<nav>
+	<a href="/receiving/main">입고 메인</a><br><br>
 	<form action="/receiving/insert3" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
+	</nav>
 
 	<!-- 기간별 검색 및 키워드 검색 폼 -->
 	<form action="/receiving/search" method="get"
@@ -255,7 +30,7 @@ tr:hover {
 			value="${param.keyword}">
 
 		<button type="submit">검색</button>
-		<button type="button" onclick="resetForm()">초기화</button>
+		<button type="button" onclick="resetForm()">검색 초기화</button>
 		<script>
 			// 폼 초기화 함수
 			function resetForm() {
@@ -280,26 +55,43 @@ tr:hover {
 				<th>제품명</th>
 				<th>옵션명</th>
 				<th>입고 수량</th>
-				<th>수량 단위</th>
 				<th>제품 단가</th>
 				<th>창고 위치</th>
 				<th>작업 메모</th>
 			</tr>
 			<c:forEach var="vo" items="${ReceivingList }">
 				<tr>
-					<td>${vo.receivingShipmentNo }</td>
-					<td>${vo.transactionType }</td>
+					<td><a href="/receiving/scan?receivingShipmentNo=${vo.receivingShipmentNo}&orderItemId=${vo.orderItemId}" id="list">
+			                ${vo.receivingShipmentNo}
+			            </a></td>
+					<td>     
+		                 <c:choose>
+		                    <c:when test="${vo.transactionType == 'INBOUND'}">입고</c:when>
+		                    <c:when test="${vo.transactionType == 'OUTBOUND'}">출고</c:when>
+		                    <c:otherwise>${vo.transactionType}</c:otherwise>
+		                </c:choose>
+		            </td>
 					<td><fmt:formatDate value="${vo.createdAt}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td>${vo.status}</td>
+					<td>
+			            <c:choose>
+			                <c:when test="${vo.status == 'PENDING'}">
+			                    대기중
+			                </c:when>
+			                <c:when test="${vo.status == 'COMPLETED'}">
+			                    완료됨
+			                </c:when>
+			                <c:otherwise>
+			                    ${vo.status}
+			                </c:otherwise>
+			            </c:choose>
+			        </td>
 					<td>${vo.productId }</td>
 					<td>${vo.productName }</td>
 					<td>${vo.productDescription }</td>
 					<td>${vo.changeQuantity }</td>
-					<td>${vo.transactionUnit }</td>
-					<td>${vo.warehouseId }</td>
-					<td>${vo.transactionUnit }</td>
 					<td>${vo.productPrice }</td>
+					<td>${vo.warehouseId }</td>
 					<td>${vo.memo }</td>
 				</tr>
 			</c:forEach>
@@ -309,7 +101,7 @@ tr:hover {
 
 	<c:choose>
 		<c:when test="${empty ReceivingList}">
-        검색 결과가 없습니다.
+        <h1>검색 결과가 없습니다.</h1>
     </c:when>
 	</c:choose>
 

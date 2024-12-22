@@ -1,14 +1,16 @@
 package com.stockm8.service;
 
-import com.stockm8.domain.vo.QRCodeVO;
+import com.stockm8.domain.dto.StockQRCodeDTO;
 
 public interface QRCodeService {
 	
     // QR 코드 생성의 전체 흐름
-	public void generateQRCode(int productId) throws Exception;
+	public String generateQRCode(int productId) throws Exception;
     
-	// JSON QR 코드 경로를 가져
-    public QRCodeVO getQRCodeByProductId(int productId) throws Exception; // 추가된 메서드
+	// JSON QR 코드 경로를 가져오기
+    public StockQRCodeDTO getQRCodeByBarcode(String productBarcode) throws Exception; // 추가된 메서드
+
+    public StockQRCodeDTO getQRCodeByProductId(Integer productId) throws Exception;
 
     // QR 코드 데이터 생성
 //    public String createQRContent(int productId) throws Exception;

@@ -26,7 +26,7 @@ public interface ProductService {
     // 회사 정보를 통해 상품 조회
 	public List<ProductVO> getProductsByBusinessId(int businessId) throws Exception;
 
-    
+    ProductVO getProductByBarcode(String productBarcode) throws Exception;
 	
 }
 

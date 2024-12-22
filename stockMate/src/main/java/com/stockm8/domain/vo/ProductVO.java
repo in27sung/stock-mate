@@ -3,6 +3,8 @@ package com.stockm8.domain.vo;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import com.stockm8.domain.dto.QRCodeDTO;
+
 import lombok.Data;
 
 @Data
@@ -23,5 +25,5 @@ public class ProductVO {
     private boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
     
     // 입출고 관련 QR 코드 정보
-    private QRCodeVO qrCode; // QRCodeVO를 별도로 관리하여 입출고 관련 정보를 관리
+    private QRCodeDTO qrCode; // QRCodeDTO를 별도로 관리하여 입출고 관련 정보를 관리
 }

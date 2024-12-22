@@ -74,7 +74,7 @@
                 <td>${warehouseDetail.updatedAt}</td>
             </tr>
         </table>
-        <button onclick="location.href='/warehouse/list'">목록으로 돌아가기</button>
+        <button onclick="location.href='/stock/list'">목록으로 돌아가기</button>
     </div>
 </body>
 </html>

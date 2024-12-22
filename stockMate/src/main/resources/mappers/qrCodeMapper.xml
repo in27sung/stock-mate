@@ -5,72 +5,80 @@
 
 <mapper namespace="com.stockm8.mapper.QRCodeMapper">
 
-    <!-- resultMap 정의 -->
-    <resultMap id="qrCodeResultMap" type="com.stockm8.domain.vo.QRCodeVO">
-        <id property="qrCodeId" column="qr_code_id" />
-        <result property="productId" column="product_id" />
-        <result property="qrCodeData" column="qr_code_data" />
-        <result property="qrCodePath" column="qr_code_path" />
-        <result property="createdAt" column="created_at" />
-        <result property="updatedAt" column="updated_at" />
+    <!-- resultMap 정의 (StockQRCodeDTO 기반) -->
+    <resultMap id="qrCodeResultMap" type="com.stockm8.domain.dto.StockQRCodeDTO">
+        <id property="stockId" column="stock_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="productBarcode" column="product_barcode"/>
+        <result property="stockQrCodePath" column="stock_qr_code_path"/>
+        <result property="stockQrCodeData" column="stock_qr_code_data"/>
+        <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-        <!-- QR 코드 데이터 삽입 -->
-    <insert id="insertQRCode" parameterType="com.stockm8.domain.vo.QRCodeVO">
-        INSERT INTO qr_codes (
-            product_id, 
-            qr_code_data, 
-            qr_code_path, 
-            created_at, 
-            updated_at
-        )
-        VALUES (
-            #{productId}, 
-            #{qrCodeData}, 
-            #{qrCodePath}, 
-            NOW(), 
-            NOW()
-        );
-    </insert>
-
-    <!-- QRCode 데이터 조회 -->
-    <select id="selectQRCodeByProductId" parameterType="int" resultMap="qrCodeResultMap">
-        SELECT 
-            qr_code_id, 
-            product_id, 
-            qr_code_data, 
-            qr_code_path, 
-            created_at, 
-            updated_at
-        FROM qr_codes
-        WHERE product_id = #{productId}
-    </select>
-
-    <!-- QR 코드 데이터 업데이트 -->
-    <update id="updateQRCodePath" parameterType="com.stockm8.domain.vo.QRCodeVO">
-        UPDATE qr_codes
-        SET qr_code_path = #{qrCodePath}, updated_at = CURRENT_TIMESTAMP
-        WHERE qr_code_id = #{qrCodeId};
+    <!-- QR 코드 데이터 삽입 또는 업데이트 (productId) -->
+    <update id="updateQRCodePathByProductId" parameterType="com.stockm8.domain.dto.StockQRCodeDTO">
+        UPDATE stocks s
+        JOIN products p ON s.product_id = p.product_id
+        SET 
+            s.stock_qr_code_path = #{stockQrCodePath},
+            s.stock_qr_code_data = #{stockQrCodeData},
+            s.updated_at = NOW()
+        WHERE s.product_id = #{productId};
     </update>
-    
-        <!-- QR 코드 경로와 연결된 product_id 조회 -->
-    <select id="selectQRCodePathsByBusinessId" parameterType="int" resultType="com.stockm8.domain.vo.QRCodeVO">
+
+    <!-- 바코드 기반 QR 코드 데이터 조회 -->
+    <select id="selectQRCodeByBarcode" parameterType="string" resultMap="qrCodeResultMap">
         SELECT 
-            product_id AS productId,
-            qr_code_path AS qrCodePath
-        FROM qr_codes
-        WHERE product_id IN (
-            SELECT product_id 
-            FROM products 
-            WHERE business_id = #{businessId} 
-              AND is_deleted = 0
-        ) 
-        AND qr_code_path IS NOT NULL;
+            s.stock_id,
+            s.product_id,
+            p.product_barcode,
+            s.stock_qr_code_path,
+            s.stock_qr_code_data,
+            s.updated_at
+        FROM stocks s
+        JOIN products p ON s.product_id = p.product_id
+        WHERE p.product_barcode = #{productBarcode};
+    </select>
+    
+        <!-- productId 기반 QR 코드 조회 -->
+    <select id="selectQRCodeByProductId" parameterType="int" resultType="com.stockm8.domain.dto.StockQRCodeDTO">
+        SELECT
+            s.stock_id,
+            s.product_id,
+            p.product_barcode,
+            s.stock_qr_code_path,
+            s.updated_at
+        FROM
+            stocks s
+        JOIN
+            products p ON s.product_id = p.product_id
+        WHERE
+            s.product_id = #{productId}
+        LIMIT 1;
     </select>
 
-    <!-- QR 코드 데이터 삭제 -->
-    <delete id="deleteQRCodeById" parameterType="int">
-        DELETE FROM qr_codes WHERE qr_code_id = #{qrCodeId};
-    </delete>
+    <!-- 비즈니스 ID로 QR 코드 경로 조회 (바코드 포함) -->
+    <select id="selectQRCodePathsByBusinessId" parameterType="int" resultType="com.stockm8.domain.dto.StockQRCodeDTO">
+        SELECT 
+            s.stock_id,
+            p.product_barcode AS productBarcode,
+            s.stock_qr_code_path AS stockQrCodePath
+        FROM stocks s
+        JOIN products p ON s.product_id = p.product_id
+        WHERE p.business_id = #{businessId}
+          AND s.is_deleted = 0
+          AND s.stock_qr_code_path IS NOT NULL;
+    </select>
+
+    <!-- 바코드 기반 QR 코드 초기화 -->
+    <update id="deleteQRCodeByBarcode" parameterType="string">
+        UPDATE stocks s
+        JOIN products p ON s.product_id = p.product_id
+        SET 
+            s.stock_qr_code_path = NULL,
+            s.stock_qr_code_data = NULL,
+            s.updated_at = NOW()
+        WHERE p.product_barcode = #{productBarcode};
+    </update>
 
 </mapper>

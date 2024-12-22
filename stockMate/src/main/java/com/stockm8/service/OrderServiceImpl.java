@@ -16,13 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.stockm8.domain.vo.Criteria;
 import com.stockm8.domain.vo.OrderItemVO;
-import com.stockm8.domain.vo.OrderVO;  // OrderItemVO import 제거
-import com.stockm8.domain.vo.OrderVO.OrderType;
+import com.stockm8.domain.vo.OrderVO;  
+import com.stockm8.domain.enums.OrderType;
 import com.stockm8.domain.vo.ProductVO;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.persistence.OrderDAO;
 import com.stockm8.persistence.ReceivingDAO;
+import com.stockm8.persistence.ShipmentDAO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -32,121 +34,130 @@ public class OrderServiceImpl implements OrderService {
     @Inject
     private OrderDAO odao;
     
-    @Inject
-    private ReceivingDAO rdao;
-    
-    
-    @Transactional
+    /**
+     * 주문 및 주문 항목을 한번에 처리
+     * 수주(OUTBOUND)인 경우 재고도 함께 처리
+     */
+    @Transactional(rollbackFor = Exception.class)
     @Override
-	public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems) throws Exception {
+    public void insertOrderWithItems(OrderVO order, List<OrderItemVO> orderItems, int businessId) throws Exception {
+    	logger.info("insertOrderWithItems() 호출");
+    	
     	odao.insertOrder(order);
+    	
     	for(OrderItemVO item : orderItems) {
             item.setOrderId(order.getOrderId());
         }
     	odao.insertOrderItem(orderItems);
-    	processOrderByType(order);
-	}
-
-
-
-	// 주문 유형에 따라 처리
-    private void processOrderByType(OrderVO order) throws Exception {
-        if (order.getOrderType() == OrderType.INBOUND) {
-            // 수주(출고) 처리
+    	
+    	//  수주(OUTBOUND)인 경우에만 재고 처리  ==> 발주는 process에서 처리
+        if (order.getOrderType() == OrderType.OUTBOUND) {
             for (OrderItemVO item : order.getOrderItems()) {
-                // 재고 감소
-                updateStockQuantity(item.getStockId(), item.getQuantity());
-                // 수주(출고)일 때는 예약수량을 양수로 처리해야 함 (+)
-                // 재고 이력 기록
-//                StockVO stock = odao.getStockById(item.getStockId());
-//                insertStockHistory(stock, order, -item.getQuantity());
-                
-                // TODO: 기존 TODO 항목들 유지
-                // - 출고 지시서 생성
-                // - 거래명세서 생성
-                // - 출고 작업 지시서 생성
-                // - 픽킹 리스트 생성
-                // - 고객사 알림 발송
-                // - 매출 전표 생성
-            }
-        } else if (order.getOrderType() == OrderType.OUTBOUND) {
-            // 발주(입고) 처리
-            for (OrderItemVO item : order.getOrderItems()) {
-                // 재고 증가
                 updateStockQuantity(item.getStockId(), -item.getQuantity());
-                // 발주(입)일 때는 예약수량을 음수로 처리해야 함 (-)
-                // 재고 이력 기록
-//                StockVO stock = odao.getStockById(item.getStockId());
-//                insertStockHistory(stock, order, item.getQuantity());
-                
-                // TODO: 기존 TODO 항목들 유지
-                // - 발주서 생성
-                // - 입고 예정 등록
-                // - 구매 오더 생성
-                // - 구매처 발주 확인
-                // - 지출 전표 생성
-                // - 입고 검수 체크리스트 생성
             }
         }
-    }
-    
+	}
 
-    // 재고 수량 업데이트   => 수정필요
-	@Override
-	public void updateStockQuantity(int stockId, int quantity) throws Exception {
-		Map<String, Object> params = new HashMap<>();
-        params.put("stockId", stockId);
-        params.put("quantity", quantity);
+    /**
+     * 재고 수량 업데이트
+     * 성공시 수정된 행 수 반환, 실패시 예외 발생
+     */
+    @Override
+    public void updateStockQuantity(int stockId, int quantity) throws Exception {
+        logger.info("updateStockQuantity() 호출 - stockId: {}, quantity: {}", stockId, quantity);
         
-        int updatedRows = odao.updateStockQuantity(params);
+        int updatedRows = odao.updateStockQuantity(stockId, quantity);
         if (updatedRows == 0) {
             throw new Exception("재고 수정에 실패했습니다. StockId: " + stockId);
         }
-		
-	}
+    }
 	
-	//  재고 목록 조회
-	@Override
-	public List<StockVO> findAvailableStocks(int businessId) throws Exception {
-		return odao.findAvailableStocks(businessId);
-	}
+    /**
+     * 사업자별 가용 재고 목록 조회
+     */
+    @Override
+    public List<StockVO> findAvailableStocks(int businessId) throws Exception {
+        logger.info("findAvailableStocks() 호출 - businessId: {}", businessId);
+        return odao.findAvailableStocks(businessId);
+    }
 	
-	// 주문번호 생성
-	@Override
-	public String generateOrderNumber() throws Exception {
-		return odao.generateOrderNumber();
-	}
+    /**
+     * 주문번호 생성
+     */
+    @Override
+    public String generateOrderNumber() throws Exception {
+        logger.info("generateOrderNumber() 호출");
+        return odao.generateOrderNumber();
+    }
 	
-	// 주문목록
-	@Override
-	public List<OrderVO> getOrderList() {
-		return odao.getOrderList();
-	}
-	
-	// 가용 재고 체크  ================>  미사용
-	@Override
-	public boolean checkAvailableStock(OrderItemVO item) throws Exception {
-		StockVO stock = odao.getStockById(item.getStockId());
-		return stock != null && stock.getAvailableStock() >= item.getQuantity();
-	}
-	
-	// 재고 이력 등록  =================> 미사용
-	@Override
-	public void insertStockHistory(StockVO stock, OrderVO order, int quantityChanged) throws Exception {
-		Map<String, Object> params = new HashMap<>();
-        params.put("stockId", stock.getStockId());
-        params.put("orderId", order.getOrderId());
-        params.put("quantityChanged", quantityChanged);
-        params.put("actionType", order.getOrderType().toString());
-        params.put("createdBy", order.getCreatedBy());
-        params.put("remarks", "주문에 의한 재고 변동");
+    /**
+     * 주문 목록 조회 (페이징 처리)
+     * cri가 null인 경우 기본값 설정
+     */
+    @Override
+    public List<OrderVO> getOrderList(Criteria cri, int businessId) {
+        logger.info("getOrderList() 호출 - businessId: {}", businessId);
         
-        odao.insertStockHistory(params);
-		
-	}
-
-
-
+        if (cri == null) {
+            cri = new Criteria();
+        }
+        return odao.getOrderList(cri, businessId);
+    }
 	
+    /**
+     * 주문 단건 조회
+     */
+    @Override
+    public OrderVO getOrderById(int orderId) throws Exception {
+        logger.info("getOrderById() 호출 - orderId: {}", orderId);
+        return odao.getOrderById(orderId);
+    }
+
+    /**
+     * 주문 상세 항목 목록 조회
+     */
+    @Override
+    public List<OrderItemVO> getOrderItemsByOrderId(int orderId) throws Exception {
+        logger.info("getOrderItemsByOrderId() 호출 - orderId: {}", orderId);
+        return odao.getOrderItemsByOrderId(orderId);
+    }
+
+    /**
+     * 가용 재고 체크
+     * OUTBOUND(수주) 주문인 경우에만 체크
+     */
+    @Override
+    public boolean checkAvailableStock(OrderItemVO item, OrderType orderType) throws Exception {
+        logger.info("checkAvailableStock() 호출 - stockId: {}, orderType: {}", item.getStockId(), orderType);
+        
+        // 발주(INBOUND)인 경우 체크하지 않음
+        if (orderType == OrderType.INBOUND) {
+            return true;
+        }
+        
+        // 수주(OUTBOUND)인 경우만 재고 체크
+        StockVO stock = odao.findStockWithAvailableQuantity(item.getStockId());
+        return stock != null && stock.getAvailableStock() >= item.getQuantity();
+    }
+
+    /**
+     * 전체 주문 개수 조회 (페이징 계산용)
+     */
+    @Override
+    public int getTotalOrderCount(int businessId) {
+        logger.info("getTotalOrderCount() 호출 - businessId: {}", businessId);
+        return odao.getTotalOrderCount(businessId);
+    }
+    
+    /**
+     * 주문 상세 항목 ID로 주문 ID 조회
+     * 이 메서드는 ReceivingService로 이동 예정
+     */
+    @Override
+    public int getOrderIdByOrderItemId(Integer orderItemId) throws Exception {
+        logger.info("getOrderIdByOrderItemId() 호출 - orderItemId: {}", orderItemId);
+        return odao.getOrderIdByOrderItemId(orderItemId);
+    }
+
 
 } //OrderServiceImpl

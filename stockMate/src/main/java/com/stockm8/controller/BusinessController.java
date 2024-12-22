@@ -36,7 +36,6 @@ public class BusinessController {
 
 		return "business/register"; // 회사 등록 폼 페이지로 이동
 	}
-
 	// 비즈니스 등록 처리
 	@PostMapping("/register")
 	public String registerBusinessPOST(BusinessVO business, HttpServletRequest request, Model model) throws Exception {

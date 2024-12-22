@@ -40,20 +40,20 @@
 	</insert>
 
     <!-- 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회) -->
-    <select id="selectAllCategories" resultMap="categoryResultMap">
-        SELECT
-            category_id,
-            parent_id,
-            business_id,
-            category_name,
-            level,
-            created_at,
-            updated_at,
-            is_deleted
-        FROM categories
-        WHERE is_deleted = 0
-        ORDER BY level ASC, category_id ASC
-    </select>
+<!--     <select id="selectAllCategories" resultMap="categoryResultMap"> -->
+<!--         SELECT -->
+<!--             category_id, -->
+<!--             parent_id, -->
+<!--             business_id, -->
+<!--             category_name, -->
+<!--             level, -->
+<!--             created_at, -->
+<!--             updated_at, -->
+<!--             is_deleted -->
+<!--         FROM categories -->
+<!--         WHERE is_deleted = 0 -->
+<!--         ORDER BY level ASC, category_id ASC -->
+<!--     </select> -->
     
     <!-- 카테고리 이름 중복 체크 -->
     <select id="selectCategoryCountByName" resultType="int">
@@ -71,18 +71,36 @@
 
     <!-- 특정 사업자 소속의 카테고리 목록 조회 (삭제되지 않은 카테고리만 조회) -->
     <select id="selectCategoriesByBusinessId" parameterType="int" resultMap="categoryResultMap">
-        SELECT
-            category_id,
-            parent_id,
-            business_id,
-            category_name,
-            level,
-            created_at,
-            updated_at
-        FROM categories
-        WHERE business_id = #{businessId}
-          AND is_deleted = 0
-        ORDER BY level ASC, category_name ASC
+	WITH RECURSIVE CategoryHierarchy AS (
+	        SELECT 
+	            category_id, 
+	            parent_id, 
+	            business_id, 
+	            category_name, 
+	            level, 
+	            created_at, 
+	            updated_at, 
+	            is_deleted
+	        FROM categories
+	        WHERE is_deleted = 0 AND business_id = #{businessId} AND parent_id IS NULL
+	
+	        UNION ALL
+	
+	        SELECT 
+	            c.category_id, 
+	            c.parent_id, 
+	            c.business_id, 
+	            c.category_name, 
+	            c.level, 
+	            c.created_at, 
+	            c.updated_at, 
+	            c.is_deleted
+	        FROM categories c
+	        INNER JOIN CategoryHierarchy ch ON c.parent_id = ch.category_id
+	    )
+	    SELECT *
+	    FROM CategoryHierarchy
+	    ORDER BY COALESCE(parent_id, category_id), level ASC, category_id ASC
     </select>
 
     <!-- 카테고리ID로 카테고리명 조회 -->

@@ -1,6 +1,8 @@
 package com.stockm8.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -8,12 +10,17 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.stockm8.domain.vo.CategoryVO;
 import com.stockm8.domain.vo.UserVO;
@@ -55,36 +62,20 @@ public class CategoryController {
         // 카테고리 등록 폼을 보여주는 페이지로 이동
         return "category/register"; 
     }
-
-    // 카테고리 등록 처리 (POST)
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerCategoryPOST(CategoryVO category, HttpServletRequest request) throws Exception {
-    	logger.info("registerCategoryPOST(CategoryVO category, HttpServletRequest request) 실행");
-    	
-    	logger.info(category+"");
-    	// 세션에서 userId 가져오기 
-    	HttpSession session = request.getSession(false);
-    	Long userId = (session != null) ? (Long)session.getAttribute("userId") : null;
-    			
-    	// userId로 사용자 정보 조회
-    	UserVO user = userService.getUserById(userId);
-    	int businessId = user.getBusinessId();
-    	category.setBusinessId(businessId);
-    	
-        // 서비스 호출: 부모 카테고리 체크와 카테고리 등록을 서비스에서 처리
-        categoryService.registerCategoryWithParentCheck(category);
-
-        // 등록 후 목록 페이지로 리다이렉트
-        return "redirect:/category/list";
-    }
     
     // http://localhost:8088/category/list
     // 카테고리 목록 페이지 호출 (GET)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String listCategoryGET(Model model) throws Exception {
+    public String listCategoryGET(@SessionAttribute("userId") Long userId, Model model) throws Exception {
     	logger.info("listCategoryGET(Model model) 호출");
+    	
+        // 사용자 정보 가져오기
+        UserVO user = userService.getUserById(userId);
+        int businessId = user.getBusinessId();
+        logger.info("Business ID for userId {}: {}", userId, businessId);
+        
         // 카테고리 목록 조회
-        List<CategoryVO> categories = categoryService.getAllCategories(); 
+        List<CategoryVO> categories = categoryService.getCategoriesByBusinessId(businessId); 
         
         // JSP로 데이터 전달
         model.addAttribute("categories", categories); 

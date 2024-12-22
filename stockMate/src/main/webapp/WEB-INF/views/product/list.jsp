@@ -7,19 +7,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>상품 리스트</title>
-<link rel="stylesheet"
-	href="<c:url value='/resources/css/productListStyle.css' />">
-<link rel="stylesheet"
-	href="<c:url value='/resources/css/toastStyle.css' />">
+<link rel="stylesheet" href="<c:url value='/resources/css/productListStyle.css' />">
+<link rel="stylesheet" href="<c:url value='/resources/css/toastStyle.css' />">
 
 </head>
 <body>
+
 	<div id="toast-container"></div>
 	<!-- 토스트 메시지 컨테이너 -->
 	<div class="container">
 	   	<!-- 대시보드로 이동 버튼 -->
-        <div style="margin-bottom: 20px; text-align: right;">
-            <a href="<c:url value='/dashboard' />" class="btn-dashboard">대시보드로 이동</a>
+        <button class="dashboard-btn" onclick="location.href='<c:url value="/dashboard" />'">대시보드로 이동</button>
+
         </div>
 		<h1 class="page-title">상품 리스트</h1>
 		<table class="product-table">

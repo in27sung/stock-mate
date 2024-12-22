@@ -13,15 +13,16 @@ public class StockVO {
     private int totalQuantity;  // 창고 내 총 재고 수량
     private int reservedQuantity;  // 예약된 수량
     private int availableStock;  // 사용 가능한 재고 (totalQuantity - reservedQuantity)
+    private String stockQrCodePath;
+    private String stockQrCodeData;
     private Timestamp updatedAt; // 최근 수정 시간
     private Timestamp createdAt; // 재고 등록 시간 
     private String description; // 재고 설명
     private Boolean isDeleted;     // 논리 삭제 여부 (true: 삭제됨, false: 활성)
 
     // 연관 VO 필드
-    private ProductVO product;      // 상품 정보
+    private ProductVO product;      // 상품 정보(JOIN)
     private CategoryVO category;    // 카테고리 정보
     private WarehouseVO warehouse;  // 창고 정보
-    private String warehouseName;   // 창고명
-
+    private String warehouseName;   // (JOIN)
 }

@@ -3,6 +3,7 @@ package com.stockm8.service;
 import com.stockm8.domain.vo.StockVO;
 import com.stockm8.domain.vo.WarehouseVO;  // 추가된 VO
 import com.stockm8.persistence.FilterCriteria;
+import com.stockm8.domain.dto.StockDTO;
 import com.stockm8.domain.vo.CategoryVO;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,10 @@ public interface StockService {
     public List<WarehouseVO> getWarehousesByBusinessId(int businessId) throws Exception;
 
     // 사업자 ID에 해당하는 재고 목록 조회
-    public List<StockVO> getStockListByBusinessId(int businessId) throws Exception;
+    public List<StockDTO> getStockList(int businessId, String sortColumn, String sortOrder) throws Exception;
 
-    // 필터링된 재고 목록 조회 (정렬 기준 추가)
-    public List<StockVO> getStockList(FilterCriteria criteria, String sortOrder) throws Exception;
+//    // 필터링된 재고 목록 조회 (정렬 기준 추가)
+//    public List<StockVO> getStockList(FilterCriteria criteria, String sortOrder) throws Exception;
 
     // 카테고리 목록 조회
     public List<CategoryVO> getCategoryList() throws Exception;

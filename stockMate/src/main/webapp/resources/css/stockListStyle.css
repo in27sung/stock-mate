@@ -1,0 +1,223 @@
+@charset "UTF-8";
+
+/* 기본 스타일 */
+body {
+	font-family: "Segoe UI", Roboto, Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f9f9f9;
+}
+
+.container {
+	width: 90%;
+	max-width: 1200px;
+	margin: 20px auto;
+	padding: 20px;
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+	text-align: center;
+	margin-bottom: 20px;
+	color: #333;
+	font-weight: bold;
+	letter-spacing: -1px;
+}
+
+/* 검색창 스타일 - 우측 상단 */
+.search-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    width: 250px;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    outline: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 122, 255, 0.5);
+}
+
+/* 대시보드 이동 버튼 */
+.dashboard-btn {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.dashboard-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 테이블 스타일 */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background: #ffffff;
+	margin-top: 10px;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+	padding: 12px;
+	text-align: center;
+	border: 1px solid #ddd;
+	word-break: break-word;
+}
+
+/* 테이블 컬럼명 정렬 스타일 */
+th {
+    background-color: #007BFF;
+    color: #fff;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    text-align: center;
+    z-index: 2; /* 컬럼 헤더 강조 */
+}
+
+th a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+th a:hover {
+    text-decoration: underline;
+}
+
+tr:hover {
+	background-color: #f2f8ff;
+}
+
+.low-stock {
+	color: red;
+	font-weight: bold;
+}
+
+/* 앵커 태그 스타일 (클릭 가능한 링크) */
+a {
+	color: #007BFF;
+	text-decoration: none; /* 밑줄 제거 */
+	font-weight: 500;
+	transition: color 0.3s ease, transform 0.3s ease; /* 부드러운 효과 */
+}
+
+a:hover {
+	color: #0056b3;
+	transform: scale(1.05); /* 호버 시 약간 확대 */
+}
+
+/* 반응형 테이블 */
+@media ( max-width : 768px) {
+	table {
+		display: block;
+		overflow-x: auto;
+	}
+	.search-box {
+		flex-direction: column;
+		gap: 10px;
+	}
+	th, td {
+		padding: 8px;
+		font-size: 13px;
+	}
+}
+
+@media ( max-width : 480px) {
+	h1 {
+		font-size: 20px;
+	}
+	.search-box input {
+		font-size: 12px;
+	}
+	table {
+		font-size: 12px;
+	}
+}
+
+/* 버튼 */
+.primary-button {
+	background-color: #007BFF;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 8px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.primary-button:hover {
+	background-color: #0056b3;
+	transform: scale(1.05); /* 버튼 확대 */
+}
+
+button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* 다운로드 버튼 스타일 */
+.btn-download {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    text-align: center;
+    white-space: nowrap;  /* 텍스트 줄 바꿈 방지 */
+    cursor: pointer;
+    text-decoration: none; /* 밑줄 제거 */
+    display: inline-block; /* 링크 스타일 제거를 위해 block/inline-block */
+}
+
+/* 방문 후 및 클릭 후에도 밑줄 제거 */
+.btn-download:visited,
+.btn-download:hover,
+.btn-download:active {
+    text-decoration: none;
+    color: white; /* 링크 색상 유지 */
+}
+
+/* 생성 버튼 스타일 */
+.btn-generate, .btn-barcode-generate {
+	min-width: 55px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.btn-generate:visited,
+.btn-generate:hover,
+.btn-generate:active {
+    text-decoration: none;
+    color: white;
+}

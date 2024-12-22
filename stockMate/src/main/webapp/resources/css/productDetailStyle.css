@@ -1,0 +1,128 @@
+@charset "UTF-8";
+
+/* 전체 페이지 스타일 */
+body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 600px;
+    width: 90%;
+    margin: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 헤더 스타일 */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+/* 상품 정보 스타일 */
+p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* 버튼 공통 스타일 */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+/* 대시보드 이동 버튼 */
+.dashboard-btn {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+/* 녹색 버튼 */
+.btn-green {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.btn-green:hover {
+    background-color: #388E3C;
+}
+
+/* 파란색 버튼 (다운로드 버튼) */
+.btn-blue {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.btn-blue:hover {
+    background-color: #0056b3;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 13px;
+    }
+}

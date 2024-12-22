@@ -1,0 +1,99 @@
+@charset "UTF-8";
+
+body {
+        font-family: 'Roboto', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f7f6;
+    }
+    
+    .container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    h2 {
+        margin-bottom: 30px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        text-align: left;
+        font-weight: 500;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    select:focus {
+        outline: none;
+        border-color: #007aff;
+        box-shadow: 0 0 8px rgba(0, 122, 255, 0.3);
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 500;
+        color: white;
+        background: linear-gradient(145deg, #007aff, #0056b3);
+        border: none;
+        border-radius: 30px; /* 애플 스타일의 pill 모양 */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 12px rgba(0, 122, 255, 0.3);
+    }
+
+    button:hover {
+        background: linear-gradient(145deg, #0056b3, #004499);
+        box-shadow: 0 8px 18px rgba(0, 122, 255, 0.5);
+    }
+
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        text-decoration: none;
+        color: #007aff;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 480px) {
+        .container {
+            width: 90%;
+            padding: 20px;
+        }
+
+        button {
+            padding: 12px;
+            font-size: 14px;
+        }
+    }
+</style>

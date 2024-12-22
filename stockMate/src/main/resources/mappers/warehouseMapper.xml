@@ -48,7 +48,7 @@
 		    0,
 		    #{warehouseDescription},
 		    #{warehouseCapacity},
-		    #{warehouseStatus},
+		    'ACTIVE',
 		    #{warehouseRegion}
 		);
     </insert>
@@ -87,14 +87,14 @@
     <!-- 비즈니스 ID로 창고 리스트 조회 -->
     <select id="selectWarehousesByBusinessId" parameterType="int" resultType="com.stockm8.domain.vo.WarehouseVO">
         SELECT 
-            warehouse_id AS warehouseId,
-            warehouse_name AS warehouseName,
-            warehouse_location AS warehouseLocation,
-            warehouse_region AS warehouseRegion,
-            warehouse_capacity AS warehouseCapacity,
-            warehouse_status AS warehouseStatus,
-            created_at AS createdAt,
-            updated_at AS updatedAt
+            warehouse_id,
+            warehouse_name,
+            warehouse_location,
+            warehouse_region,
+            warehouse_capacity,
+            warehouse_status,
+            created_at,
+            updated_at
         FROM warehouses
         WHERE business_id = #{businessId} AND is_deleted = 0;
     </select>
