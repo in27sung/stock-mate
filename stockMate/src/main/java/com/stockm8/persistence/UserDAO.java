@@ -13,41 +13,41 @@ import com.stockm8.domain.vo.UserVO;
 public interface UserDAO {
 
     // 회원가입 동작
-    public void userJoin(UserVO user);
+    public void userJoin(UserVO user) throws Exception;
 
     // 로그인 체크 동작
-    public UserVO userLogin(UserVO user);
+    public UserVO userLogin(UserVO user) throws Exception;
 
     // 회원정보 조회동작
-    public UserVO getUser(Long userId , String password); //
+    public UserVO getUser(Long userId , String password) throws Exception; //
     
     // 조건에 맞는 pending 회원 리스트와 사업자 정보 가져오기
-    public List<PendingUserDTO> selectPendingUsersWithBusiness();
+    public List<PendingUserDTO> selectPendingUsersWithBusiness() throws Exception;
     
     // 같은 회사의 pending 회원 리스트와 사업자 정보 가져오기
-    public List<PendingUserDTO> selectStaffByBusinessId(int businessId);
+    public List<PendingUserDTO> selectStaffByBusinessId(int businessId) throws Exception;
     
     // 회원정보 수정동작
-    public void updateUser (UserVO user);
+    public void updateUser (UserVO user) throws Exception;
     
     // 회원 승인 여부 수정 
-    public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO);
+    public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) throws Exception;
     
     public UserVO getUserInfoById(Long userId) throws Exception;
 
-    void updatePassword(@Param("userId") Long userId, @Param("newPassword") String newPassword);
+    void updatePassword(@Param("userId") Long userId, @Param("newPassword") String newPassword) throws Exception;
 
     // 사용자의 businessId 수정
-    int updateUserBusinessId(@Param("userId") Long userId, @Param("businessId") int businessId);
+    int updateUserBusinessId(@Param("userId") Long userId, @Param("businessId") int businessId) throws Exception;
     
     // 비밀번호 찾기 동작
     public String findPassword(String email,String name) throws Exception; 
     
     // 회원정보 삭제동작
-    public int deleteUser (UserVO user);
+    public int deleteUser (UserVO user) throws Exception;
 
     // 회원정보 목록(list)
-    public List<UserVO> getUserList();
+    public List<UserVO> getUserList() throws Exception;
 
     @Select("SELECT * FROM users WHERE user_id = #{userId}")
     UserVO getUserById(@Param("userId")Long userId) throws Exception;

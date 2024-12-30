@@ -30,7 +30,8 @@ import com.stockm8.persistence.ProductDAO;
 @Service
 public class BarcodeServiceImpl implements BarcodeService {
 	
-    private static final String BARCODE_BASE_PATH = "/Users/Insung/Documents/upload/barcodes";
+//  private static final String BARCODE_BASE_PATH = "/Users/Insung/Documents/upload/barcodes";
+    private static final String BARCODE_BASE_PATH = "/usr/local/tomcat/webapps/upload/barcodes";
 
     @Autowired
     private ProductDAO productDAO;

@@ -28,7 +28,7 @@ public class ManagerApiController {
     @PostMapping("/approve")
     public ResponseEntity<Map<String, Object>> approveStaff(
             @RequestBody UpdateUserStatusDTO updateUserStatusDTO,
-            @SessionAttribute("userId") Long sessionUserId) {
+            @SessionAttribute("userId") Long sessionUserId) throws Exception {
         
         Map<String, Object> response = new HashMap<>();
 
@@ -43,7 +43,7 @@ public class ManagerApiController {
         }
 
         // 직원 승인 처리
-        userService.updateUserStatus(updateUserStatusDTO);;
+        userService.updateUserStatus(updateUserStatusDTO);
 
         response.put("success", true);
         response.put("message", "직원이 성공적으로 승인되었습니다.");

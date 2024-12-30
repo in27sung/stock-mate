@@ -32,6 +32,10 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>com.stockm8.config.WebConfig</param-value>
 		</init-param>
+		<init-param>
+	        <param-name>throwExceptionIfNoHandlerFound</param-name>
+	        <param-value>true</param-value>
+    	</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 

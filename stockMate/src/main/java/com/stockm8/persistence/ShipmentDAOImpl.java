@@ -128,7 +128,7 @@ public class ShipmentDAOImpl implements ShipmentDAO {
 	    
 
 	    // SQL 실행
-	    return sqlSession.update(NAMESPACE + "updateIncreseStock", params);
+	    return sqlSession.update(NAMESPACE + "updateIncreseStock2", params);
 	}
 
 	@Override

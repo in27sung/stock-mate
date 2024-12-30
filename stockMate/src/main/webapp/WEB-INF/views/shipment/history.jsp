@@ -14,6 +14,7 @@
 	<h1>출고 내역</h1>
 	<nav>
 	<a href="/shipment/main">출고 메인</a><br><br>
+	<a href="/dashboard">대시보드</a><br><br>
 	<form action="/shipment/insert2" method="POST">
     	<input type="submit" value="새로고침">
 	</form>
@@ -53,12 +54,12 @@
 				<th>입고 출고</th>
 				<th>출고 일자</th>
 				<th>출고 상태</th>
-				<th>제품 번호</th>
+<!-- 				<th>제품 번호</th> -->
 				<th>제품명</th>
 				<th>옵션명</th>
 				<th>출고 수량</th>
 				<th>제품 단가</th>
-				<th>창고 위치</th>
+<!-- 				<th>창고 위치</th> -->
 				<th>작업 메모</th>
 			</tr>
 			<c:forEach var="vo" items="${ShipmentList }">
@@ -90,12 +91,12 @@
 			                </c:otherwise>
 			            </c:choose>
 			        </td>
-					<td>${vo.productId }</td>
+<%-- 					<td>${vo.productId }</td> --%>
 					<td>${vo.productName }</td>
 					<td>${vo.productDescription }</td>
 					<td>${vo.changeQuantity }</td>
 					<td>${vo.productPrice }</td>
-					<td>${vo.warehouseId }</td>
+<%-- 					<td>${vo.warehouseId }</td> --%>
 					<td>${vo.memo }</td>
 				</tr>
 			</c:forEach>

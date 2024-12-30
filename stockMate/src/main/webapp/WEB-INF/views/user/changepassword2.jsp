@@ -37,7 +37,7 @@
         <label for="confirmPassword">한 번 더 입력</label>
         <input type="password" id="confirmPassword" name="confirmPassword" placeholder="한번 더 입력" required>
     </div>
-    <button type="submit">정보 변경 하기</button>
+    <button type="submit">변경 하기</button>
 </form>
 
 

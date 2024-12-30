@@ -33,7 +33,7 @@
         <h1>비밀번호를 입력하세요</h1>
         <form method="post">
             <input type="password" name="password" placeholder="비밀번호" required>
-            <button type="submit">내 정보 수정하기</button>
+            <button type="submit">비밀번호 변경하기</button>
         </form>
     </div>
 

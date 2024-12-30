@@ -32,7 +32,7 @@ public interface UserService {
    
    void updatePassword(Long userId, String newPassword) throws Exception;
    
-   public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO);
+   public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) throws Exception;
 
    // 회원정보에서 비밀번호 수정
    public void updateUserBusinessId(Long userId, int businessId) throws Exception;

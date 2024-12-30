@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) {
+	public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) throws Exception {
 		userDAO.updateUserStatus(updateUserStatusDTO);
 	}
 

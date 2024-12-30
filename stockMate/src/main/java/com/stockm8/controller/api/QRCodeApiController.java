@@ -67,7 +67,8 @@ public class QRCodeApiController {
             // 클라이언트에 응답 반환
             response.put("success", true);
             response.put("message", "QR 코드가 성공적으로 생성되었습니다.");
-            response.put("qrCodePath", qrCodePath.replace("/Users/Insung/Documents/upload", "/upload"));
+//          response.put("qrCodePath", qrCodePath.replace("/Users/Insung/Documents/upload", "/upload"));
+            response.put("qrCodePath", qrCodePath.replace("/usr/local/tomcat/webapps/upload", "/upload"));
             response.put("qrCodeFileName", qrCodeFileName);  // 파일명 직접 반환
 
             return ResponseEntity.ok(response);
@@ -131,7 +132,8 @@ public class QRCodeApiController {
             StockQRCodeDTO stockBarcode = qrCodeService.getQRCodeByProductId(productId);
             if (stockBarcode != null && stockBarcode.getStockQrCodePath() != null) {
                 response.put("success", true);
-                response.put("qrCodePath", stockBarcode.getStockQrCodePath().replace("/Users/Insung/Documents/upload", "/upload"));
+//              response.put("qrCodePath", stockBarcode.getStockQrCodePath().replace("/Users/Insung/Documents/upload", "/upload"));
+                response.put("qrCodePath", stockBarcode.getStockQrCodePath().replace("/usr/local/tomcat/webapps/upload", "/upload"));
                 response.put("productBarcode", stockBarcode.getProductBarcode());
             } else {
                 response.put("success", false);

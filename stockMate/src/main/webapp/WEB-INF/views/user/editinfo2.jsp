@@ -51,7 +51,7 @@
 					id="password" name="password" value="${userVO.password}"
 					placeholder="비밀번호를 입력하세요" readonly="readonly">
 			</div>
-			<button type="submit">내 정보 수정하기</button>
+			<button type="submit">수정 하기</button>
 		</form>
 
 	</div>

@@ -4,8 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.stockm8.exceptions.BusinessRegistrationException;
@@ -106,6 +109,63 @@ public class GlobalExceptionHandler {
         logger.error("잘못된 요청 - URL: {}", request.getRequestURL(), ex);
 
         redirectAttributes.addFlashAttribute("errorMessage", "잘못된 요청입니다: " + ex.getMessage());
+        
+        // 리다이렉트 경로 결정
+        String referer = request.getHeader("Referer"); // 이전 페이지로 이동
+        return "redirect:" + (referer != null ? referer : "/dashboard");
+    }
+    
+    // 404 예외 핸들러
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public String handleNotFoundException(
+            NoHandlerFoundException ex,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
+        logger.error("404 Not Found - URL: {}", request.getRequestURL(), ex);
+        redirectAttributes.addFlashAttribute("errorMessage", "요청하신 페이지를 찾을 수 없습니다.");
+        
+        // 이전 페이지로 리다이렉트 (없다면 대시보드)
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/dashboard");
+    }
+    
+    @ExceptionHandler(NullPointerException.class)
+    public String handleNullPointerException(
+            NullPointerException ex,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
+        logger.error("Null Pointer Exception - URL: {}", request.getRequestURL(), ex);
+        redirectAttributes.addFlashAttribute("errorMessage", "요청 처리 중 오류가 발생했습니다. (NPE)");
+        
+        // 리다이렉트 경로 결정
+        String referer = request.getHeader("Referer"); // 이전 페이지로 이동
+        return "redirect:" + (referer != null ? referer : "/dashboard");
+    }
+    
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public String handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
+        logger.error("데이터 무결성 위반 - URL: {}", request.getRequestURL(), ex);
+        redirectAttributes.addFlashAttribute("errorMessage", "데이터 무결성 위반 오류가 발생했습니다.");
+        
+        // 리다이렉트 경로 결정
+        String referer = request.getHeader("Referer"); // 이전 페이지로 이동
+        return "redirect:" + (referer != null ? referer : "/dashboard");
+    }
+    
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String handleMaxSizeException(
+            MaxUploadSizeExceededException ex,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
+        logger.error("파일 업로드 크기 초과 - URL: {}", request.getRequestURL(), ex);
+        redirectAttributes.addFlashAttribute("errorMessage", "파일 크기가 너무 큽니다. 최대 업로드 크기를 초과했습니다.");
         
         // 리다이렉트 경로 결정
         String referer = request.getHeader("Referer"); // 이전 페이지로 이동

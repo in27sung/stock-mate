@@ -51,12 +51,12 @@
 				<th>입고 출고</th>
 				<th>입고 일자</th>
 				<th>입고 상태</th>
-				<th>제품 번호</th>
+<!-- 				<th>제품 번호</th> -->
 				<th>제품명</th>
 				<th>옵션명</th>
 				<th>입고 수량</th>
 				<th>제품 단가</th>
-				<th>창고 위치</th>
+<!-- 				<th>창고 위치</th> -->
 				<th>작업 메모</th>
 			</tr>
 			<c:forEach var="vo" items="${ReceivingList }">
@@ -86,12 +86,12 @@
 			                </c:otherwise>
 			            </c:choose>
 			        </td>
-					<td>${vo.productId }</td>
+<%-- 					<td>${vo.productId }</td> --%>
 					<td>${vo.productName }</td>
 					<td>${vo.productDescription }</td>
 					<td>${vo.changeQuantity }</td>
 					<td>${vo.productPrice }</td>
-					<td>${vo.warehouseId }</td>
+<%-- 					<td>${vo.warehouseId }</td> --%>
 					<td>${vo.memo }</td>
 				</tr>
 			</c:forEach>

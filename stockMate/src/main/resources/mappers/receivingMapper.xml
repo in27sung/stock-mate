@@ -31,8 +31,7 @@
 <!-- 테이블에 입고 데이터 입력 -->
 <insert id="insertReceiving" parameterType="com.stockm8.domain.vo.ReceivingShipmentVO">
 INSERT INTO receiving_shipment (
-    transaction_type, 
-    status, 
+    transaction_type,  
     product_id, 
     change_quantity, 
     order_item_id,
@@ -43,7 +42,6 @@ INSERT INTO receiving_shipment (
 )
 SELECT DISTINCT 
     ord.order_type, 
-    'PENDING',
     p.product_id, 
     o.quantity, 
     o.order_item_id,
@@ -53,17 +51,17 @@ SELECT DISTINCT
     o.remarks
 FROM products p
 JOIN order_items o ON o.product_id = p.product_id
-JOIN stocks s ON s.product_id = p.product_id
+JOIN stocks s ON s.product_id = p.product_id AND s.warehouse_id = o.warehouse_id
 JOIN users u ON u.business_id = p.business_id
 JOIN orders ord ON ord.order_id = o.order_id
 WHERE NOT EXISTS (
     SELECT 1
     FROM receiving_shipment rs
     WHERE rs.transaction_type = ord.order_type
-    AND rs.status = 'PENDING'
     AND rs.product_id = p.product_id
     AND rs.order_item_id = o.order_item_id
     AND rs.stock_id = s.stock_id
+    AND rs.warehouse_id = o.warehouse_id
 )AND u.business_id = #{businessId}
 </insert>
 	
@@ -177,17 +175,18 @@ WHERE NOT EXISTS (
     JOIN warehouses w ON w.warehouse_id = r.warehouse_id
     JOIN users u on u.user_id = r.created_by
     <where>
-        <if test="startDate != ''">
-            r.created_at &gt;= #{startDate}
-        </if>
-        <if test="endDate != ''">
-            AND r.created_at &lt;= #{endDate}
-        </if>
-        <if test="keyword != ''">
-            AND (p.product_name LIKE CONCAT('%', #{keyword}, '%') )
-        </if>
+    <if test="startDate != null and startDate != ''">
+        r.created_at &gt;= #{startDate}
+    </if>
+    <if test="endDate != null and endDate != ''">
+        AND r.created_at &lt;= #{endDate}
+    </if>
+    <if test="keyword != null and keyword != ''">
+        AND p.product_name LIKE CONCAT('%', #{keyword}, '%')
+    </if>
         	AND transaction_type = 'INBOUND' 
         	AND u.business_id = #{businessId}
+    
     </where>
     ORDER BY r.receiving_shipment_no desc
     limit #{cri.startPage},#{cri.pageSize};

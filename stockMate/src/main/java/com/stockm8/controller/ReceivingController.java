@@ -128,7 +128,9 @@ public class ReceivingController {
 	    int totalCount = 0;
 	    
 	    // 날짜와 키워드가 모두 있는 경우
-	    if (startDate != null && endDate != null && keyword != null) {
+	    if (startDate != null && !startDate.trim().isEmpty() && 
+	    	    endDate != null && !endDate.trim().isEmpty() && 
+	    	    keyword != null && !keyword.trim().isEmpty()) { 
 	        ReceivingList = rService.getHistoryByDateRange(startDate, endDate, keyword, cri, businessId);
 	        totalCount = rService.getTotalCountBySearch(startDate, endDate, keyword, businessId);
 	        

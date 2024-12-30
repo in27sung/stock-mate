@@ -14,15 +14,9 @@
             <h2>주문 상세 정보</h2>
          <a class="btn btn-success" href="/order/orderList" style="text-decoration: none;">목록으로</a>
         </div>
-        <div style="margin: 20px; padding: 10px; background-color: #f8f9fa; border: 1px solid #ddd;">
-	    <h4>디버깅 정보:</h4>
-	    <p>주문 정보 존재 여부: ${not empty order}</p>
-	    <p>주문 번호: ${order.orderNumber}</p>
-	    <p>주문 항목 수: ${not empty orderItems ? orderItems.size() : 0}</p>
-		</div>
-	        
         <!-- 주문 기본 정보 -->
         <div class="order-info">
+        <br>
             <h3>주문 기본 정보</h3>
             
             <table>
@@ -35,15 +29,21 @@
                 <tr>
                     <td>${order.orderNumber}</td>
                     <td><fmt:formatDate value="${order.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                    <td>${order.orderType}</td>
+                   	<td>
+	                   	<c:choose>
+	                       <c:when test="${order.orderType =='INBOUND'}">발주</c:when>
+	                       <c:when test="${order.orderType =='OUTBOUND'}">수주</c:when>
+	                     <%--   <c:otherwise>값이 없습니다</c:otherwise> --%>
+	                   </c:choose>
+	                </td>
                     <!-- 포매팅 관련 문제로 인해 잠시 대기 금액에 대해서 다 표 기 할지 올림할지 모르겠음 pattern="#,###.##"  -->
                     <td><fmt:formatNumber value="${order.totalPrice}" />원</td>
                 </tr>
             </table>
         </div>
-        
+        <br>
+        <h3>주문 상세 항목</h3>
 <div class="card order-items">
-    <div class="card-header">주문 상세 항목</div>
     <table>
         <tr>
             <th>No.</th>

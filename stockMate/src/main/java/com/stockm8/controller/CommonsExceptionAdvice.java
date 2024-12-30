@@ -9,9 +9,9 @@
 //// => 프로젝트에서 발생한 모든 예외를 처리하는 객체
 //// => 컨트롤러가 던진 예외를 받아서 처리하는 객체
 //@ControllerAdvice
-//public class CoommonsExceptionAdvice {
+//public class CommonsExceptionAdvice {
 //	
-//	private static final Logger logger = LoggerFactory.getLogger(CoommonsExceptionAdvice.class);
+//	private static final Logger logger = LoggerFactory.getLogger(CommonsExceptionAdvice.class);
 //	
 //	// 예외 처리
 //	@ExceptionHandler(Exception.class) // 모든 예외객체 처리

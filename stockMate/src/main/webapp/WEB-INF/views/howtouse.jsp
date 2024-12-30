@@ -26,7 +26,7 @@
           .header {
     position: relative;
     height: 400px;
-    background: url(resources/css/9950253.jpg) no-repeat center center / cover;
+    background: url(resources/img/9950253.jpg) no-repeat center center / cover;
     display: flex
 ;
     justify-content: center;

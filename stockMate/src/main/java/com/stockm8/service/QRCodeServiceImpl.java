@@ -111,8 +111,8 @@ public class QRCodeServiceImpl implements QRCodeService {
         // QR 코드 저장 경로 생성
         int businessId = product.getBusinessId(); // 상품의 비즈니스 ID
         int categoryId = product.getCategoryId(); // 상품의 카테고리 ID
-        String basePath = "/Users/Insung/Documents/upload"; // QR 코드 기본 저장 경로
-//      String basePath = "/usr/local/tomcat/webapps/upload";
+//      String basePath = "/Users/Insung/Documents/upload"; // QR 코드 기본 저장 경로
+        String basePath = "/usr/local/tomcat/webapps/upload";
 
         // 디렉토리 경로 생성
         String directoryPath = basePath + File.separator 

@@ -204,7 +204,7 @@ button:disabled {
 
 /* 생성 버튼 스타일 */
 .btn-generate, .btn-barcode-generate {
-	min-width: 55px;
+	min-width: 60px;
     background-color: #28a745;
     color: white;
     border: none;

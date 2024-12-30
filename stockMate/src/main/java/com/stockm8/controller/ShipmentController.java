@@ -128,7 +128,9 @@ public class ShipmentController {
 	    int totalCount = 0;
 	    
 	    // 날짜와 키워드가 모두 있는 경우
-	    if (startDate != null && endDate != null && keyword != null) {
+	    if (startDate != null && !startDate.trim().isEmpty() && 
+	    	    endDate != null && !endDate.trim().isEmpty() && 
+	    	    keyword != null && !keyword.trim().isEmpty()) {
 	        ShipmentList = sService.getHistoryByDateRange(startDate, endDate, keyword, cri, businessId);
 	        totalCount = sService.getTotalCountBySearch(startDate, endDate, keyword, businessId);
 	        

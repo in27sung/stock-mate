@@ -46,7 +46,8 @@ public class BarcodeApiController {
 
             response.put("success", true);
             response.put("message", "바코드가 성공적으로 생성되었습니다.");
-            response.put("barcodePath", barcodePath.replace("/Users/Insung/Documents/upload", "/upload"));
+//          response.put("barcodePath", barcodePath.replace("/Users/Insung/Documents/upload", "/upload"));
+            response.put("barcodePath", barcodePath.replace("/usr/local/tomcat/webapps/upload", "/upload"));
             response.put("barcodeFileName", fileName);
 
         } catch (Exception e) {

@@ -5,14 +5,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>주문 발주 페이지</title>
+    <title>주문 페이지</title>
     <link rel="stylesheet" href="<c:url value='/resources/css/OrderStyle.css' />">
 </head>
 
 <body>
     <!-- 메인 컨테이너 -->
     <div class="container">
-        <h1 style="margin-bottom: 20px;">주문 발주</h1>
+        <h1 style="margin-bottom: 20px;">주문 페이지</h1>
 
         <div>
             <a class="btn btn-success" href="/dashboard" style="text-decoration: none;">대시 보드</a>

@@ -26,14 +26,14 @@ public class UserDAOImpl implements UserDAO {
 	private static final String NAMESPACE = "com.stockm8.mapper.UserMapper.";
 
 	@Override
-	public void userJoin(UserVO user) {
+	public void userJoin(UserVO user) throws Exception{
 		logger.info("userJoin 실행: " + user);
 		sqlSession.insert(NAMESPACE + "insertUser", user);
 		logger.info("회원가입 성공!");
 	}
 
 	@Override
-	public UserVO userLogin(UserVO user) {
+	public UserVO userLogin(UserVO user) throws Exception{
 		logger.info("UserLogin 실행: " + user);
 		UserVO resultVO = sqlSession.selectOne(NAMESPACE + "loginCheck", user);
 		logger.info("로그인 결과: " + resultVO);
@@ -41,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public UserVO getUser(Long userId, String password) {
+	public UserVO getUser(Long userId, String password) throws Exception{
 	    logger.info("getUser 실행: user_id = " + userId);
 
 	    // 비밀번호가 일치하는 사용자 정보 조회
@@ -59,17 +59,17 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public List<PendingUserDTO> selectPendingUsersWithBusiness() {
+	public List<PendingUserDTO> selectPendingUsersWithBusiness() throws Exception{
 		return sqlSession.selectList(NAMESPACE + "selectPendingUsersWithBusiness");
 	}
 	
 	@Override
-	public List<PendingUserDTO> selectStaffByBusinessId(int businessId) {
+	public List<PendingUserDTO> selectStaffByBusinessId(int businessId) throws Exception{
 		return sqlSession.selectList(NAMESPACE + "selectStaffByBusinessId", businessId);
 	}
 
 	@Override
-	public void updateUser(UserVO user) {
+	public void updateUser(UserVO user) throws Exception{
 		 logger.info("updateUser 실행: " + user);  // 전달되는 userVO 객체 확인
 		   sqlSession.update(NAMESPACE + "updateUser", user);
 		
@@ -78,7 +78,7 @@ public class UserDAOImpl implements UserDAO {
 	
     // 회원 승인 여부 수정 
 	@Override
-	public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) {
+	public void updateUserStatus(UpdateUserStatusDTO updateUserStatusDTO) throws Exception{
 	    // DTO에서 데이터를 Map으로 변환
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("approvedUserId", updateUserStatusDTO.getApprovedUserId());
@@ -90,7 +90,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void updatePassword(Long userId, String newPassword) {
+	public void updatePassword(Long userId, String newPassword) throws Exception{
 	    logger.info("updatePassword 실행: userId = " + userId);
 
 	    Map<String, Object> params = new HashMap<>();
@@ -103,7 +103,7 @@ public class UserDAOImpl implements UserDAO {
 
 	
 	@Override
-	public int updateUserBusinessId(Long userId, int businessId) {
+	public int updateUserBusinessId(Long userId, int businessId) throws Exception{
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("userId", userId);
 	    params.put("businessId", businessId);
@@ -126,13 +126,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
 	@Override
-	public int deleteUser(UserVO user) {
+	public int deleteUser(UserVO user) throws Exception{
 		logger.info("deleteUser 실행: " + user);
 		return sqlSession.delete(NAMESPACE + "deleteUser", user);
 	}
 
 	@Override
-	public List<UserVO> getUserList() {
+	public List<UserVO> getUserList() throws Exception{
 		logger.info("getMemberList 실행");
 		return sqlSession.selectList(NAMESPACE + "userList");
 	}

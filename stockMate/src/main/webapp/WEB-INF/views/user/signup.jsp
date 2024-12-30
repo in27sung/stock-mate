@@ -142,7 +142,7 @@
 
 <div class="container">
 	<div class="logo">
-			<a href="http://localhost:8088/">
+			<a href="http://c7d2408t1p1.itwillbs.com/">
 				<img alt="" src="../resources/img/stockmate-removebg-preview.png">
 			</a>
 		</div>

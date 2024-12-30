@@ -73,7 +73,7 @@
                         <c:forEach var="stock" items="${stockList}">
                             <tr>
                                 <!-- 상품명 클릭 시 상품 상세 페이지 이동 -->
-                                <td>
+                                <td class="product-name">
                                     <a href="<c:url value='/product/detail' />?productId=${stock.productId}">
                                         ${stock.productName}
                                     </a>
