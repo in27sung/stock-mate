@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+.header {
+    height: 87vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('<c:url value="/resources/img/main.png" />') no-repeat center center/cover;
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+}
+
+.bg-primary {
+    --bs-bg-opacity: 0.3 !important;
+    background-color: rgb(119 77 214 / 8%) !important;
+}
+
+footer {
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); /* 푸터 상단 그림자 */
+}
+
+footer a:hover {
+    color: #007bff; /* 호버 시 링크 강조 */
+}
