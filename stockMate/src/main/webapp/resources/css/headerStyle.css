@@ -41,6 +41,39 @@
     z-index: 998; /* 블러가 메뉴 아래로 들어가도록 조정 */
 }
 
+/* 닫기 버튼 스타일 */
+.close-btn {
+    position: absolute;
+    top: 23px;
+    right: 4px;
+    background: rgb(249 249 249 / 7%); /* 반투명 배경 */
+    border: none;
+    color: #f1f3f3;
+    font-size: 1.8rem; /* 아이콘 크기 */
+    cursor: pointer;
+    border-radius: 15%; /* 원형 버튼 */
+    width: 50px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 1000; /* 버튼이 메뉴 위에 표시되도록 */
+	float: right;
+}
+
+/* 버튼 호버 효과 */
+.close-btn:hover {
+    background: rgb(118 185 0 / 80%); /* 밝은 반투명 배경 */
+    transform: scale(1.1); /* 약간 확대 */
+}
+
+/* 닫기 버튼 아이콘 스타일 */
+.close-btn i {
+    font-size: 1.5rem; /* 아이콘 크기 */
+    color: #fff; /* 아이콘 색상 */
+}
+
 /* 브라우저 파비콘 이미지 수정 */
 link[rel="icon"] {
     max-height: 16px; /* 파비콘 높이 */
@@ -57,7 +90,3 @@ link[rel="icon"] {
     z-index: 999; /* 메뉴가 블러 위로 표시되도록 */
 }
 
-.close-btn {
-	margin-top: -52px;
-	float: right;
-}

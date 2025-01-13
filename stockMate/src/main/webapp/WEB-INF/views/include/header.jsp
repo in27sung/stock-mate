@@ -32,8 +32,11 @@
             </button>
             <!-- 네비게이션 메뉴 -->
             <div class="collapse navbar-collapse" id="navbarNav">
-				<button class="close-btn" hidden='true'>&times;</button> <!-- 닫기 버튼 -->
-                <ul class="navbar-nav ms-auto text-end"> <!-- 텍스트 오른쪽 정렬 -->
+					<!-- 닫기 버튼 -->
+					<button class="close-btn" hidden='true'>
+					    <i class="bi bi-x-circle"></i> <!-- Bootstrap 아이콘 활용 -->
+					</button>                
+				<ul class="navbar-nav ms-auto text-end"> <!-- 텍스트 오른쪽 정렬 -->
                     <li class="nav-item"><a class="nav-link" href="/user/signup">회원가입</a></li>
                     <li class="nav-item"><a class="nav-link" href="/dashboard">대시보드</a></li>
                     <li class="nav-item"><a class="nav-link" href="/howtouse">사용법</a></li>
