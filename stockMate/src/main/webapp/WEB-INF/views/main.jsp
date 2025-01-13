@@ -134,5 +134,6 @@
 
     <!-- Footer -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<script src="<c:url value='/resources/scripts/header.js' />"></script>
 </body>
 </html>
