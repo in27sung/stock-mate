@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+/* 헤더 스타일 */
+.navbar-brand img {
+    height: 60px; /* 로고 이미지 높이 */
+    margin-right: 10px;
+}
+
+.bg-primary {
+    background-color: #5cb85c !important; /* 헤더 배경색 */
+}
+
+/* 메뉴 텍스트 색상 변경 */
+.nav-link {
+    color: rgb(239, 239, 239) !important; /* 메뉴 텍스트를 하얀색으로 변경 */
+    transition: color 0.3s ease; /* 색상 변경 시 부드러운 애니메이션 */
+    font-size: larger !important; /* 글자 크기를 키움 */
+    text-align: right; /* 텍스트 오른쪽 정렬 */
+}
+
+/* 메뉴 항목 호버 시 색상 변경 */
+.nav-link:hover {
+    color: #f8f9fa !important; /* 호버 시 약간 더 밝은 하얀색 */
+}
+
+/* 모바일 메뉴가 열렸을 때 오른쪽 정렬 */
+.navbar-nav {
+    text-align: right;
+}
+
+/* 블러 효과 영역 */
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 0;
+    backdrop-filter: blur(8px); /* 블러 강도 */
+    background-color: rgba(0, 0, 0, 0.4); /* 약간 어두운 반투명 배경 */
+    transition: height 0.3s ease; /* 부드러운 높이 변경 */
+    z-index: 998; /* 블러가 메뉴 아래로 들어가도록 조정 */
+}
+
+/* 닫기 버튼 스타일 */
+.close-btn {
+    position: absolute;
+    top: 23px;
+    right: 4px;
+    background: rgb(249 249 249 / 7%); /* 반투명 배경 */
+    border: none;
+    color: #f1f3f3;
+    font-size: 1.8rem; /* 아이콘 크기 */
+    cursor: pointer;
+    border-radius: 15%; /* 원형 버튼 */
+    width: 50px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 1000; /* 버튼이 메뉴 위에 표시되도록 */
+	float: right;
+}
+
+/* 버튼 호버 효과 */
+.close-btn:hover {
+    background: rgb(118 185 0 / 80%); /* 밝은 반투명 배경 */
+    transform: scale(1.1); /* 약간 확대 */
+}
+
+/* 닫기 버튼 아이콘 스타일 */
+.close-btn i {
+    font-size: 1.5rem; /* 아이콘 크기 */
+    color: #fff; /* 아이콘 색상 */
+}
+
+/* 브라우저 파비콘 이미지 수정 */
+link[rel="icon"] {
+    max-height: 16px; /* 파비콘 높이 */
+    max-width: 16px; /* 파비콘 폭 */
+}
+
+/* 모바일 메뉴 내부 간격 조정 */
+.navbar-nav .nav-item {
+    margin-bottom: 10px; /* 모바일 메뉴 항목 간격 */
+}
+
+/* 모바일 메뉴가 열렸을 때 */
+.navbar-collapse.show {
+    z-index: 999; /* 메뉴가 블러 위로 표시되도록 */
+}
+
